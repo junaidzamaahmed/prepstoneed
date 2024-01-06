@@ -1,0 +1,138 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id    String @id @default(uuid())
+  email String
+  role  Role   @default(STUDENT)
+
+  // Relationships
+  quizAttempts QuizAttempt[]
+  // createdQuiz  Quiz[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+
+  quizzes Quiz[]
+}
+
+// Quiz model
+model Quiz {
+  id          String  @id @default(uuid())
+  categoryId  String?
+  userId      String
+  title       String
+  description String? @db.MediumText
+  duration    Int
+  price       Int?
+  isPublished Boolean @default(false)
+
+  // Relationships
+  category Category? @relation(fields: [categoryId], references: [id])
+  // user     User      @relation(fields: [userId], references: [id])
+
+  attempts QuizAttempt[]
+  sections Section[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Section {
+  id          String  @id @default(uuid())
+  quizId      String
+  name        String
+  difficulty  String  @default("easy")
+  isPublished Boolean @default(false)
+  position    Int
+
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  questions Question[]
+  responses UserResponse[]
+}
+
+// Question model
+model Question {
+  id          String @id @default(uuid())
+  sectionId   String
+  question    String @db.MediumText
+  explanation String @db.MediumText
+  position    Int
+
+  // Relationships
+  section   Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  answers   Answer[]
+  responses UserResponse[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Answer model
+model Answer {
+  id         String  @id @default(uuid())
+  questionID String // Foreign key referencing Question.id
+  text       String  @db.MediumText
+  isCorrect  Boolean @default(false)
+  position   Int
+
+  // Relationships
+  question  Question       @relation(fields: [questionID], references: [id], onDelete: Cascade)
+  responses UserResponse[]
+}
+
+// QuizAttempt model
+model QuizAttempt {
+  id         String    @id @default(uuid())
+  userID     String // Foreign key referencing User.id
+  quizID     String // Foreign key referencing Quiz.id
+  score      Int       @default(0)
+  percentage Float     @default(0)
+  startTime  DateTime  @default(now())
+  endTime    DateTime?
+
+  // Relationships
+  user User @relation(fields: [userID], references: [id], onDelete: Cascade)
+  quiz Quiz @relation(fields: [quizID], references: [id], onDelete: Cascade)
+
+  responses UserResponse[]
+}
+
+// UserResponse model
+model UserResponse {
+  id               String   @id @default(uuid())
+  attemptID        String // Foreign key referencing QuizAttempt.id
+  questionID       String // Foreign key referencing Question.id
+  selectedAnswerID String // Foreign key referencing Answer.id
+  sectionID        String
+  isCorrect        Boolean  @default(false)
+  endTime          DateTime @default(now())
+
+  // Relationships
+  attempt        QuizAttempt @relation(fields: [attemptID], references: [id])
+  question       Question    @relation(fields: [questionID], references: [id])
+  section        Section     @relation(fields: [sectionID], references: [id])
+  selectedAnswer Answer      @relation(fields: [selectedAnswerID], references: [id])
+}
+
+// Role enum
+enum Role {
+  STUDENT
+  TEACHER
+}
