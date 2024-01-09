@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -59,7 +59,6 @@ export const NameForm = ({ initialData, sectionId, testId }: NameFormProps) => {
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <Toaster richColors position="top-center" />
       <div className="font-medium flex items-center justify-between">
         Name
         <Button onClick={toggleEdit} variant="ghost">

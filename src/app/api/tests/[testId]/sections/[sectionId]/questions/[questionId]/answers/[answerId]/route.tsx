@@ -4,11 +4,21 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { testId: string; sectionId: string } }
+  {
+    params,
+  }: {
+    params: {
+      testId: string;
+      sectionId: string;
+      questionId: string;
+      answerId: string;
+    };
+  }
 ) {
   try {
     const { userId } = auth();
-    const { testId, sectionId } = params;
+    const { testId, answerId } = params;
+    // const values = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -22,24 +32,34 @@ export async function DELETE(
     if (!testOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const section = await db.section.delete({
+
+    const answer = await db.answer.delete({
       where: {
-        id: sectionId,
+        id: answerId,
       },
     });
-    return NextResponse.json(section);
+    return NextResponse.json(answer);
   } catch (error) {
-    console.log("[TEST_ID]", error);
+    console.log("[ANSWER_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
 export async function PATCH(
   req: Request,
-  { params }: { params: { testId: string; sectionId: string } }
+  {
+    params,
+  }: {
+    params: {
+      testId: string;
+      sectionId: string;
+      questionId: string;
+      answerId: string;
+    };
+  }
 ) {
   try {
     const { userId } = auth();
-    const { testId, sectionId } = params;
+    const { testId, sectionId, questionId, answerId } = params;
     const values = await req.json();
 
     if (!userId) {
@@ -54,17 +74,18 @@ export async function PATCH(
     if (!testOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const section = await db.section.update({
+
+    const answer = await db.answer.update({
       where: {
-        id: sectionId,
+        id: answerId,
       },
       data: {
         ...values,
       },
     });
-    return NextResponse.json(section);
+    return NextResponse.json(answer);
   } catch (error) {
-    console.log("[TEST_ID]", error);
+    console.log("[ANSWER_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

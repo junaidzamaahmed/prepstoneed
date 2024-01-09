@@ -18,7 +18,6 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { Toaster } from "@/components/ui/sonner";
 import { useAuth } from "@clerk/nextjs";
 
 const formSchema = z.object({
@@ -108,7 +107,6 @@ const CreateTest = () => {
             </div>
           </form>
         </Form>
-        <Toaster richColors position="top-center" />
       </div>
     </div>
   );

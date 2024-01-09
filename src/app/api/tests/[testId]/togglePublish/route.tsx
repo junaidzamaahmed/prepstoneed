@@ -2,28 +2,6 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { testId: string } }
-) {
-  try {
-    const { userId } = auth();
-    const { testId } = params;
-
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-    const test = await db.quiz.delete({
-      where: {
-        id: testId,
-      },
-    });
-    return NextResponse.json(test);
-  } catch (error) {
-    console.log("[TEST_ID]", error);
-    return new NextResponse("Internal Error", { status: 500 });
-  }
-}
 export async function PATCH(
   req: Request,
   { params }: { params: { testId: string } }
@@ -36,16 +14,24 @@ export async function PATCH(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const test = await db.quiz.update({
+    const testOwner = await db.quiz.findUnique({
       where: {
         id: testId,
-        userId,
-      },
-      data: {
-        ...values,
+        userId: userId,
       },
     });
-    return NextResponse.json(test);
+    if (!testOwner) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+    const quiz = await db.quiz.update({
+      where: {
+        id: params.testId,
+      },
+      data: {
+        isPublished: values.isPublished,
+      },
+    });
+    return NextResponse.json(quiz);
   } catch (error) {
     console.log("[TEST_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });

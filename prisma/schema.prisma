@@ -69,11 +69,12 @@ model Section {
 
 // Question model
 model Question {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   sectionId   String
-  question    String @db.MediumText
-  explanation String @db.MediumText
+  question    String  @db.MediumText
+  explanation String? @db.MediumText
   position    Int
+  isPublished Boolean @default(false)
 
   // Relationships
   section   Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
