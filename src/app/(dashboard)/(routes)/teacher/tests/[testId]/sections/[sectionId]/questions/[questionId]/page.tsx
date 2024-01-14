@@ -9,6 +9,7 @@ import { AnswerForm } from "./_components/answer-form";
 import Link from "next/link";
 import { Banner } from "@/components/banner";
 import { QuestionActions } from "./_components/actions";
+import { ImageForm } from "./_components/image_form";
 
 const QuestionIdPage = async ({
   params,
@@ -78,6 +79,12 @@ const QuestionIdPage = async ({
           <h2 className="text-xl">Edit this question</h2>
         </div>
         <QuestionForm
+          initialData={question}
+          testId={params.testId}
+          sectionId={params.sectionId}
+          questionId={params.questionId}
+        />
+        <ImageForm
           initialData={question}
           testId={params.testId}
           sectionId={params.sectionId}

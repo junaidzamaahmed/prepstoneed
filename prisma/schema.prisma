@@ -74,6 +74,7 @@ model Question {
   question    String  @db.MediumText
   explanation String? @db.MediumText
   position    Int
+  imageUrl    String? @db.MediumText
   isPublished Boolean @default(false)
 
   // Relationships

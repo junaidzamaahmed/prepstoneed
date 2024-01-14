@@ -14,7 +14,7 @@ const guestRoutes = [
   {
     icon: Compass,
     label: "Browse",
-    href: "/mocks",
+    href: "/search",
   },
 ];
 const teacherRoutes = [
