@@ -3,6 +3,7 @@ import { columns } from "./_components/columns";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { InputFile } from "./_components/input_file";
 
 const TestsPage = async () => {
   const { userId } = auth();
@@ -21,6 +22,7 @@ const TestsPage = async () => {
 
   return (
     <div className="p-6">
+      <InputFile />
       <DataTable columns={columns} data={tests} />
     </div>
   );
