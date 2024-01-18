@@ -22,7 +22,7 @@ const TestsPage = async () => {
 
   return (
     <div className="p-6">
-      <InputFile />
+      {/* <InputFile /> */}
       <DataTable columns={columns} data={tests} />
     </div>
   );
