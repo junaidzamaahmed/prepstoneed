@@ -5,7 +5,7 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Loader2, PlusCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Section, Question } from "@prisma/client";
@@ -21,6 +21,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { QuestionsList } from "./questions-list";
+import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface QuestionFormProps {
   initialData: Section & { questions: Question[] };
@@ -30,6 +32,16 @@ interface QuestionFormProps {
 
 const formSchema = z.object({
   question: z.string().min(1),
+  isPublished: z.boolean().optional(),
+  imageUrl: z.string().optional(),
+  explanation: z.string().min(1),
+  answers: z.array(
+    z.object({
+      text: z.string().min(1),
+      isCorrect: z.boolean().optional(),
+      position: z.number().gte(1).optional(),
+    })
+  ),
 });
 
 export const QuestionForm = ({
@@ -55,12 +67,19 @@ export const QuestionForm = ({
 
   const { isSubmitting, isValid } = form.formState;
 
+  // const onSubmit = async (values: z.infer<typeof formSchema>) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(
+      values?.answers?.forEach((element: any, index: number) => {
+        element.isCorrect = ansObj[index].isCorrect;
+        element.position = ansObj[index].position;
+      });
+      values.isPublished = true;
+      const ques = await axios.post(
         `/api/tests/${testId}/sections/${sectionId}/questions`,
         values
       );
+      console.log(ques);
       toast.success("Question created");
       toggleCreating();
       router.refresh();
@@ -90,6 +109,33 @@ export const QuestionForm = ({
     router.push(
       `/teacher/tests/${testId}/sections/${sectionId}/questions/${id}`
     );
+  };
+  const [answers, setAnswers] = useState<any>("");
+  const [ansObj, setAnsObj] = useState<any>(null);
+  const [ref, setRef] = useState<boolean>(false);
+  useEffect(() => {
+    if (answers && !ref) {
+      setAnsObj(
+        answers.map((a: any, index: number) => {
+          return {
+            position: index + 1,
+            isCorrect: !index ? true : false,
+            text: a,
+          };
+        })
+      );
+      setRef(true);
+    }
+  }, [answers]);
+  const onChange = (e: string) => {
+    ansObj.forEach((answer: any) => {
+      if (answer.text === e) {
+        answer.isCorrect = true;
+      } else {
+        answer.isCorrect = false;
+      }
+    });
+    setAnsObj(ansObj);
   };
 
   return (
@@ -124,7 +170,7 @@ export const QuestionForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
+                    <Textarea
                       disabled={isSubmitting}
                       placeholder="e.g. 'What is your name?'"
                       {...field}
@@ -134,6 +180,90 @@ export const QuestionForm = ({
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="explanation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Textarea
+                      disabled={isSubmitting}
+                      placeholder="Correct answer explanation"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="Image URL"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {ansObj ? (
+              <RadioGroup
+                defaultValue={ansObj.find((ans: any) => ans?.isCorrect)?.text}
+                onValueChange={(e) => onChange(e)}
+              >
+                {ansObj.map((a: any, index: number) => {
+                  return (
+                    <div key={index} className="flex gap-x-2 items-center">
+                      <FormField
+                        defaultValue={a.isCorrect}
+                        control={form.control}
+                        name={`answers.${index}.isCorrect`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <RadioGroupItem value={a.text} id={a.text} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        defaultValue={a.text}
+                        control={form.control}
+                        name={`answers.${index}.text`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Textarea
+                                className=""
+                                disabled={isSubmitting}
+                                placeholder="Answer here"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  );
+                })}
+              </RadioGroup>
+            ) : (
+              <Textarea
+                disabled={isSubmitting}
+                placeholder="Paste answers here'"
+                onChange={(e) => setAnswers(e.target.value.split("\n"))}
+              />
+            )}
+
             <Button disabled={!isValid || isSubmitting} type="submit">
               Create
             </Button>

@@ -9,7 +9,7 @@ export async function POST(
   try {
     const { userId } = auth();
 
-    const { question } = await req.json();
+    const values = await req.json();
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -33,10 +33,21 @@ export async function POST(
     const newPosition = lastQuestion ? lastQuestion.position + 1 : 1;
     const section = await db.question.create({
       data: {
-        question,
+        question: values.question,
         sectionId: params.sectionId,
         position: newPosition,
+        imageUrl: values.imageUrl,
+        explanation: values.explanation,
+        isPublished: true,
+        answers: {
+          create: values.answers.map((a: any) => ({
+            text: a.text,
+            isCorrect: a.isCorrect,
+            position: a.position,
+          })),
+        },
       },
+      include: { answers: true },
     });
     return NextResponse.json(section);
   } catch (error) {
