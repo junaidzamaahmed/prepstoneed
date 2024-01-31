@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { QuestionsList } from "./questions-list";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Editor } from "@/components/editor";
 
 interface QuestionFormProps {
   initialData: Section & { questions: Question[] };
@@ -170,9 +171,14 @@ export const QuestionForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
+                    {/* <Textarea
                       disabled={isSubmitting}
                       placeholder="e.g. 'What is your name?'"
+                      {...field}
+                    /> */}
+                    <Editor
+                      placeholder="e.g. 'What is your name?'"
+                      disabled={isSubmitting}
                       {...field}
                     />
                   </FormControl>

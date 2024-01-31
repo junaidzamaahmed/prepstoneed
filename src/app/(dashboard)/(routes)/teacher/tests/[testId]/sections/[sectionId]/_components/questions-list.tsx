@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Grip, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Preview } from "@/components/preview";
 
 interface QuestionsListProps {
   items: Question[];
@@ -82,7 +83,7 @@ export const QuestionsList = ({
                     >
                       <Grip className="h-5 w-5" />
                     </div>
-                    {question.question}
+                    <Preview value={question.question} />
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
                       <Badge
                         className={cn(
