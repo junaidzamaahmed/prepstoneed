@@ -3,7 +3,10 @@ import MobileSidebar from "./mobile-sidebar";
 
 const Navbar = () => {
   return (
-    <nav className="p-4 border-b- h-full flex items-center shadow-sm">
+    <nav
+      id="navbar"
+      className="p-4 border-b- h-full flex items-center shadow-sm bg-white"
+    >
       <MobileSidebar />
       <NavbarRoutes />
     </nav>
