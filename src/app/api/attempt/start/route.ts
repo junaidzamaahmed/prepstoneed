@@ -15,13 +15,20 @@ export async function POST(req: Request) {
         id: testId,
       },
     });
-    if (!test) {
+    const user = await db.user.findUnique({
+      where: {
+        externalId: userId,
+      },
+    });
+    if (!test || !user) {
       return new NextResponse("Not Found", { status: 404 });
     }
+
     const endTime = new Date().getTime() + test?.duration * 1000;
+
     const attempt = await db.quizAttempt.create({
       data: {
-        // userID: userId,
+        userID: user?.id,
         quizID: testId,
         endTime: new Date(endTime),
       },
