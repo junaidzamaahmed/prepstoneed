@@ -50,7 +50,7 @@ export async function POST(req: Request) {
   }
 
   // Get the ID and type
-  const { id, email_addresses } = evt.data;
+  const { id } = evt.data;
   const eventType = evt.type;
 
   // CREATE USER IF EVENT TYPE IS USER_CREATED
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
     const user = await db.user.create({
       data: {
         externalId: id,
-        email: email_addresses[0]?.email_address,
+        email: evt.data.email_addresses[0]?.email_address,
       },
     });
     console.log(`User with and ID of ${id} and type of ${eventType}`);
