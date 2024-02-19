@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 export default function HOME() {
   return (
     <div>
@@ -30,18 +31,26 @@ export default function HOME() {
           </div>
 
           <div className="grid gap-5 xl:gap-1 items-center *:max-w-[14rem] *:w-full *:mx-auto my-8 md:grid-cols-4">
-            <div className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
-              DU IBA
-            </div>
-            <div className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
-              BUP FBS
-            </div>
-            <div className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
-              DSAT Mock
-            </div>
-            <div className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
-              DSAT
-            </div>
+            <Link href="/comingSoon">
+              <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
+                DU IBA
+              </button>
+            </Link>
+            <Link href="/comingSoon">
+              <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
+                BUP FBS
+              </button>
+            </Link>
+            <Link href="/sat">
+              <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
+                DSAT Mock
+              </button>
+            </Link>
+            <Link href="/comingSoon">
+              <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
+                DSAT
+              </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -432,7 +441,7 @@ export default function HOME() {
             <Image
               width={80}
               height={80}
-              src="/assets/student1@2x.webp "
+              src="/assets/student1@2x.webp"
               alt="profile image"
               className="absolute -top-9 left-5 size-20"
             />
