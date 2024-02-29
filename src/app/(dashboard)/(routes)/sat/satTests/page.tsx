@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { UserTable } from "../../_components/user-table";
+import { UserTable } from "../../../_components/user-table";
 
 export default async function Home() {
   const { userId } = auth();

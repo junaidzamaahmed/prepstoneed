@@ -4,8 +4,6 @@ import { redirect } from "next/navigation";
 import { Preview } from "@/components/preview";
 import { Button } from "./_components/button";
 import Link from "next/link";
-import axios from "axios";
-import { toast } from "sonner";
 
 const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
   const { userId } = auth();
@@ -66,9 +64,7 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
                 {test.price === 0 ? "Free" : test.price} Taka
               </p>
             </div>
-            {/* <Link href={`/startTest/${test.id}/start`}> */}
             <Button>Start Test</Button>
-            {/* </Link> */}
           </div>
         </div>
       </div>

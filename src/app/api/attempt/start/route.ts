@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       return new NextResponse("Not Found", { status: 404 });
     }
 
-    const endTime = new Date().getTime() + test?.duration * 1000;
+    const endTime = new Date().getTime() + test?.duration * 1000 + 5000;
 
     const attempt = await db.quizAttempt.create({
       data: {

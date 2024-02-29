@@ -6,7 +6,9 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { toast } from "sonner";
-import { useParams } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
+import { Router } from "next/router";
+import { set } from "react-hook-form";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -46,12 +48,18 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   async ({ className, variant, size, asChild = false, ...props }, ref) => {
     const params = useParams<any>();
+    const router = useRouter();
+    const [disabled, setDisabled] = React.useState(false);
     const handleStart = async () => {
       try {
-        await axios.post(`/api/attempt/start/`, {
+        setDisabled(true);
+        toast.info("Starting test. Please wait.");
+        const attempt = await axios.post(`/api/attempt/start/`, {
           testId: params.testId,
         });
         toast.success("Test started");
+        router.push(`/startTest/${params.testId}/start/${attempt.data.id}`);
+        setDisabled(false);
       } catch {
         toast.error("Something went wrong");
       }
@@ -60,6 +68,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
+        disabled={disabled}
         onClick={handleStart}
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}

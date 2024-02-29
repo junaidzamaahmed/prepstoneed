@@ -71,7 +71,6 @@ model Section {
   quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
   questions Question[]
-  responses UserResponse[]
 }
 
 // Question model
@@ -115,6 +114,8 @@ model QuizAttempt {
   percentage Float     @default(0)
   startTime  DateTime  @default(now())
   endTime    DateTime?
+  completed  Boolean?  @default(false)
+  sections   String[]
 
   // Relationships
   user User @relation(fields: [userID], references: [id], onDelete: Cascade)
@@ -125,19 +126,18 @@ model QuizAttempt {
 
 // UserResponse model
 model UserResponse {
-  id               String   @id @default(uuid())
+  id               String  @id @default(uuid())
   attemptID        String // Foreign key referencing QuizAttempt.id
   questionID       String // Foreign key referencing Question.id
   selectedAnswerID String // Foreign key referencing Answer.id
-  sectionID        String
-  isCorrect        Boolean  @default(false)
-  endTime          DateTime @default(now())
+  isCorrect        Boolean @default(false)
 
   // Relationships
   attempt        QuizAttempt @relation(fields: [attemptID], references: [id])
   question       Question    @relation(fields: [questionID], references: [id])
-  section        Section     @relation(fields: [sectionID], references: [id])
   selectedAnswer Answer      @relation(fields: [selectedAnswerID], references: [id])
+
+  @@unique([attemptID, questionID])
 }
 
 // Role enum

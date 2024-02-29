@@ -24,7 +24,7 @@ export async function POST(
     }
     const lastQuestion = await db.question.findFirst({
       where: {
-        sectionId: params.testId,
+        sectionId: params.sectionId,
       },
       orderBy: {
         position: "desc",
