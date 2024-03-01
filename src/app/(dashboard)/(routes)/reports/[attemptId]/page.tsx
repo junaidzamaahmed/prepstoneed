@@ -113,72 +113,76 @@ export default async function Reports({
         <span className="px-3 text-sm pb-1">400 to 1600</span>
       </div>
 
-      {attempt?.quiz.sections.map((section) => (
-        <div key={section.id} className="py-4">
-          <p>
-            {attempt?.quiz?.title} Section {section.name}
-          </p>
-          <div className="grid grid-flow-col auto-cols-max divide-x-2">
-            <div className="grid grid-cols-1 border-primary border border-1 font-semibold bg-primary text-white divide-y-2">
-              <div className="p-2">#</div>
-              <div className="p-2">Your Answer</div>
-              <div className="p-2">Correct Answer</div>
-            </div>
-            {section.questions.map((question) => (
-              <Link
-                key={question.id}
-                href={`/reports/${params.attemptId}/${question.id}`}
-              >
-                <div className="grid grid-cols-1 border-primary border border-1 font-semibold divide-y-2 hover:opacity-40 cursor-pointer">
-                  <div className="p-2 bg-primary text-white">
-                    {question.position}
-                  </div>
-                  <div className="p-2 bg-white flex">
-                    {question.answers.find(
-                      (ans) =>
-                        ans?.id ===
-                        question.responses.find(
-                          (response) => response.attemptID === attempt.id
-                        )?.selectedAnswerID
-                    ) ? (
-                      <div>
-                        {
-                          // Convert answer position to alphabet
-                          ansAlphabet[
-                            question?.answers?.find(
-                              (ans) =>
-                                ans?.id ===
-                                question.responses.find(
-                                  (response) =>
-                                    response.attemptID === attempt.id
-                                )?.selectedAnswerID
-                            )?.position || 0
-                          ]
-                        }
-                      </div>
-                    ) : (
-                      <Dot className="text-red-500" />
-                    )}
-                  </div>
-                  <div className="p-2 bg-white flex">
-                    {question.answers.find(
-                      (ans) =>
-                        ans?.id ===
-                        question.responses.find(
-                          (response) => response.attemptID === attempt.id
-                        )?.selectedAnswerID
-                    )?.isCorrect ? (
-                      <Check className=" text-green-600" />
-                    ) : (
-                      <X className="text-red-500" />
-                    )}
-                  </div>
+      {attempt?.quiz.sections.map((section) => {
+        return (
+          attempt.sections.includes(section.id) && (
+            <div key={section.id} className="py-4">
+              <p>
+                {attempt?.quiz?.title} Section {section.name}
+              </p>
+              <div className="grid grid-flow-col auto-cols-max divide-x-2">
+                <div className="grid grid-cols-1 border-primary border border-1 font-semibold bg-primary text-white divide-y-2">
+                  <div className="p-2">#</div>
+                  <div className="p-2">Your Answer</div>
+                  <div className="p-2">Correct Answer</div>
                 </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      ))}
+                {section.questions.map((question) => (
+                  <Link
+                    key={question.id}
+                    href={`/reports/${params.attemptId}/${question.id}`}
+                  >
+                    <div className="grid grid-cols-1 border-primary border border-1 font-semibold divide-y-2 hover:opacity-40 cursor-pointer">
+                      <div className="p-2 bg-primary text-white">
+                        {question.position}
+                      </div>
+                      <div className="p-2 bg-white flex">
+                        {question.answers.find(
+                          (ans) =>
+                            ans?.id ===
+                            question.responses.find(
+                              (response) => response.attemptID === attempt.id
+                            )?.selectedAnswerID
+                        ) ? (
+                          <div>
+                            {
+                              // Convert answer position to alphabet
+                              ansAlphabet[
+                                question?.answers?.find(
+                                  (ans) =>
+                                    ans?.id ===
+                                    question.responses.find(
+                                      (response) =>
+                                        response.attemptID === attempt.id
+                                    )?.selectedAnswerID
+                                )?.position || 0
+                              ]
+                            }
+                          </div>
+                        ) : (
+                          <Dot className="text-red-500" />
+                        )}
+                      </div>
+                      <div className="p-2 bg-white flex">
+                        {question.answers.find(
+                          (ans) =>
+                            ans?.id ===
+                            question.responses.find(
+                              (response) => response.attemptID === attempt.id
+                            )?.selectedAnswerID
+                        )?.isCorrect ? (
+                          <Check className=" text-green-600" />
+                        ) : (
+                          <X className="text-red-500" />
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )
+        );
+      })}
     </div>
   );
 }
