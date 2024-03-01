@@ -2,7 +2,6 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { UserTable } from "../../../_components/user-table";
-import { toast } from "sonner";
 
 export default async function Home() {
   const { userId } = auth();
@@ -28,7 +27,7 @@ export default async function Home() {
       externalId: userId,
     },
   });
-  if (userRole?.role !== "SPECIAL") {
+  if (userRole?.role === "STUDENT") {
     return redirect("/");
   }
   return (

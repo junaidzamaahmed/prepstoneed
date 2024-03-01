@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { GraduationCap, LogOut } from "lucide-react";
 import Link from "next/link";
 
-const NavbarRoutes = () => {
+const NavbarRoutes = ({ teacher }: { teacher: boolean }) => {
   const pathname = usePathname();
 
   const isTeacherPage = pathname?.startsWith("/teacher");
@@ -13,19 +13,20 @@ const NavbarRoutes = () => {
 
   return (
     <div className="flex gap-x-2 ml-auto">
-      {isTeacherPage || isGuestPage ? (
-        <Link href="/">
-          <Button size="sm" variant="ghost">
-            <LogOut className="h-4 w-4 mr-2" /> Exit
-          </Button>
-        </Link>
-      ) : (
-        <Link href="/teacher/tests">
-          <Button size="sm" variant="ghost">
-            <GraduationCap className="h-4 w-4 mr-2" /> Teacher mode
-          </Button>
-        </Link>
-      )}
+      {teacher &&
+        (isTeacherPage || isGuestPage ? (
+          <Link href="/">
+            <Button size="sm" variant="ghost">
+              <LogOut className="h-4 w-4 mr-2" /> Exit
+            </Button>
+          </Link>
+        ) : (
+          <Link href="/teacher/tests">
+            <Button size="sm" variant="ghost">
+              <GraduationCap className="h-4 w-4 mr-2" /> Teacher mode
+            </Button>
+          </Link>
+        ))}
       <UserButton afterSignOutUrl="/" />
     </div>
   );
