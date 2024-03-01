@@ -269,7 +269,11 @@ export const QuestionForm = ({
               <Textarea
                 disabled={isSubmitting}
                 placeholder="Paste answers here'"
-                onChange={(e) => setAnswers(e.target.value.split("\n"))}
+                onChange={(e) =>
+                  setAnswers(
+                    e.target.value.split("\n").filter((a: string) => a !== "")
+                  )
+                }
               />
             )}
 
