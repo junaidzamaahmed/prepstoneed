@@ -80,10 +80,13 @@ export const QuestionForm = ({
         `/api/tests/${testId}/sections/${sectionId}/questions`,
         values
       );
-      console.log(ques);
       toast.success("Question created");
       toggleCreating();
       router.refresh();
+      form.reset();
+      setAnsObj(null);
+      setAnswers("");
+      setRef(false);
     } catch {
       toast.error("Something went wrong");
     }

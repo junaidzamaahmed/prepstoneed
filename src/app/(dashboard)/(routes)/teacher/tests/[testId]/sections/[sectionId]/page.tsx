@@ -8,6 +8,8 @@ import { QuestionForm } from "./_components/question-form";
 import Link from "next/link";
 import { Banner } from "@/components/banner";
 import { SectionActions } from "./_components/actions";
+import { PositionForm } from "./_components/position-form";
+import DifficultyForm from "./_components/difficulty-form";
 
 const SectionIdPage = async ({
   params,
@@ -41,6 +43,7 @@ const SectionIdPage = async ({
     section.difficulty,
     section.name,
     section.questions.find((question) => question.isPublished === true),
+    section.position,
   ];
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -82,6 +85,12 @@ const SectionIdPage = async ({
           testId={params.testId}
           sectionId={params.sectionId}
         />
+        <PositionForm
+          initialData={section}
+          testId={params.testId}
+          sectionId={params.sectionId}
+        />
+        <DifficultyForm testId={params.testId} section={section} />
         <div className="mt-4 flex items-center gap-x-2">
           <IconBadge icon={MessageCircleQuestion} />
           <h2 className="text-xl">Questions</h2>

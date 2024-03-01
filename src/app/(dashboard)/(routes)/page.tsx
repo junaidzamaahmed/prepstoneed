@@ -31,6 +31,11 @@ export default function HOME() {
           </div>
 
           <div className="grid gap-5 xl:gap-1 items-center *:max-w-[14rem] *:w-full *:mx-auto my-8 md:grid-cols-4">
+            <Link href="/sat/satTests">
+              <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
+                DSAT Mock
+              </button>
+            </Link>
             <Link href="/comingSoon">
               <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
                 DU IBA
@@ -39,11 +44,6 @@ export default function HOME() {
             <Link href="/comingSoon">
               <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
                 BUP FBS
-              </button>
-            </Link>
-            <Link href="/sat">
-              <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
-                DSAT Mock
               </button>
             </Link>
             <Link href="/comingSoon">

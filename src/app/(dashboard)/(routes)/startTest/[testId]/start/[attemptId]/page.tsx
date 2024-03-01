@@ -18,6 +18,7 @@ export default async function TEST({
         orderBy: { position: "asc" },
         include: {
           questions: {
+            orderBy: { position: "asc" },
             include: {
               answers: true,
               responses: {

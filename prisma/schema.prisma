@@ -61,11 +61,11 @@ model Quiz {
 }
 
 model Section {
-  id          String  @id @default(uuid())
+  id          String     @id @default(uuid())
   quizId      String
   name        String
-  difficulty  String  @default("easy")
-  isPublished Boolean @default(false)
+  difficulty  Difficulty @default(EASY)
+  isPublished Boolean    @default(false)
   position    Int
 
   quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
@@ -144,4 +144,12 @@ model UserResponse {
 enum Role {
   STUDENT
   TEACHER
+  SPECIAL
+}
+
+// Difficulty enum
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
 }

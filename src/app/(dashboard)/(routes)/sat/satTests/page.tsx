@@ -10,6 +10,9 @@ export default async function Home() {
   }
 
   const tests = await db.quiz.findMany({
+    where: {
+      isPublished: true,
+    },
     orderBy: {
       title: "asc",
     },

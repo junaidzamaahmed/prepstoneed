@@ -3,7 +3,6 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { Preview } from "@/components/preview";
 import { Button } from "./_components/button";
-import Link from "next/link";
 
 const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
   const { userId } = auth();
@@ -17,7 +16,8 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
     },
     include: {
       sections: {
-        include: { questions: true },
+        orderBy: { position: "asc" },
+        include: { questions: { orderBy: { position: "asc" } } },
       },
     },
   });

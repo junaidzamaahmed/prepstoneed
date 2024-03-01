@@ -40,7 +40,6 @@ export default function QuestionAnswer({
     );
     question.responses[0] = response.data;
     toggleDisable(false);
-    console.log(response);
   };
   useEffect(() => {
     form.setValue("type", selected);

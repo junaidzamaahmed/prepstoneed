@@ -13,10 +13,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronUp, MapPin } from "lucide-react";
 import { QuizAttempt, UserResponse } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useForm } from "react-hook-form";
 import { ConfirmModal } from "@/components/confirm-modal";
 import axios from "axios";
 
@@ -39,18 +38,66 @@ export default function Questions({
   const toggleDisable = (val: boolean) => {
     setDisable(val);
   };
-  const handleCompleteSection = () => {
+  const handleCompleteSection = async (secId: string) => {
+    let completed = false;
+    if (attempt.sections.includes(secId)) {
+      completed = true;
+    }
+
     setSectionNo((prev) => {
+      let secNo = prev + 1;
+      let temp = null;
       setSection((prev1: any) => {
-        setQuestions(test.sections[prev + 1]?.questions);
-        return test.sections[prev + 1];
+        if (prev === 0 || prev === 4) {
+          setDisable(true);
+
+          // Find the total score for this section
+          let score = 0;
+          prev1?.questions?.forEach((question: any) => {
+            question.responses?.forEach((response: any) => {
+              if (response.isCorrect) {
+                score++;
+              }
+            });
+          });
+          const difficulty =
+            prev1?.questions?.length - score > 8
+              ? "EASY"
+              : prev1?.questions?.length - score > 4
+              ? "MEDIUM"
+              : "HARD";
+          const possibleSections =
+            prev === 0 ? test?.sections?.slice(1, 4) : test?.sections?.slice(5);
+          secNo =
+            possibleSections?.findIndex(
+              (section: any) => section.difficulty === difficulty
+            ) + (prev === 0 ? 1 : 5);
+          temp = test.sections[secNo];
+          setQuestions(temp?.questions);
+          toast.info("Please wait.");
+          attempt.sections.push(prev1.id);
+          toast.info("Section completed");
+          setDisable(false);
+          return temp;
+        } else if (prev < 4) {
+          setDisable(true);
+          secNo = 4;
+          setDisable(false);
+          setQuestions(test.sections[4].questions);
+          return test.sections[4];
+        } else {
+          completeTest();
+        }
       });
       setCurrentQuestion(0);
-      return prev + 1;
+      return secNo;
     });
+    if (!completed) {
+      await axios.put(`/api/attempt/${attempt.id}/${secId}`);
+    }
   };
   if (test?.completed) {
-    console.log("completed");
+    router.push(`/reports/${attempt.id}`);
   }
   const completeTest = async () => {
     try {
@@ -63,7 +110,9 @@ export default function Questions({
       toast.error("Error completing test");
     }
   };
-
+  if (attempt.sections.includes(section?.id)) {
+    handleCompleteSection(section.id);
+  }
   return (
     <>
       <QuestionAnswer
@@ -170,7 +219,10 @@ export default function Questions({
             </ConfirmModal>
           ) : (
             currentQuestion === questions?.length - 1 && (
-              <Button disabled={disable} onClick={handleCompleteSection}>
+              <Button
+                disabled={disable}
+                onClick={() => handleCompleteSection(section.id)}
+              >
                 Complete Section
               </Button>
             )
