@@ -100,14 +100,14 @@ const TestIdPage = async ({ params }: { params: { testId: string } }) => {
             <TitleForm initialData={test} testId={test.id} />
             <DurationForm initialData={test} testId={test.id} />
             <DescriptionForm initialData={test} testId={test.id} />
-            {/* <CategoryForm
+            <CategoryForm
               initialData={test}
               testId={test.id}
               options={categories.map((category) => ({
                 label: category.name,
                 value: category.id,
               }))}
-            /> */}
+            />
             <PriceForm initialData={test} testId={test.id} />
           </div>
           <div>
