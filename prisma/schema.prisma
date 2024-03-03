@@ -153,3 +153,8 @@ enum Difficulty {
   MEDIUM
   HARD
 }
+
+enum Qtype {
+  MCQ
+  INPUT
+}

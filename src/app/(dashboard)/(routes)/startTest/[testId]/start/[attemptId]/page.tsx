@@ -20,7 +20,9 @@ export default async function TEST({
           questions: {
             orderBy: { position: "asc" },
             include: {
-              answers: true,
+              answers: {
+                orderBy: { position: "asc" },
+              },
               responses: {
                 where: {
                   attemptID: params.attemptId,
@@ -41,7 +43,7 @@ export default async function TEST({
     return redirect(`/reports/${params.attemptId}`);
   }
   return (
-    <div className="relative h-[calc(100vh-80px)]">
+    <div className="relative md:h-[calc(100vh-100px)]">
       <div className="flex justify-between p-3 border-b-2 border-primary border-dashed border-spacing-3">
         <div>
           <p className="text-lg font-semibold text-primary">{test?.title}</p>

@@ -124,8 +124,8 @@ export default function Questions({
         selected={selected}
       />
       {/* Footer */}
-      <div className="absolute bottom-0 p-4 w-[calc(100vw-14rem)] flex justify-between border-t-2 border-dashed border-primary pt-3">
-        <div className="py-2 font-semibold">
+      <div className="md:absolute bottom-0 md:p-4 md:w-[calc(100vw-15.5rem)] w-100 flex justify-between border-t-2 border-dashed border-primary pt-3">
+        <div className="md:py-2 font-semibold text-xs md:text-base md:w-auto w-14">
           <span>Section: {section?.name}</span>
         </div>
         <div>
