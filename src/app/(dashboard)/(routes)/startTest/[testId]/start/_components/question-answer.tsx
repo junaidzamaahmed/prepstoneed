@@ -18,6 +18,8 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function QuestionAnswer({
   question,
@@ -37,6 +39,16 @@ export default function QuestionAnswer({
   const correctAnswer = question?.answers.find(
     (answer: any) => answer.isCorrect
   );
+  const onSubmit = async (values: any) => {
+    if (values.input === "") return;
+    toggleDisable(true);
+    const response = await axios.put(
+      `/api/userResponse/${attemptId}/${question.id}/`,
+      [values, correctAnswer.text == values.input]
+    );
+    question.responses[0] = response.data;
+    toggleDisable(false);
+  };
   const handleAnswerChange = async (value: string) => {
     toggleDisable(true);
     const response = await axios.put(
@@ -74,49 +86,78 @@ export default function QuestionAnswer({
               Question {question?.position}
             </div>
             <div>
-              <Form {...form}>
-                <form
-                  //   onSubmit={handleSubmit()}
-                  className="w-full space-y-6"
-                >
-                  <FormField
-                    control={form.control}
-                    name="type"
-                    render={({ field }) => (
-                      <FormItem className="space-y-3">
-                        <FormLabel className="ml-1">
-                          Please select your answer:
-                        </FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            disabled={disable}
-                            onValueChange={handleAnswerChange}
-                            defaultValue={
-                              question?.responses[0]?.selectedAnswerID
-                            }
-                            className="space-y-1"
-                          >
-                            {question?.answers.map((answer: any) => (
-                              <FormItem
-                                key={answer?.position}
-                                className="flex items-center space-x-3 space-y-0 border border-black rounded-md py-3 px-2"
-                              >
-                                <FormControl>
-                                  <RadioGroupItem value={answer?.id} />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  {answer?.text}
-                                </FormLabel>
-                              </FormItem>
-                            ))}
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </form>
-              </Form>
+              {question.qtype === "MCQ" ? (
+                <Form {...form}>
+                  <form className="w-full space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="type"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormLabel className="ml-1">
+                            Please select your answer:
+                          </FormLabel>
+                          <FormControl>
+                            <RadioGroup
+                              disabled={disable}
+                              onValueChange={handleAnswerChange}
+                              defaultValue={
+                                question?.responses[0]?.selectedAnswerID
+                              }
+                              className="space-y-1"
+                            >
+                              {question?.answers.map((answer: any) => (
+                                <FormItem
+                                  key={answer?.position}
+                                  className="flex items-center space-x-3 space-y-0 border border-black rounded-md py-3 px-2"
+                                >
+                                  <FormControl>
+                                    <RadioGroupItem value={answer?.id} />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {answer?.text}
+                                  </FormLabel>
+                                </FormItem>
+                              ))}
+                            </RadioGroup>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                </Form>
+              ) : (
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="w-full space-y-6"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="input"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormLabel className="ml-1">Your Answer:</FormLabel>
+                          <FormControl>
+                            <Input
+                              defaultValue={question?.responses[0]?.inputText}
+                              disabled={disable}
+                              type="text"
+                              placeholder="Write your answer here..."
+                              {...field}
+                            />
+                          </FormControl>
+                          <Button type="submit" disabled={disable}>
+                            Save Answer
+                          </Button>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                </Form>
+              )}
             </div>
           </div>
         </ResizablePanel>

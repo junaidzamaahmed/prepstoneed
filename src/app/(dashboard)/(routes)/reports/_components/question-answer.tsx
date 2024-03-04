@@ -54,9 +54,7 @@ export default function QuestionAnswer({
                   name="type"
                   render={({ field }) => (
                     <FormItem className="space-y-3">
-                      <FormLabel className="ml-1">
-                        Please select your answer:
-                      </FormLabel>
+                      <FormLabel className="ml-1">Answer:</FormLabel>
                       <FormControl>
                         <RadioGroup
                           disabled={true}
@@ -68,10 +66,6 @@ export default function QuestionAnswer({
                               key={answer?.position}
                               className={`flex items-center space-x-3 space-y-0 border border-black rounded-md py-3 px-2 ${
                                 answer?.isCorrect && "bg-green-200"
-                              } ${
-                                response?.selectedAnswerID === answer?.id &&
-                                !response?.isCorrect &&
-                                "bg-red-200"
                               }`}
                             >
                               <FormLabel className="font-normal">
@@ -79,12 +73,27 @@ export default function QuestionAnswer({
                               </FormLabel>
                             </FormItem>
                           ))}
+                          {!response?.isCorrect && (
+                            <>
+                              <p className="text-sm font-semibold">
+                                Your answer:
+                              </p>
+                              <FormItem
+                                className={`flex items-center space-x-3 space-y-0 border border-black rounded-md py-3 px-2 bg-red-200`}
+                              >
+                                <FormLabel className="font-normal">
+                                  {response?.inputText}
+                                </FormLabel>
+                              </FormItem>
+                            </>
+                          )}
                         </RadioGroup>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                {}
               </form>
             </Form>
             {!response && (

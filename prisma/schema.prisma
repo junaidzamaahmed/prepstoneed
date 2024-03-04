@@ -82,6 +82,7 @@ model Question {
   position    Int
   imageUrl    String? @db.Text
   isPublished Boolean @default(false)
+  qtype       Qtype   @default(MCQ)
 
   // Relationships
   section   Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
@@ -129,13 +130,14 @@ model UserResponse {
   id               String  @id @default(uuid())
   attemptID        String // Foreign key referencing QuizAttempt.id
   questionID       String // Foreign key referencing Question.id
-  selectedAnswerID String // Foreign key referencing Answer.id
+  selectedAnswerID String? // Foreign key referencing Answer.id
   isCorrect        Boolean @default(false)
+  inputText        String? @db.Text
 
   // Relationships
   attempt        QuizAttempt @relation(fields: [attemptID], references: [id])
   question       Question    @relation(fields: [questionID], references: [id])
-  selectedAnswer Answer      @relation(fields: [selectedAnswerID], references: [id])
+  selectedAnswer Answer?     @relation(fields: [selectedAnswerID], references: [id])
 
   @@unique([attemptID, questionID])
 }

@@ -8,13 +8,14 @@ import { Loader2, PlusCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Section, Question } from "@prisma/client";
+import { Section, Question, Qtype } from "@prisma/client";
 
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,7 @@ const formSchema = z.object({
   isPublished: z.boolean().optional(),
   imageUrl: z.string().optional(),
   explanation: z.string().min(1),
+  qtype: z.string().min(1),
   answers: z.array(
     z.object({
       text: z.string().min(1),
@@ -63,6 +65,7 @@ export const QuestionForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       question: "",
+      qtype: "MCQ",
     },
   });
 
@@ -174,11 +177,6 @@ export const QuestionForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    {/* <Textarea
-                      disabled={isSubmitting}
-                      placeholder="e.g. 'What is your name?'"
-                      {...field}
-                    /> */}
                     <Editor
                       placeholder="e.g. 'What is your name?'"
                       disabled={isSubmitting}
@@ -189,6 +187,33 @@ export const QuestionForm = ({
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="qtype"
+              render={({ field }) => (
+                <FormItem className="space-y-3 ">
+                  <FormControl>
+                    <RadioGroup
+                      defaultValue={field.value}
+                      onValueChange={field.onChange}
+                      className="space-y-1"
+                    >
+                      {Object.keys(Qtype).map((key, index) => (
+                        <FormItem key={key} className="space-x-2">
+                          <FormControl>
+                            <RadioGroupItem value={key} />
+                          </FormControl>
+                          <FormLabel className="font-normal">{key}</FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="explanation"
@@ -276,7 +301,6 @@ export const QuestionForm = ({
                 }
               />
             )}
-
             <Button disabled={!isValid || isSubmitting} type="submit">
               Create
             </Button>

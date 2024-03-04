@@ -13,25 +13,48 @@ export async function PUT(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const quiz = await db.userResponse.upsert({
-      where: {
-        attemptID_questionID: {
+    console.log("[RESPONSE]", data[0], data[1]);
+    if (data[0]?.input) {
+      const quiz = await db.userResponse.upsert({
+        where: {
+          attemptID_questionID: {
+            attemptID: params.attemptId,
+            questionID: params.questionId,
+          },
+        },
+        create: {
           attemptID: params.attemptId,
           questionID: params.questionId,
+          isCorrect: data[1],
+          inputText: data[0]?.input,
         },
-      },
-      create: {
-        attemptID: params.attemptId,
-        questionID: params.questionId,
-        selectedAnswerID: data[0],
-        isCorrect: data[1],
-      },
-      update: {
-        selectedAnswerID: data[0],
-        isCorrect: data[1],
-      },
-    });
-    return NextResponse.json(quiz);
+        update: {
+          isCorrect: data[1],
+          inputText: data[0]?.input,
+        },
+      });
+      return NextResponse.json(quiz);
+    } else {
+      const quiz = await db.userResponse.upsert({
+        where: {
+          attemptID_questionID: {
+            attemptID: params.attemptId,
+            questionID: params.questionId,
+          },
+        },
+        create: {
+          attemptID: params.attemptId,
+          questionID: params.questionId,
+          selectedAnswerID: data[0],
+          isCorrect: data[1],
+        },
+        update: {
+          selectedAnswerID: data[0],
+          isCorrect: data[1],
+        },
+      });
+      return NextResponse.json(quiz);
+    }
   } catch (error) {
     console.log("[RESPONSE]", error);
     return new NextResponse("Internal Error", { status: 500 });

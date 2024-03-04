@@ -39,6 +39,7 @@ export async function POST(
         imageUrl: values.imageUrl,
         explanation: values.explanation,
         isPublished: true,
+        qtype: values.qtype,
         answers: {
           create: values.answers.map((a: any) => ({
             text: a.text,

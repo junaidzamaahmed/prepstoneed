@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { Check, CheckCircle2, Dot, X } from "lucide-react";
+import { Check, CheckCircle2, Dot, Pen, X } from "lucide-react";
 import Link from "next/link";
 
 export default async function Reports({
@@ -158,6 +158,10 @@ export default async function Reports({
                               ]
                             }
                           </div>
+                        ) : question.responses.find(
+                            (response) => response.attemptID === attempt.id
+                          )?.inputText ? (
+                          <Pen className="text-primary" />
                         ) : (
                           <Dot className="text-red-500" />
                         )}
@@ -167,7 +171,8 @@ export default async function Reports({
                           (ans) =>
                             ans?.id ===
                             question.responses.find(
-                              (response) => response.attemptID === attempt.id
+                              (response: any) =>
+                                response.attemptID === attempt.id
                             )?.selectedAnswerID
                         )?.isCorrect ? (
                           <Check className=" text-green-600" />
