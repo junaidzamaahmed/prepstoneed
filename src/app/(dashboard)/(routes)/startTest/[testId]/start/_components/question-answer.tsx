@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/resizable";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function QuestionAnswer({
   question,
@@ -70,96 +71,101 @@ export default function QuestionAnswer({
     <>
       <ResizablePanelGroup
         direction="horizontal"
-        className="grid grid-cols-1 md:grid-cols-2 gap-2"
+        className="grid grid-cols-1 md:grid-cols-2 gap-2 md:max-h-[65vh]"
       >
         <ResizablePanel
           minSize={width <= 768 ? 100 : 0}
           defaultSize={width <= 768 ? 100 : 50}
-          className="p-4"
+          className="p-4 max-h-[60vh]"
         >
-          <Preview value={question?.question} />
+          <ScrollArea className="h-[60vh]">
+            <Preview value={question?.question} />
+          </ScrollArea>
         </ResizablePanel>
-        <ResizableHandle withHandle className="md:h-[70vh]" />
+        <ResizableHandle withHandle />
         <ResizablePanel>
-          <div className="p-4 hidden md:block">
-            <div className="bg-primary text-white text-xl p-2 rounded-md px-4">
-              Question {question?.position}
+          <ScrollArea className="h-[60vh]">
+            <div className="p-4 hidden md:block">
+              <div className="bg-primary text-white text-xl p-2 rounded-md px-4">
+                Question {question?.position}
+              </div>
+              <div>
+                {question.qtype === "MCQ" ? (
+                  <Form {...form}>
+                    <form className="w-full space-y-6">
+                      <FormField
+                        control={form.control}
+                        name="type"
+                        render={({ field }) => (
+                          <FormItem className="space-y-3">
+                            <FormLabel className="ml-1">
+                              Please select your answer:
+                            </FormLabel>
+                            <FormControl>
+                              <RadioGroup
+                                disabled={disable}
+                                onValueChange={handleAnswerChange}
+                                defaultValue={
+                                  question?.responses[0]?.selectedAnswerID
+                                }
+                                className="space-y-1"
+                              >
+                                {question?.answers.map((answer: any) => (
+                                  <FormItem
+                                    key={answer?.position}
+                                    className="flex items-center space-x-3 space-y-0 border border-black rounded-md py-3 px-2"
+                                  >
+                                    <FormControl>
+                                      <RadioGroupItem value={answer?.id} />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      {answer?.text}
+                                    </FormLabel>
+                                  </FormItem>
+                                ))}
+                              </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </form>
+                  </Form>
+                ) : (
+                  <Form {...form}>
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="w-full space-y-6"
+                    >
+                      <FormField
+                        control={form.control}
+                        name="input"
+                        render={({ field }) => (
+                          <FormItem className="space-y-3">
+                            <FormLabel className="ml-1">Your Answer:</FormLabel>
+                            <FormControl>
+                              <Input
+                                defaultValue={question?.responses[0]?.inputText}
+                                disabled={disable}
+                                type="text"
+                                placeholder="Write your answer here..."
+                                {...field}
+                              />
+                            </FormControl>
+                            <Button type="submit" disabled={disable}>
+                              Save Answer
+                            </Button>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </form>
+                  </Form>
+                )}
+              </div>
             </div>
-            <div>
-              {question.qtype === "MCQ" ? (
-                <Form {...form}>
-                  <form className="w-full space-y-6">
-                    <FormField
-                      control={form.control}
-                      name="type"
-                      render={({ field }) => (
-                        <FormItem className="space-y-3">
-                          <FormLabel className="ml-1">
-                            Please select your answer:
-                          </FormLabel>
-                          <FormControl>
-                            <RadioGroup
-                              disabled={disable}
-                              onValueChange={handleAnswerChange}
-                              defaultValue={
-                                question?.responses[0]?.selectedAnswerID
-                              }
-                              className="space-y-1"
-                            >
-                              {question?.answers.map((answer: any) => (
-                                <FormItem
-                                  key={answer?.position}
-                                  className="flex items-center space-x-3 space-y-0 border border-black rounded-md py-3 px-2"
-                                >
-                                  <FormControl>
-                                    <RadioGroupItem value={answer?.id} />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">
-                                    {answer?.text}
-                                  </FormLabel>
-                                </FormItem>
-                              ))}
-                            </RadioGroup>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </form>
-                </Form>
-              ) : (
-                <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="w-full space-y-6"
-                  >
-                    <FormField
-                      control={form.control}
-                      name="input"
-                      render={({ field }) => (
-                        <FormItem className="space-y-3">
-                          <FormLabel className="ml-1">Your Answer:</FormLabel>
-                          <FormControl>
-                            <Input
-                              defaultValue={question?.responses[0]?.inputText}
-                              disabled={disable}
-                              type="text"
-                              placeholder="Write your answer here..."
-                              {...field}
-                            />
-                          </FormControl>
-                          <Button type="submit" disabled={disable}>
-                            Save Answer
-                          </Button>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </form>
-                </Form>
-              )}
-            </div>
-          </div>
+            <ScrollBar orientation="vertical" />
+          </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>
       <div className="p-4 md:hidden">
