@@ -48,7 +48,7 @@ export default function Questions({
       let secNo = prev + 1;
       let temp = null;
       setSection((prev1: any) => {
-        if (prev === 0 || prev === 4) {
+        if (prev === 0 || prev === 3) {
           setDisable(true);
 
           // Find the total score for this section
@@ -61,17 +61,15 @@ export default function Questions({
             });
           });
           const difficulty =
-            prev1?.questions?.length - score > 8
+            prev1?.questions?.length - score >= 10
               ? "EASY"
-              : prev1?.questions?.length - score > 4
-              ? "MEDIUM"
               : "HARD";
           const possibleSections =
-            prev === 0 ? test?.sections?.slice(1, 4) : test?.sections?.slice(5);
+            prev === 0 ? test?.sections?.slice(1, 3) : test?.sections?.slice(4);
           secNo =
             possibleSections?.findIndex(
               (section: any) => section.difficulty === difficulty
-            ) + (prev === 0 ? 1 : 5);
+            ) + (prev === 0 ? 1 : 4);
           temp = test.sections[secNo];
           setQuestions(temp?.questions);
           toast.info("Please wait.");
@@ -79,12 +77,12 @@ export default function Questions({
           toast.info("Section completed");
           setDisable(false);
           return temp;
-        } else if (prev < 4) {
+        } else if (prev < 3) {
           setDisable(true);
-          secNo = 4;
+          secNo = 3;
           setDisable(false);
-          setQuestions(test.sections[4].questions);
-          return test.sections[4];
+          setQuestions(test.sections[3].questions);
+          return test.sections[3];
         } else {
           completeTest();
         }

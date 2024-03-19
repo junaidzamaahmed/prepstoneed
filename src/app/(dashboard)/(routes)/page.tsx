@@ -417,7 +417,7 @@ export default function HOME() {
             </p>
           </div>
 
-          <div className="xl:ml-32 w-full">
+          <div className="xl:ml-32 max-w-[80vh]">
             <img
               src="/assets/feat-01@3x.webp"
               alt=""
