@@ -36,7 +36,7 @@ export default function HOME() {
                 DSAT Mock
               </button>
             </Link>
-            <Link href="/comingSoon">
+            <Link href="/courses/d2770193-00eb-4b92-b18c-4918292f7fc1">
               <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
                 DU IBA
               </button>
