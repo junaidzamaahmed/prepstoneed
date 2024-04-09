@@ -47,7 +47,7 @@ export default function Course() {
           </div>
         </div>
         <h3 className="text-lg font-semibold my-1">
-          What you'll learn in this course
+          What you&apos;ll learn in this course
         </h3>
         <div className="border border-1 border-black/20 rounded-lg p-4 grid grid-cols-2">
           <div className="">
