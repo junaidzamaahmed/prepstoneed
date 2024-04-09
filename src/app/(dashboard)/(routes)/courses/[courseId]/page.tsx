@@ -5,7 +5,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { CheckCircle } from "lucide-react";
-
+import Image from "next/image";
+import instructor from "../../../../../../public/assets/1632307192368.jpg";
+import course from "../../../../../../public/assets/course.jpg";
 export default function Course() {
   return (
     <div className="p-4 grid grid-cols-2 gap-4 lg:gap-16 container">
@@ -29,9 +31,11 @@ export default function Course() {
           <h3 className="font-semibold text-lg">Course Instructor</h3>
           <div className="flex align-middle">
             <div>
-              <img
+              <Image
                 className="w-20 h-20 rounded-full my-3"
-                src="https://media.licdn.com/dms/image/D5603AQF-GnUISpclZA/profile-displayphoto-shrink_200_200/0/1632307192368?e=2147483647&v=beta&t=LY_wVXpovCxN9duuSfLSK80EdaeGs5D1-zXUwFd7E54"
+                height={100}
+                width={100}
+                src={instructor}
                 alt=""
               />
             </div>
@@ -213,9 +217,11 @@ export default function Course() {
       </div>
       <div className="">
         <div className="border border-1 border-black/20 rounded-lg fixed mr-4 lg:mr-20">
-          <img
+          <Image
+            height={500}
+            width={500}
             className="rounded-t-lg w-full"
-            src="https://cdn.10minuteschool.com/images/catalog/media/HSC_26_English_Grammar_Course_16_9_1709632573053.jpg?w=1088&h=608"
+            src={course}
             alt=""
           />
           <div className="p-2">
