@@ -9,12 +9,12 @@ const NavbarRoutes = ({ teacher }: { teacher: boolean }) => {
   const pathname = usePathname();
 
   const isTeacherPage = pathname?.startsWith("/teacher");
-  const isGuestPage = pathname?.includes("/chapter");
+  const isCoursePage = pathname?.includes("/startCourse");
 
   return (
     <div className="flex gap-x-2 ml-auto">
       {teacher &&
-        (isTeacherPage || isGuestPage ? (
+        (isTeacherPage || isCoursePage ? (
           <Link href="/">
             <Button size="sm" variant="ghost">
               <LogOut className="h-4 w-4 mr-2" /> Exit

@@ -13,7 +13,7 @@ export const ourFileRouter = {
   questionImage: f({ image: { maxFileSize: "256KB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
-  coursevideo: f({ video: { maxFileSize: "256GB", maxFileCount: 1 } })
+  coursevideo: f({ video: { maxFileSize: "2GB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
   // questionAttachment:f(["image"]).middleware(()=>handleAuth())

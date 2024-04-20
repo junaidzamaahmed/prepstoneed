@@ -11,6 +11,12 @@ import { VideoForm } from "./_components/video-form";
 import { TestActions } from "./_components/actions";
 import Link from "next/link";
 import { Banner } from "@/components/banner";
+import { InstructorForm } from "./_components/instructor-form";
+import { CourseFeaturesForm } from "./_components/course-features";
+import { CoursePointsForm } from "./_components/course-points";
+import { ImageForm } from "./_components/image_form";
+import { CourseFAQForm } from "./_components/course-faq";
+import { CourseRoutineForm } from "./_components/course-routine";
 
 const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -27,6 +33,10 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
           position: "asc",
         },
       },
+      CoursePoints: true,
+      CourseRoutine: true,
+      FAQ: true,
+      CourseFeatures: true,
     },
   });
   if (!course) {
@@ -37,6 +47,10 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
     orderBy: {
       name: "asc",
     },
+  });
+
+  const instructors = await db.instructor.findMany({
+    orderBy: { name: "asc" },
   });
 
   const requiredFields = [
@@ -104,6 +118,14 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
                 value: category.id,
               }))}
             />
+            <InstructorForm
+              initialData={course}
+              courseId={course.id}
+              options={instructors.map((instructor) => ({
+                label: instructor.name,
+                value: instructor.id,
+              }))}
+            />
             <PriceForm initialData={course} courseId={course.id} />
           </div>
           <div>
@@ -112,6 +134,14 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
               <h2 className="text-xl">Course Videos</h2>
             </div>
             <VideoForm initialData={course} courseId={course.id} />
+            <CourseFeaturesForm initialData={course} courseId={course.id} />
+            <CoursePointsForm initialData={course} courseId={course.id} />
+            <ImageForm courseId={params.courseId} initialData={course} />
+            <CourseFAQForm courseId={params.courseId} initialData={course} />
+            <CourseRoutineForm
+              courseId={params.courseId}
+              initialData={course}
+            />
           </div>
         </div>
       </div>

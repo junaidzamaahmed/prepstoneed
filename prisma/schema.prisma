@@ -176,9 +176,15 @@ model Course{
 
   categoryId String?
   category Category? @relation(fields: [categoryId], references: [id])
+  instructorId String?
+  instructors Instructor? @relation(fields: [instructorId], references: [id])
 
   recordings Recordings[]
   purchases Purchase[]
+  CoursePoints CoursePoints[]
+  CourseFeatures CourseFeatures[]
+  CourseRoutine CourseRoutine[]
+  FAQ FAQ[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -195,6 +201,7 @@ model Purchase{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([userId, courseId])
 }
 
 model Recordings{
@@ -220,4 +227,51 @@ model MuxData {
 
   recordingId String @unique
   recording Recordings @relation(fields: [recordingId], references: [id], onDelete: Cascade)
+}
+
+model Instructor{
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  bio String? @db.Text
+  imageUrl String?
+  courses Course[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CoursePoints{
+  id String @id @default(uuid())
+  courseId String
+  description String
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+model CourseFeatures{
+  id String @id @default(uuid())
+  courseId String
+  feature String
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+model CourseRoutine{
+  id String @id @default(uuid())
+  courseId String
+  day String
+  time String
+  title String
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+model FAQ{
+  id String @id @default(uuid())
+  question String
+  answer String
+
+  courseId String
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
