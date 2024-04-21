@@ -1,0 +1,263 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  externalId String [unique, not null]
+  email String [unique, not null]
+  role Role [not null, default: 'STUDENT']
+  quizAttempts QuizAttempt [not null]
+  purchases Purchase [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Category {
+  id String [pk]
+  name String [unique, not null]
+  quizzes Quiz [not null]
+  courses Course [not null]
+}
+
+Table Quiz {
+  id String [pk]
+  categoryId String
+  userId String [not null]
+  title String [not null]
+  description String
+  duration Int [not null]
+  price Int
+  isPublished Boolean [not null, default: false]
+  category Category
+  attempts QuizAttempt [not null]
+  sections Section [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Section {
+  id String [pk]
+  quizId String [not null]
+  name String [not null]
+  difficulty Difficulty [not null, default: 'EASY']
+  isPublished Boolean [not null, default: false]
+  position Int [not null]
+  quiz Quiz [not null]
+  questions Question [not null]
+}
+
+Table Question {
+  id String [pk]
+  sectionId String [not null]
+  question String [not null]
+  explanation String
+  position Int [not null]
+  imageUrl String
+  isPublished Boolean [not null, default: false]
+  qtype Qtype [not null, default: 'MCQ']
+  section Section [not null]
+  answers Answer [not null]
+  responses UserResponse [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Answer {
+  id String [pk]
+  questionID String [not null]
+  text String [not null]
+  isCorrect Boolean [not null, default: false]
+  position Int [not null]
+  question Question [not null]
+  responses UserResponse [not null]
+}
+
+Table QuizAttempt {
+  id String [pk]
+  userID String [not null]
+  quizID String [not null]
+  score Int [not null, default: 0]
+  percentage Float [not null, default: 0]
+  startTime DateTime [default: `now()`, not null]
+  endTime DateTime
+  completed Boolean [default: false]
+  sections String[] [not null]
+  user User [not null]
+  quiz Quiz [not null]
+  responses UserResponse [not null]
+}
+
+Table UserResponse {
+  id String [pk]
+  attemptID String [not null]
+  questionID String [not null]
+  selectedAnswerID String
+  isCorrect Boolean [not null, default: false]
+  inputText String
+  attempt QuizAttempt [not null]
+  question Question [not null]
+  selectedAnswer Answer
+
+  indexes {
+    (attemptID, questionID) [unique]
+  }
+}
+
+Table Course {
+  id String [pk]
+  title String [not null]
+  description String
+  isPublished Boolean [not null, default: false]
+  isFree Boolean [not null, default: false]
+  price Int
+  imageUrl String
+  categoryId String
+  category Category
+  instructorId String
+  instructors Instructor
+  recordings Recordings [not null]
+  purchases Purchase [not null]
+  CoursePoints CoursePoints [not null]
+  CourseFeatures CourseFeatures [not null]
+  CourseRoutine CourseRoutine [not null]
+  FAQ FAQ [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Purchase {
+  id String [pk]
+  userId String [not null]
+  courseId String [not null]
+  user User [not null]
+  course Course [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+
+  indexes {
+    (userId, courseId) [unique]
+  }
+}
+
+Table Recordings {
+  id String [pk]
+  title String [not null]
+  description String
+  isFree Boolean [not null, default: false]
+  muxData MuxData
+  isPublished Boolean [not null, default: false]
+  position Int [not null]
+  videoUrl String
+  courseId String [not null]
+  course Course [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table MuxData {
+  id String [pk]
+  assetId String [not null]
+  playbackId String
+  recordingId String [unique, not null]
+  recording Recordings [not null]
+}
+
+Table Instructor {
+  id String [pk]
+  name String [not null]
+  email String [unique, not null]
+  bio String
+  imageUrl String
+  courses Course [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table CoursePoints {
+  id String [pk]
+  courseId String [not null]
+  description String [not null]
+  course Course [not null]
+}
+
+Table CourseFeatures {
+  id String [pk]
+  courseId String [not null]
+  feature String [not null]
+  course Course [not null]
+}
+
+Table CourseRoutine {
+  id String [pk]
+  courseId String [not null]
+  day String [not null]
+  time String [not null]
+  title String [not null]
+  course Course [not null]
+}
+
+Table FAQ {
+  id String [pk]
+  question String [not null]
+  answer String [not null]
+  courseId String [not null]
+  course Course [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Enum Role {
+  STUDENT
+  TEACHER
+  SPECIAL
+}
+
+Enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+Enum Qtype {
+  MCQ
+  INPUT
+}
+
+Ref: Quiz.categoryId > Category.id
+
+Ref: Section.quizId > Quiz.id [delete: Cascade]
+
+Ref: Question.sectionId > Section.id [delete: Cascade]
+
+Ref: Answer.questionID > Question.id [delete: Cascade]
+
+Ref: QuizAttempt.userID > User.id [delete: Cascade]
+
+Ref: QuizAttempt.quizID > Quiz.id [delete: Cascade]
+
+Ref: UserResponse.attemptID > QuizAttempt.id
+
+Ref: UserResponse.questionID > Question.id
+
+Ref: UserResponse.selectedAnswerID > Answer.id
+
+Ref: Course.categoryId > Category.id
+
+Ref: Course.instructorId > Instructor.id
+
+Ref: Purchase.userId > User.id [delete: Cascade]
+
+Ref: Purchase.courseId > Course.id [delete: Cascade]
+
+Ref: Recordings.courseId > Course.id [delete: Cascade]
+
+Ref: MuxData.recordingId - Recordings.id [delete: Cascade]
+
+Ref: CoursePoints.courseId > Course.id [delete: Cascade]
+
+Ref: CourseFeatures.courseId > Course.id [delete: Cascade]
+
+Ref: CourseRoutine.courseId > Course.id [delete: Cascade]
+
+Ref: FAQ.courseId > Course.id [delete: Cascade]
