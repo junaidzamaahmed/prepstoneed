@@ -18,6 +18,7 @@ export async function POST(req: Request) {
   const svix_id = headerPayload.get("svix-id");
   const svix_timestamp = headerPayload.get("svix-timestamp");
   const svix_signature = headerPayload.get("svix-signature");
+  const forwardedFor = headerPayload.get("x-forwarded-for");
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
@@ -79,10 +80,11 @@ export async function POST(req: Request) {
       });
     }
     console.log(`Session with and ID of ${id} and type of ${eventType}`);
+    console.log(`${forwardedFor}`);
   }
 
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
+  // console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
+  // console.log("Webhook body:", body);
 
   return new Response("", { status: 200 });
 }
