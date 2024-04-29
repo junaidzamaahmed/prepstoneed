@@ -23,6 +23,9 @@ async function main() {
         {
           name: "Math",
         },
+        {
+          name: "DU",
+        },
       ],
     });
     console.log("Success");

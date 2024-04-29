@@ -71,6 +71,16 @@ export async function POST(req: Request) {
     console.log(`User with and ID of ${id} and type of ${eventType}`);
   }
 
+  if (eventType === "session.created") {
+    // Create a new session in your database
+    if (!id) {
+      return new Response("Error occured -- no svix headers", {
+        status: 400,
+      });
+    }
+    console.log(`Session with and ID of ${id} and type of ${eventType}`);
+  }
+
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", body);
 

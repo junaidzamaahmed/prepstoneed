@@ -6,9 +6,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { toast } from "sonner";
-import { redirect, useParams, useRouter } from "next/navigation";
-import { Router } from "next/router";
-import { set } from "react-hook-form";
+import { useParams, useRouter } from "next/navigation";
+import { Category } from "@prisma/client";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -43,10 +42,14 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  category: Category;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  async ({ className, variant, size, asChild = false, ...props }, ref) => {
+  async (
+    { className, variant, size, asChild = false, category, ...props },
+    ref
+  ) => {
     const params = useParams<any>();
     const router = useRouter();
     const [disabled, setDisabled] = React.useState(false);
@@ -58,7 +61,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           testId: params.testId,
         });
         toast.success("Test started");
-        router.push(`/startTest/${params.testId}/start/${attempt.data.id}`);
+        router.push(
+          `/startTest/${params.testId}/${
+            category.name == "DU" ? "singlePage" : "start"
+          }/${attempt.data.id}`
+        );
         setDisabled(false);
       } catch {
         toast.error("Something went wrong");

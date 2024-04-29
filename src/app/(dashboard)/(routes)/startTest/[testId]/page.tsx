@@ -19,6 +19,7 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
         orderBy: { position: "asc" },
         include: { questions: { orderBy: { position: "asc" } } },
       },
+      category: true,
     },
   });
   if (!test) {
@@ -64,7 +65,7 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
                 {test.price === 0 ? "Free" : test.price} Taka
               </p>
             </div>
-            <Button>Start Test</Button>
+            <Button category={test?.category!}>Start Test</Button>
           </div>
         </div>
       </div>
