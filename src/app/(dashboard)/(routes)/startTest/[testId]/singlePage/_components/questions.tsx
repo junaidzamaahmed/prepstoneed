@@ -13,11 +13,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronUp, MapPin } from "lucide-react";
 import { QuizAttempt, UserResponse } from "@prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ConfirmModal } from "@/components/confirm-modal";
 import axios from "axios";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Questions({
   attempt,
@@ -31,69 +32,67 @@ export default function Questions({
   const [section, setSection] = useState(test?.sections[sectionNo]);
   const [questions, setQuestions] = useState(section?.questions);
   const [disable, setDisable] = useState(false);
-  const [selected, setSelected] = useState(
-    questions && questions[currentQuestion]?.responses[0]?.selectedAnswerID
-  );
   const router = useRouter();
   const toggleDisable = (val: boolean) => {
     setDisable(val);
   };
-  const handleCompleteSection = async (secId: string) => {
-    let completed = false;
-    if (attempt.sections.includes(secId)) {
-      completed = true;
-    }
 
-    setSectionNo((prev) => {
-      let secNo = prev + 1;
-      let temp = null;
-      setSection((prev1: any) => {
-        if (prev === 0 || prev === 3) {
-          setDisable(true);
+  // const handleCompleteSection = async (secId: string) => {
+  //   let completed = false;
+  //   if (attempt.sections.includes(secId)) {
+  //     completed = true;
+  //   }
 
-          // Find the total score for this section
-          let score = 0;
-          prev1?.questions?.forEach((question: any) => {
-            question.responses?.forEach((response: any) => {
-              if (response.isCorrect) {
-                score++;
-              }
-            });
-          });
-          const difficulty =
-            prev1?.questions?.length - score >= 10
-              ? "EASY"
-              : "HARD";
-          const possibleSections =
-            prev === 0 ? test?.sections?.slice(1, 3) : test?.sections?.slice(4);
-          secNo =
-            possibleSections?.findIndex(
-              (section: any) => section.difficulty === difficulty
-            ) + (prev === 0 ? 1 : 4);
-          temp = test.sections[secNo];
-          setQuestions(temp?.questions);
-          toast.info("Please wait.");
-          attempt.sections.push(prev1.id);
-          toast.info("Section completed");
-          setDisable(false);
-          return temp;
-        } else if (prev < 3) {
-          setDisable(true);
-          secNo = 3;
-          setDisable(false);
-          setQuestions(test.sections[3].questions);
-          return test.sections[3];
-        } else {
-          completeTest();
-        }
-      });
-      setCurrentQuestion(0);
-      return secNo;
-    });
-    if (!completed) {
-      await axios.put(`/api/attempt/${attempt.id}/${secId}`);
-    }
-  };
+  //   setSectionNo((prev) => {
+  //     let secNo = prev + 1;
+  //     let temp = null;
+  //     setSection((prev1: any) => {
+  //       if (prev === 0 || prev === 3) {
+  //         setDisable(true);
+
+  //         // Find the total score for this section
+  //         let score = 0;
+  //         prev1?.questions?.forEach((question: any) => {
+  //           question.responses?.forEach((response: any) => {
+  //             if (response.isCorrect) {
+  //               score++;
+  //             }
+  //           });
+  //         });
+  //         const difficulty =
+  //           prev1?.questions?.length - score >= 10
+  //             ? "EASY"
+  //             : "HARD";
+  //         const possibleSections =
+  //           prev === 0 ? test?.sections?.slice(1, 3) : test?.sections?.slice(4);
+  //         secNo =
+  //           possibleSections?.findIndex(
+  //             (section: any) => section.difficulty === difficulty
+  //           ) + (prev === 0 ? 1 : 4);
+  //         temp = test.sections[secNo];
+  //         setQuestions(temp?.questions);
+  //         toast.info("Please wait.");
+  //         attempt.sections.push(prev1.id);
+  //         toast.info("Section completed");
+  //         setDisable(false);
+  //         return temp;
+  //       } else if (prev < 3) {
+  //         setDisable(true);
+  //         secNo = 3;
+  //         setDisable(false);
+  //         setQuestions(test.sections[3].questions);
+  //         return test.sections[3];
+  //       } else {
+  //         completeTest();
+  //       }
+  //     });
+  //     setCurrentQuestion(0);
+  //     return secNo;
+  //   });
+  //   if (!completed) {
+  //     await axios.put(`/api/attempt/${attempt.id}/${secId}`);
+  //   }
+  // };
   if (test?.completed) {
     router.push(`/reports/${attempt.id}`);
   }
@@ -108,26 +107,42 @@ export default function Questions({
       toast.error("Error completing test");
     }
   };
-  if (attempt.sections.includes(section?.id)) {
-    handleCompleteSection(section.id);
-  }
+  // if (attempt.sections.includes(section?.id)) {
+  //   handleCompleteSection(section.id);
+  // }
+  // console.log(test?.sections);
   return (
     <>
-      <QuestionAnswer
+      <ScrollArea className="h-[calc(100vh-15rem)]">
+        {test?.sections &&
+          test?.sections?.map((section: any) => {
+            return section?.questions?.map((question: any) => {
+              return (
+                <QuestionAnswer
+                  key={question.id}
+                  question={question}
+                  attemptId={attempt.id}
+                  toggleDisable={toggleDisable}
+                  disable={disable}
+                />
+              );
+            });
+          })}
+      </ScrollArea>
+      {/* <QuestionAnswer
         key={questions && questions[currentQuestion].id}
         question={questions ? questions[currentQuestion] : null}
         attemptId={attempt.id}
         toggleDisable={toggleDisable}
         disable={disable}
-        selected={selected}
-      />
+      /> */}
       {/* Footer */}
-      <div className="md:absolute bottom-0 md:p-4 md:w-[calc(100vw-15.5rem)] w-100 flex justify-between border-t-2 border-dashed border-primary pt-3 bg-white">
+      <div className="md:absolute fixed bottom-0 md:p-4 md:w-[calc(100vw-15.5rem)] w-100 flex justify-between border-t-2 border-dashed border-primary pt-3 bg-white">
         <div className="md:py-2 font-semibold text-xs md:text-base md:w-auto w-14">
-          <span>Section: {section?.name}</span>
+          {/* <span>Section: {section?.name}</span> */}
         </div>
         <div>
-          <Drawer>
+          {/* <Drawer>
             <DrawerTrigger disabled={disable}>
               <Button disabled={disable} className="py-2">
                 Question {currentQuestion + 1} of {questions?.length}
@@ -175,10 +190,10 @@ export default function Questions({
                 </DrawerClose>
               </DrawerFooter>
             </DrawerContent>
-          </Drawer>
+          </Drawer> */}
         </div>
         <div>
-          {currentQuestion >= 1 && (
+          {/* {currentQuestion >= 1 && (
             <Button
               disabled={disable}
               className="me-2"
@@ -209,13 +224,13 @@ export default function Questions({
               >
                 Next
               </Button>
-            )}
-          {section?.position === test?.sections?.length &&
-          currentQuestion === questions?.length - 1 ? (
-            <ConfirmModal onConfirm={completeTest}>
-              <Button disabled={disable}>Submit Test</Button>
-            </ConfirmModal>
-          ) : (
+            )} */}
+          {/* {section?.position === test?.sections?.length &&
+          currentQuestion === questions?.length - 1 ? ( */}
+          <ConfirmModal onConfirm={completeTest}>
+            <Button disabled={disable}>Submit Test</Button>
+          </ConfirmModal>
+          {/* ) : (
             currentQuestion === questions?.length - 1 && (
               <Button
                 disabled={disable}
@@ -224,7 +239,7 @@ export default function Questions({
                 Complete Section
               </Button>
             )
-          )}
+          )} */}
         </div>
       </div>
     </>

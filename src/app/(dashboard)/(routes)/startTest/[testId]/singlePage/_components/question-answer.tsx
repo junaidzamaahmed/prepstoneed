@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   ResizableHandle,
@@ -21,21 +21,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import Answer from "./answer";
 
 export default function QuestionAnswer({
   question,
   attemptId,
   toggleDisable,
   disable,
-  selected,
 }: {
   question: any;
   attemptId: string;
   toggleDisable: (val: boolean) => void;
   disable: boolean;
-  selected: string;
 }) {
   const form = useForm({});
+  const [selected, setSelected] = useState(
+    question?.responses[0]?.selectedAnswerID
+  );
 
   const correctAnswer = question?.answers.find(
     (answer: any) => answer.isCorrect
@@ -71,7 +73,7 @@ export default function QuestionAnswer({
     <>
       <ResizablePanelGroup
         direction="horizontal"
-        className="grid grid-cols-1 md:grid-cols-2 gap-2 md:max-h-[65vh]"
+        className="grid grid-cols-1 md:grid-cols-2 gap-2 md:max-h-[65vh] border-b border-black/20"
       >
         <ResizablePanel
           minSize={width <= 768 ? 100 : 0}
@@ -83,7 +85,7 @@ export default function QuestionAnswer({
           </ScrollArea>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel>
+        <ResizablePanel defaultSize={width <= 768 ? 100 : 50}>
           <ScrollArea className="h-[60vh]">
             <div className="p-4 hidden md:block">
               <div className="bg-primary text-white text-xl p-2 rounded-md px-4">
@@ -111,17 +113,10 @@ export default function QuestionAnswer({
                                 className="space-y-1"
                               >
                                 {question?.answers.map((answer: any) => (
-                                  <FormItem
-                                    key={answer?.position}
-                                    className="flex items-center space-x-3 space-y-0 border border-black rounded-md py-3 px-2"
-                                  >
-                                    <FormControl>
-                                      <RadioGroupItem value={answer?.id} />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                      {answer?.text}
-                                    </FormLabel>
-                                  </FormItem>
+                                  <Answer
+                                    key={answer.position}
+                                    answer={answer}
+                                  />
                                 ))}
                               </RadioGroup>
                             </FormControl>
@@ -168,6 +163,7 @@ export default function QuestionAnswer({
           </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>
+      {/* MOBILE */}
       <div className="p-4 md:hidden">
         <div className="bg-primary text-white text-xl p-2 rounded-md px-4">
           Question {question?.position}
@@ -194,17 +190,7 @@ export default function QuestionAnswer({
                         className="space-y-1"
                       >
                         {question?.answers.map((answer: any) => (
-                          <FormItem
-                            key={answer?.position}
-                            className="flex items-center space-x-3 space-y-0 border border-black rounded-md py-3 px-2"
-                          >
-                            <FormControl>
-                              <RadioGroupItem value={answer?.id} />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {answer?.text}
-                            </FormLabel>
-                          </FormItem>
+                          <Answer key={answer.position} answer={answer} />
                         ))}
                       </RadioGroup>
                     </FormControl>

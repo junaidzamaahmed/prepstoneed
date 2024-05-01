@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import Answer from "./answer";
 
 export default function QuestionAnswer({
   question,
@@ -71,14 +72,14 @@ export default function QuestionAnswer({
     <>
       <ResizablePanelGroup
         direction="horizontal"
-        className="grid grid-cols-1 md:grid-cols-2 gap-2 md:max-h-[65vh]"
+        className="grid grid-cols-1 md:grid-cols-2 gap-2 md:max-h-[65vh] select-none"
       >
         <ResizablePanel
           minSize={width <= 768 ? 100 : 0}
           defaultSize={width <= 768 ? 100 : 50}
           className="p-4 max-h-[60vh]"
         >
-          <ScrollArea className="h-[60vh]">
+          <ScrollArea className="h-[60vh] select-none">
             <Preview value={question?.question} />
           </ScrollArea>
         </ResizablePanel>
@@ -111,17 +112,10 @@ export default function QuestionAnswer({
                                 className="space-y-1"
                               >
                                 {question?.answers.map((answer: any) => (
-                                  <FormItem
-                                    key={answer?.position}
-                                    className="flex items-center space-x-3 space-y-0 border border-black rounded-md py-3 px-2"
-                                  >
-                                    <FormControl>
-                                      <RadioGroupItem value={answer?.id} />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                      {answer?.text}
-                                    </FormLabel>
-                                  </FormItem>
+                                  <Answer
+                                    key={answer.position}
+                                    answer={answer}
+                                  />
                                 ))}
                               </RadioGroup>
                             </FormControl>
@@ -194,17 +188,7 @@ export default function QuestionAnswer({
                         className="space-y-1"
                       >
                         {question?.answers.map((answer: any) => (
-                          <FormItem
-                            key={answer?.position}
-                            className="flex items-center space-x-3 space-y-0 border border-black rounded-md py-3 px-2"
-                          >
-                            <FormControl>
-                              <RadioGroupItem value={answer?.id} />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {answer?.text}
-                            </FormLabel>
-                          </FormItem>
+                          <Answer key={answer.position} answer={answer} />
                         ))}
                       </RadioGroup>
                     </FormControl>

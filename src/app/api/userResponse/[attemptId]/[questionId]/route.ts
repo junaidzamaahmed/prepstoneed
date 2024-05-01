@@ -13,7 +13,6 @@ export async function PUT(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    console.log("[RESPONSE]", data[0], data[1]);
     if (data[0]?.input) {
       const quiz = await db.userResponse.upsert({
         where: {

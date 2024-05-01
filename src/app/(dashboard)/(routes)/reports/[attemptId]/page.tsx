@@ -31,6 +31,7 @@ export default async function Reports({
               },
             },
           },
+          category: true,
         },
       },
     },
@@ -73,9 +74,12 @@ export default async function Reports({
   ];
 
   // Create a SAT raw to scaled score conversion function
-  const attSecs = attempt?.quiz.sections.filter((section) =>
-    attempt.sections.includes(section.id)
-  );
+  const attSecs =
+    attempt?.quiz.category?.name == "DU"
+      ? attempt?.quiz.sections
+      : attempt?.quiz.sections.filter((section) =>
+          attempt.sections.includes(section.id)
+        );
   let eng1Score = 0;
   if (!attSecs) {
     return;
@@ -127,7 +131,9 @@ export default async function Reports({
         <span>Completed</span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2">
-        <p className="text-[6rem] text-primary font-bold">SAT</p>
+        <p className="text-[6rem] text-primary font-bold">
+          {attempt?.quiz.category?.name == "DU" ? "DU" : "SAT"}
+        </p>
         <div className="pt-8">
           <p>
             <span className="font-bold">Email: </span>
@@ -188,7 +194,9 @@ export default async function Reports({
 
       {attempt?.quiz.sections.map((section) => {
         return (
-          attempt.sections.includes(section.id) && (
+          ((attempt?.quiz?.category?.name != "DU" &&
+            attempt.sections.includes(section.id)) ||
+            attempt?.quiz?.category?.name == "DU") && (
             <div key={section.id} className="py-4">
               <p>
                 {attempt?.quiz?.title} Section {section.name}

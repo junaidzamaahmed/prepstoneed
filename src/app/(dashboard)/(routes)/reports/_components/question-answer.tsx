@@ -68,7 +68,7 @@ export default function QuestionAnswer({
                                 answer?.isCorrect && "bg-green-200"
                               }`}
                             >
-                              <FormLabel className="font-normal">
+                              <FormLabel className="font-normal select-none">
                                 {answer?.text}
                               </FormLabel>
                             </FormItem>
@@ -100,7 +100,7 @@ export default function QuestionAnswer({
               <p className="text-red-600 text-lg font-semibold py-1">Skipped</p>
             )}
           </div>
-          <div className="py-4">
+          <div className="py-4 select-none">
             <p className="text-xl text-primary font-semibold">Explanation</p>
             <p>{question?.explanation}</p>
           </div>
