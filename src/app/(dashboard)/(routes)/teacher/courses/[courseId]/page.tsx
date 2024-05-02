@@ -17,6 +17,7 @@ import { CoursePointsForm } from "./_components/course-points";
 import { ImageForm } from "./_components/image_form";
 import { CourseFAQForm } from "./_components/course-faq";
 import { CourseRoutineForm } from "./_components/course-routine";
+import SelectQuiz from "./_components/select-quiz";
 
 const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -37,8 +38,10 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
       CourseRoutine: true,
       FAQ: true,
       CourseFeatures: true,
+      tests: true,
     },
   });
+  const tests = await db.quiz.findMany({});
   if (!course) {
     return redirect("/");
   }
@@ -127,6 +130,11 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
               }))}
             />
             <PriceForm initialData={course} courseId={course.id} />
+            <SelectQuiz
+              initialData={course}
+              courseId={course.id}
+              tests={tests}
+            />
           </div>
           <div>
             <div className="flex items-center gap-x-2">

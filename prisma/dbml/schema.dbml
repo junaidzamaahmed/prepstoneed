@@ -30,6 +30,8 @@ Table Quiz {
   price Int
   isPublished Boolean [not null, default: false]
   category Category
+  courseId String
+  course Course
   attempts QuizAttempt [not null]
   sections Section [not null]
   createdAt DateTime [default: `now()`, not null]
@@ -122,6 +124,7 @@ Table Course {
   CourseFeatures CourseFeatures [not null]
   CourseRoutine CourseRoutine [not null]
   FAQ FAQ [not null]
+  tests Quiz [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
@@ -225,6 +228,8 @@ Enum Qtype {
 }
 
 Ref: Quiz.categoryId > Category.id
+
+Ref: Quiz.courseId > Course.id [delete: Cascade]
 
 Ref: Section.quizId > Quiz.id [delete: Cascade]
 

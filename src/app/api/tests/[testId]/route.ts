@@ -39,7 +39,6 @@ export async function PATCH(
     const test = await db.quiz.update({
       where: {
         id: testId,
-        userId,
       },
       data: {
         ...values,
