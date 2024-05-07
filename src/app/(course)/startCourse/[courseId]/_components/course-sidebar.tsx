@@ -172,11 +172,11 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
 
               <AccordionContent className="my-1">
                 {course?.tests.map((test) => (
-                  <Link href={purchase ? `/startTest/${test.id}` : ""}>
-                    <div
-                      key={test.id}
-                      className="flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group"
-                    >
+                  <Link
+                    key={test.id}
+                    href={purchase ? `/startTest/${test.id}` : ""}
+                  >
+                    <div className="flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group">
                       <div className="flex items-center space-x-2 hover:text-secondary">
                         <PlayIcon
                           size={16}

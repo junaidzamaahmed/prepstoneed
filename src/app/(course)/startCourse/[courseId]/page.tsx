@@ -177,7 +177,7 @@ export default async function CoursePage({
               {course.tests.map((test: any) => {
                 return test.attempts.map((attempt: any) => {
                   return (
-                    <TableRow>
+                    <TableRow key={attempt.id}>
                       <TableCell className="font-medium">
                         {test.title}
                       </TableCell>
