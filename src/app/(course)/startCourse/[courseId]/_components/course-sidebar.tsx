@@ -120,43 +120,49 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
 
               <AccordionContent className="my-1">
                 {course?.recordings.map((recording) => (
-                  <Link
+                  // <Link
+                  //   key={recording.id}
+                  //   href={`/startCourse/${course.id}/recordings/${recording.id}`}
+                  // >
+                  //   <div
+                  //     className={`${
+                  //       activeId == recording.id &&
+                  //       "bg-secondary/5 text-secondary"
+                  //     } flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group`}
+                  //   >
+                  //     <div
+                  //       className={`${
+                  //         activeId == recording.id && "text-secondary"
+                  //       } flex items-center space-x-2 hover:text-secondary`}
+                  //     >
+                  //       <PlayIcon
+                  //         size={16}
+                  //         className={`pl-[2px] py-[2px] rounded-full text-white ${
+                  //           activeId == recording.id
+                  //             ? "bg-secondary"
+                  //             : "bg-black"
+                  //         } group-hover:bg-secondary transition-all`}
+                  //       />
+                  //       <p className="font-medium">{recording.title}</p>
+                  //     </div>
+                  //     {recording.isFree || purchase ? null : (
+                  //       <Lock
+                  //         size={12}
+                  //         className={`${
+                  //           activeId == recording.id
+                  //             ? "text-secondary"
+                  //             : "text-slate-500"
+                  //         } group-hover:text-secondary transition-all`}
+                  //       />
+                  //     )}
+                  //   </div>
+                  // </Link>
+                  <CourseSidebarItem
                     key={recording.id}
-                    href={`/startCourse/${course.id}/recordings/${recording.id}`}
-                  >
-                    <div
-                      className={`${
-                        activeId == recording.id &&
-                        "bg-secondary/5 text-secondary"
-                      } flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group`}
-                    >
-                      <div
-                        className={`${
-                          activeId == recording.id && "text-secondary"
-                        } flex items-center space-x-2 hover:text-secondary`}
-                      >
-                        <PlayIcon
-                          size={16}
-                          className={`pl-[2px] py-[2px] rounded-full text-white ${
-                            activeId == recording.id
-                              ? "bg-secondary"
-                              : "bg-black"
-                          } group-hover:bg-secondary transition-all`}
-                        />
-                        <p className="font-medium">{recording.title}</p>
-                      </div>
-                      {recording.isFree || purchase ? null : (
-                        <Lock
-                          size={12}
-                          className={`${
-                            activeId == recording.id
-                              ? "text-secondary"
-                              : "text-slate-500"
-                          } group-hover:text-secondary transition-all`}
-                        />
-                      )}
-                    </div>
-                  </Link>
+                    recording={recording}
+                    courseId={course.id}
+                    purchase={purchase}
+                  />
                 ))}
               </AccordionContent>
             </AccordionItem>

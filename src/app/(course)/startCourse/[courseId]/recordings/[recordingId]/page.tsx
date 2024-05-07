@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import VideoPlayer from "./_components/video-player";
 import { Lock } from "lucide-react";
 import Image from "next/image";
+import { db } from "@/lib/db";
 
 export default async function RecordingPage({
   params,
@@ -14,10 +15,13 @@ export default async function RecordingPage({
   if (!userId) {
     return redirect("/");
   }
+  const user = await db.user.findUnique({
+    where: { externalId: userId },
+  });
   const data = await getRecording({
     recordingId: params.recordingId,
     courseId: params.courseId,
-    userId,
+    userId: user?.id!,
   });
 
   if (!data?.recording || !data?.course) {
