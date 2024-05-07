@@ -220,7 +220,7 @@ export default async function DSAT() {
               className="w-full mb-10 border border-1"
             >
               {course?.FAQ.map((faq) => (
-                <AccordionItem value={faq.id}>
+                <AccordionItem key={faq.id} value={faq.id}>
                   <AccordionTrigger className="text-secondary px-3 hover:no-underline">
                     {faq.question}
                   </AccordionTrigger>
