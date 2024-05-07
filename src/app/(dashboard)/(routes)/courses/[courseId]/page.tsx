@@ -26,6 +26,7 @@ export default async function Course({
       CoursePoints: true,
       CourseRoutine: true,
       FAQ: true,
+      CourseFeatures: true,
     },
   });
   const ins = await db.instructor.findUnique({
@@ -117,7 +118,7 @@ export default async function Course({
           <Image
             height={500}
             width={500}
-            className="rounded-t-lg w-full"
+            className="rounded-t-lg w-96 h-96 object-cover"
             src={courseData?.imageUrl || ""}
             alt=""
           />
@@ -130,41 +131,16 @@ export default async function Course({
             </Link>
             <div className="my-4">
               <div className="ps-3">
-                <p className="my-3">
-                  <CheckCircle
-                    size={16}
-                    className="inline-block text-blue-400"
-                  />
-                  <span className="ps-2">Total 30 Classes</span>
-                </p>
-                <p className="my-3">
-                  <CheckCircle
-                    size={16}
-                    className="inline-block text-blue-400"
-                  />
-                  <span className="ps-2">40 Hour Lectures</span>
-                </p>
-                <p className="my-3">
-                  <CheckCircle
-                    size={16}
-                    className="inline-block text-blue-400"
-                  />
-                  <span className="ps-2">Weekly Quiz</span>
-                </p>
-                <p className="my-3">
-                  <CheckCircle
-                    size={16}
-                    className="inline-block text-blue-400"
-                  />
-                  <span className="ps-2">Final Exam</span>
-                </p>
-                <p className="my-3">
-                  <CheckCircle
-                    size={16}
-                    className="inline-block text-blue-400"
-                  />
-                  <span className="ps-2">Certificate</span>
-                </p>
+                {courseData?.CourseFeatures &&
+                  courseData?.CourseFeatures.map((feature) => (
+                    <p className="my-3" key={feature.id}>
+                      <CheckCircle
+                        size={16}
+                        className="inline-block text-blue-400"
+                      />
+                      <span className="ps-2">{feature.feature}</span>
+                    </p>
+                  ))}
               </div>
             </div>
           </div>

@@ -7,8 +7,11 @@ Table User {
   externalId String [unique, not null]
   email String [unique, not null]
   role Role [not null, default: 'STUDENT']
+  fullName String
+  phone String
   quizAttempts QuizAttempt [not null]
   purchases Purchase [not null]
+  accessRequests AccessRequest [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
@@ -125,6 +128,7 @@ Table Course {
   CourseRoutine CourseRoutine [not null]
   FAQ FAQ [not null]
   tests Quiz [not null]
+  accessRequests AccessRequest [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
@@ -152,6 +156,7 @@ Table Recordings {
   isPublished Boolean [not null, default: false]
   position Int [not null]
   videoUrl String
+  videoSource Int [default: 0]
   courseId String [not null]
   course Course [not null]
   createdAt DateTime [default: `now()`, not null]
@@ -210,6 +215,22 @@ Table FAQ {
   updatedAt DateTime [not null]
 }
 
+Table AccessRequest {
+  id String [pk]
+  userId String [not null]
+  courseId String [not null]
+  trxId String
+  phone String
+  user User [not null]
+  course Course [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+
+  indexes {
+    (userId, courseId) [unique]
+  }
+}
+
 Enum Role {
   STUDENT
   TEACHER
@@ -266,3 +287,7 @@ Ref: CourseFeatures.courseId > Course.id [delete: Cascade]
 Ref: CourseRoutine.courseId > Course.id [delete: Cascade]
 
 Ref: FAQ.courseId > Course.id [delete: Cascade]
+
+Ref: AccessRequest.userId > User.id [delete: Cascade]
+
+Ref: AccessRequest.courseId > Course.id [delete: Cascade]

@@ -61,9 +61,7 @@ export default function Questions({
             });
           });
           const difficulty =
-            prev1?.questions?.length - score >= 10
-              ? "EASY"
-              : "HARD";
+            prev1?.questions?.length - score >= 10 ? "EASY" : "HARD";
           const possibleSections =
             prev === 0 ? test?.sections?.slice(1, 3) : test?.sections?.slice(4);
           secNo =
@@ -114,7 +112,7 @@ export default function Questions({
   return (
     <>
       <QuestionAnswer
-        key={questions && questions[currentQuestion].id}
+        key={questions && questions[currentQuestion]?.id}
         question={questions ? questions[currentQuestion] : null}
         attemptId={attempt.id}
         toggleDisable={toggleDisable}

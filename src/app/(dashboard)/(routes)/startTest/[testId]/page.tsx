@@ -3,13 +3,20 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { Preview } from "@/components/preview";
 import { Button } from "./_components/button";
+import { Banner } from "@/components/banner";
 
 const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
   const { userId } = auth();
+
   if (!userId) {
     return redirect("/");
   }
-
+  let disabled = false;
+  const user = await db.user.findUnique({
+    where: {
+      externalId: userId,
+    },
+  });
   const test = await db.quiz.findUnique({
     where: {
       id: params.testId,
@@ -20,8 +27,30 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
         include: { questions: { orderBy: { position: "asc" } } },
       },
       category: true,
+      course: {
+        include: {
+          purchases: {
+            where: {
+              userId: user?.id,
+            },
+          },
+        },
+      },
+      attempts: true,
     },
   });
+
+  const userAttempts = test?.attempts.filter(
+    (attempt) => attempt.userID === user?.id
+  );
+
+  if (!test?.course?.purchases.length) {
+    disabled = true;
+  }
+
+  if (userAttempts?.length && userAttempts?.length >= 3) {
+    disabled = true;
+  }
   if (!test) {
     return redirect("/");
   }
@@ -35,6 +64,13 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
       <div className="container mx-auto my-auto">
         <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
           <div className="px-6 py-4">
+            {!test?.course?.purchases.length && (
+              <Banner
+                label="You do not have access to this test. Please contact us for access."
+                variant="warning"
+              />
+            )}
+
             <h2 className="text-2xl font-bold mb-2">Details</h2>
             <p className="mb-4">
               Name: <span className="font-bold">{test.title}</span>
@@ -65,7 +101,19 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
                 {test.price === 0 ? "Free" : test.price} Taka
               </p>
             </div>
-            <Button category={test?.category!}>Start Test</Button>
+            {userAttempts?.length && userAttempts?.length >= 3 && (
+              <Banner
+                label="You have crossed your attempt limit. You can not attempt this test anymore."
+                variant="warning"
+              />
+            )}
+            <Button
+              className="mt-1"
+              disabled={disabled}
+              category={test?.category!}
+            >
+              Start Test
+            </Button>
           </div>
         </div>
       </div>

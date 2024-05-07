@@ -9,9 +9,8 @@ export default function HOME() {
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
-        className="py-32"
       >
-        <div className="max-w-[1240px] w-full mx-auto px-3 xl:px-0">
+        <div className="max-w-[1240px] w-full mx-auto px-3 xl:px-0 flex justify-center min-h-screen lg:min-h-[calc(100vh-80px)] flex-col">
           <div className="text-center space-y-10">
             <h1 className="text-3xl text-white font-semibold xl:text-5xl">
               CRUSH YOUR <span className="text-primary">GOAL</span>
@@ -31,6 +30,11 @@ export default function HOME() {
           </div>
 
           <div className="grid gap-5 xl:gap-1 items-center *:max-w-[14rem] *:w-full *:mx-auto my-8 md:grid-cols-4">
+            <Link href="/courses/dsat">
+              <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
+                DSAT
+              </button>
+            </Link>
             <Link href="/sat/satTests">
               <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
                 DSAT Mock
@@ -44,11 +48,6 @@ export default function HOME() {
             <Link href="/comingSoon">
               <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
                 BUP FBS
-              </button>
-            </Link>
-            <Link href="/comingSoon">
-              <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
-                DSAT
               </button>
             </Link>
           </div>
@@ -308,17 +307,17 @@ export default function HOME() {
       </div> */}
       {/* <!-- ! help students section --> */}
       {/* <!-- ! tools section  --> */}
-      <div className="max-w-[1240px] w-full mx-auto px-3 xl:px-0 py-10 my-10">
-        {/* <!-- title  --> */}
-        <div className="relative max-w-screen-sm mx-auto xl:max-w-screen-md">
+      {/* <div className="max-w-[1240px] w-full mx-auto px-3 xl:px-0 py-10 my-10"> */}
+      {/* <!-- title  --> */}
+      {/* <div className="relative max-w-screen-sm mx-auto xl:max-w-screen-md">
           <h1 className="text-gray-800 text-3xl font-medium text-center">
             Get the tools you really need to conquer your test
           </h1>
           <span className="w-14 h-1 bg-gray-900 mx-auto block my-2 rounded-sm"></span>
-        </div>
+        </div> */}
 
-        {/* <!-- card  --> */}
-        <div className="my-10 grid xl:grid-cols-3 gap-8 justify-center">
+      {/* <!-- card  --> */}
+      {/* <div className="my-10 grid xl:grid-cols-3 gap-8 justify-center">
           <div className="text-center max-w-screen-sm">
             <Image
               width={50}
@@ -370,12 +369,12 @@ export default function HOME() {
               unprecedented clarity and detail.
             </p>
           </div>
-        </div>
-        {/* <!-- card  --> */}
-      </div>
+        </div> */}
+      {/* <!-- card  --> */}
+      {/* </div> */}
       {/* <!-- ! tools section  --> */}
       {/* <!-- ? two column section  --> */}
-      <div className="my-8 pb-16">
+      {/* <div className="my-8 pb-16">
         <div className="p-12 grid xl:grid-cols-[1fr_2fr] relative">
           <div className="bg-white p-6 rounded-md shadow-2xl border-b-4 border-blue-300 mb-6 h-max xl:ml-32 max-w-[430px] mx-auto w-full">
             <h1 className="text-2xl font-semibold text-gray-700 mb-2">
@@ -393,14 +392,14 @@ export default function HOME() {
               practice and step-by-step video solutions to reinforce learning.
             </p>
           </div>
-
-          {/* <!-- line  --> */}
-          <div className="w-1 h-24 bg-gray-200 absolute left-[12rem] z-20 bottom-[13rem] hidden xl:block"></div>
+ */}
+      {/* <!-- line  --> */}
+      {/* <div className="w-1 h-24 bg-gray-200 absolute left-[12rem] z-20 bottom-[13rem] hidden xl:block"></div>
           <div className="w-20 h-1 bg-gray-200 absolute left-[12rem] z-20 bottom-[13rem] hidden xl:block"></div>
+ */}
+      {/* <!-- line  --> */}
 
-          {/* <!-- line  --> */}
-
-          <div className="bg-white px-6 py-8 rounded-md shadow-2xl border-b-4 border-blue-300 mb-6 h-max xl:ml-32 xl:max-w-[700px] max-w-[430px] mx-auto w-full xl:absolute xl:left-[12rem] xl:-bottom-4">
+      {/* <div className="bg-white px-6 py-8 rounded-md shadow-2xl border-b-4 border-blue-300 mb-6 h-max xl:ml-32 xl:max-w-[700px] max-w-[430px] mx-auto w-full xl:absolute xl:left-[12rem] xl:-bottom-4">
             <h1 className="text-2xl font-semibold text-gray-700 mb-2">
               <span className="text-primary">Courses engineered</span> taught in
               a for efficient learning
@@ -425,10 +424,10 @@ export default function HOME() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <!-- ? two column section  --> */}
       {/* <!-- ! teachers and students section  --> */}
-      <div className="w-full py-24 bg-[#0E2D42]">
+      {/* <div className="w-full py-24 bg-[#0E2D42]">
         <div className="max-w-[1240px] w-full mx-auto px-3 xl:px-0 grid gap-20 xl:gap-14 xl:grid-cols-2">
           <div className="max-w-screen-sm mx-auto w-full">
             <h1 className="text-4xl font-medium text-white">
@@ -495,10 +494,10 @@ export default function HOME() {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <!-- ! teachers and students section  --> */}
       {/* <!-- * community section  --> */}
-      <div className="w-full py-16">
+      {/* <div className="w-full py-16">
         <div className="max-w-[1240px] w-full mx-auto px-3 xl:px-0">
           <div className="w-full max-w-[450px] mx-auto my-8">
             <h1 className="text-3xl font-semibold text-gray-800 text-center tracking-wide">
@@ -508,9 +507,9 @@ export default function HOME() {
             <span className="w-14 h-1 bg-gray-900 mx-auto block my-2 rounded-md"></span>
           </div>
 
-          <div className="grid gap-16 md:grid-cols-2 md:gap-8">
-            {/* <!-- card 1 --> */}
-            <div className="bg-white pt-6 px-8 pb-4 flex flex-col justify-between gap-10 max-w-screen-sm w-full mx-auto shadow-2xl relative">
+          <div className="grid gap-16 md:grid-cols-2 md:gap-8"> */}
+      {/* <!-- card 1 --> */}
+      {/* <div className="bg-white pt-6 px-8 pb-4 flex flex-col justify-between gap-10 max-w-screen-sm w-full mx-auto shadow-2xl relative">
               <div>
                 <Image
                   width={50}
@@ -563,21 +562,21 @@ export default function HOME() {
                     alt=""
                   />
                 </div>
-              </div>
+              </div> */}
 
-              {/* <!-- author --> */}
-              <Image
+      {/* <!-- author --> */}
+      {/* <Image
                 width={100}
                 height={100}
                 src="/assets/vedant@3x.png"
                 alt="author"
                 className="absolute bottom-0 right-0 w-40"
-              />
-              {/* <!-- author --> */}
-            </div>
+              /> */}
+      {/* <!-- author --> */}
+      {/* </div> */}
 
-            {/* <!-- card 2 --> */}
-            <div className="bg-white pt-6 px-8 pb-4 flex flex-col justify-between gap-10 max-w-screen-sm w-full mx-auto shadow-2xl relative">
+      {/* <!-- card 2 --> */}
+      {/* <div className="bg-white pt-6 px-8 pb-4 flex flex-col justify-between gap-10 max-w-screen-sm w-full mx-auto shadow-2xl relative">
               <div>
                 <Image
                   width={50}
@@ -630,27 +629,27 @@ export default function HOME() {
                     alt=""
                   />
                 </div>
-              </div>
+              </div> */}
 
-              {/* <!-- author --> */}
-              <Image
+      {/* <!-- author --> */}
+      {/* <Image
                 width={100}
                 height={100}
                 src="/assets/emma@3x.png"
                 alt="author"
                 className="absolute bottom-0 right-0 w-40"
-              />
-              {/* <!-- author --> */}
-            </div>
+              /> */}
+      {/* <!-- author --> */}
+      {/* </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <!-- * community section  --> */}
       {/* <!-- ! map section --> */}
-      <div className="py-20">
-        <div className="max-w-[1240px] w-full mx-auto px-3 xl:px-0 grid gap-24 xl:grid-cols-[2fr_1fr]">
-          {/* <!-- left  --> */}
-          <div
+      {/* <div className="py-20">
+        <div className="max-w-[1240px] w-full mx-auto px-3 xl:px-0 grid gap-24 xl:grid-cols-[2fr_1fr]"> */}
+      {/* <!-- left  --> */}
+      {/* <div
             style={{
               backgroundImage: `url("../assets/map.svg")`,
               backgroundSize: "contain",
@@ -665,10 +664,10 @@ export default function HOME() {
                 src="/assets/student1@2x.jpg"
                 alt=""
                 className="size-14 rounded-full ring-4 ring-green-400 relative z-10"
-              />
+              /> */}
 
-              {/* <!-- line  --> */}
-              <span className="w-[2px] h-20 bg-green-500 block absolute left-[28px] -bottom-[4rem] -z-10 after:'' after:size-2 after:bg-green-500 after:absolute after:left-[-3px] after:bottom-0 after:rounded-full after:block"></span>
+      {/* <!-- line  --> */}
+      {/* <span className="w-[2px] h-20 bg-green-500 block absolute left-[28px] -bottom-[4rem] -z-10 after:'' after:size-2 after:bg-green-500 after:absolute after:left-[-3px] after:bottom-0 after:rounded-full after:block"></span>
               <div>
                 <h3 className="text-green-500 font-medium">Emma (USA)</h3>
                 <p>Earned a Q168 / V166 on the GRE®</p>
@@ -688,10 +687,10 @@ export default function HOME() {
                 src="/assets/student1@2x.jpg"
                 alt=""
                 className=" rounded-full ring-4 ring-green-400 relative z-10"
-              />
+              /> */}
 
-              {/* <!-- line  --> */}
-              <span className="w-[2px] h-20 bg-green-500 block absolute right-[28px] -bottom-[4rem] -z-10 after:'' after:size-2 after:bg-green-500 after:absolute after:left-[-3px] after:bottom-0 after:rounded-full after:block"></span>
+      {/* <!-- line  --> */}
+      {/* <span className="w-[2px] h-20 bg-green-500 block absolute right-[28px] -bottom-[4rem] -z-10 after:'' after:size-2 after:bg-green-500 after:absolute after:left-[-3px] after:bottom-0 after:rounded-full after:block"></span>
             </div>
 
             <div className="items-center gap-4 ml-auto absolute left-0 bottom-[6rem] hidden md:flex">
@@ -701,10 +700,10 @@ export default function HOME() {
                 src="/assets/student1@2x.jpg"
                 alt=""
                 className=" rounded-full ring-4 ring-green-400 relative z-10"
-              />
+              /> */}
 
-              {/* <!-- line  --> */}
-              <span className="w-[2px] h-20 bg-green-500 block absolute left-[28px] -top-[4rem] -z-10 after:'' after:size-2 after:bg-green-500 after:absolute after:left-[-3px] after:top-0 after:rounded-full after:block"></span>
+      {/* <!-- line  --> */}
+      {/* <span className="w-[2px] h-20 bg-green-500 block absolute left-[28px] -top-[4rem] -z-10 after:'' after:size-2 after:bg-green-500 after:absolute after:left-[-3px] after:top-0 after:rounded-full after:block"></span>
 
               <div className="">
                 <h3 className="text-green-500 font-medium">Emma (USA)</h3>
@@ -723,25 +722,25 @@ export default function HOME() {
                 src="/assets/student1@2x.jpg"
                 alt=""
                 className=" rounded-full ring-4 ring-green-400 relative z-10"
-              />
+              /> */}
 
-              {/* <!-- line  --> */}
-              <span className="w-[2px] h-20 bg-green-500 block absolute right-[28px] -top-[4rem] -z-10 after:'' after:size-2 after:bg-green-500 after:absolute after:left-[-3px] after:top-0 after:rounded-full after:block"></span>
+      {/* <!-- line  --> */}
+      {/* <span className="w-[2px] h-20 bg-green-500 block absolute right-[28px] -top-[4rem] -z-10 after:'' after:size-2 after:bg-green-500 after:absolute after:left-[-3px] after:top-0 after:rounded-full after:block"></span>
             </div>
-          </div>
+          </div> */}
 
-          {/* <!-- right  --> */}
-          <div className="bg-blue-100/70 p-6 rounded-md max-w-[370px] w-auto mx-auto space-y-16 xl:order-3 relative">
-            {/* <!--* border top --> */}
-            <div className="w-14 h-1 bg-blue-100 top-[-30px] right-[-25px] absolute"></div>
-            <div className="w-1 h-14 bg-blue-100 top-[-94px] right-[-28px] absolute"></div>
-            {/* <!--* border top --> */}
-            {/* <!--* border bottom --> */}
-            <div className="w-14 h-1 bg-blue-100 bottom-[-30px] left-[-25px] absolute"></div>
-            <div className="w-1 h-14 bg-blue-100 bottom-[-30px] left-[-28px] absolute"></div>
-            {/* <!--* border bottom --> */}
+      {/* <!-- right  --> */}
+      {/* <div className="bg-blue-100/70 p-6 rounded-md max-w-[370px] w-auto mx-auto space-y-16 xl:order-3 relative"> */}
+      {/* <!--* border top --> */}
+      {/* <div className="w-14 h-1 bg-blue-100 top-[-30px] right-[-25px] absolute"></div>
+            <div className="w-1 h-14 bg-blue-100 top-[-94px] right-[-28px] absolute"></div> */}
+      {/* <!--* border top --> */}
+      {/* <!--* border bottom --> */}
+      {/* <div className="w-14 h-1 bg-blue-100 bottom-[-30px] left-[-25px] absolute"></div>
+            <div className="w-1 h-14 bg-blue-100 bottom-[-30px] left-[-28px] absolute"></div> */}
+      {/* <!--* border bottom --> */}
 
-            <div className="flex items-center gap-6">
+      {/* <div className="flex items-center gap-6">
               <Image
                 width={50}
                 height={50}
@@ -788,7 +787,7 @@ export default function HOME() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/*{/* <!-- ! map section --> */}
     </div>
   );

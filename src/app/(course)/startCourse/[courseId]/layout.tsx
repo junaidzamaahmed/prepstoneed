@@ -19,7 +19,12 @@ export default async function CourseLayout({
     where: { id: params.courseId },
     include: {
       recordings: {
-        orderBy: { createdAt: "desc" },
+        where: { isPublished: true },
+        orderBy: { createdAt: "asc" },
+      },
+      tests: {
+        where: { isPublished: true },
+        orderBy: { createdAt: "asc" },
       },
     },
   });

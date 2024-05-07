@@ -20,7 +20,7 @@ export const getRecording = async ({
       select: { price: true },
     });
     const recording = await db.recordings.findUnique({
-      where: { id: recordingId },
+      where: { id: recordingId, isPublished: true },
     });
     if (!course || !recording) {
       throw new Error("Course or recording not found");

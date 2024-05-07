@@ -21,7 +21,6 @@ const TestIdPage = async ({ params }: { params: { testId: string } }) => {
   const test = await db.quiz.findUnique({
     where: {
       id: params.testId,
-      userId,
     },
     include: {
       sections: {

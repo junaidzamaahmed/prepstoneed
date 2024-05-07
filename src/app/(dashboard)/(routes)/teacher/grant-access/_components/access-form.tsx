@@ -49,7 +49,7 @@ async function AccessForm({ users, courses }: AccessFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="">
         <FormField
           control={form.control}
           name="uid"
@@ -95,12 +95,14 @@ async function AccessForm({ users, courses }: AccessFormProps) {
                   ))}
                 </SelectContent>
               </Select>
-              <FormDescription>Select student</FormDescription>
+              <FormDescription>Select course</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button className="mt-2" type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );

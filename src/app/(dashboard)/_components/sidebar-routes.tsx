@@ -20,7 +20,7 @@ const guestRoutes = [
   },
   {
     icon: Compass,
-    label: "My Courses",
+    label: "Dashboard",
     href: "/courses",
   },
 ];

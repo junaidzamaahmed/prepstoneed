@@ -5,24 +5,24 @@ async function main() {
   try {
     await db.category.createMany({
       data: [
-        {
-          name: "Practice",
-        },
-        {
-          name: "Modules",
-        },
-        {
-          name: "Full Tests",
-        },
-        {
-          name: "Adaptive Tests",
-        },
-        {
-          name: "English",
-        },
-        {
-          name: "Math",
-        },
+        // {
+        //   name: "Practice",
+        // },
+        // {
+        //   name: "Modules",
+        // },
+        // {
+        //   name: "Full Tests",
+        // },
+        // {
+        //   name: "Adaptive Tests",
+        // },
+        // {
+        //   name: "English",
+        // },
+        // {
+        //   name: "Math",
+        // },
         {
           name: "DU",
         },

@@ -29,7 +29,7 @@ export const TestActions = ({
     try {
       setIsLoading(true);
 
-      await axios.patch(`/api/tests/${testId}/togglePublish`, {
+      await axios.patch(`/api/courses/${testId}/togglePublish`, {
         isPublished: !isPublished,
       });
       isPublished
@@ -48,11 +48,11 @@ export const TestActions = ({
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/tests/${testId}`);
+      await axios.delete(`/api/courses/${testId}`);
 
-      toast.success("Test deleted");
+      toast.success("Course deleted");
       router.refresh();
-      router.push(`/teacher/tests`);
+      router.push(`/teacher/courses`);
     } catch {
       toast.error("Something went wrong");
     } finally {

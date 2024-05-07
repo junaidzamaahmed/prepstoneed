@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: "utfs.io",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "yt3.googleusercontent.com",
+        pathname: "**",
+      },
     ],
   },
   reactStrictMode: false,

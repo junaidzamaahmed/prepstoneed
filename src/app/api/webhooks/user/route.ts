@@ -67,6 +67,8 @@ export async function POST(req: Request) {
       data: {
         externalId: id,
         email: evt.data.email_addresses[0]?.email_address,
+        fullName: evt.data.first_name + " " + evt.data.last_name,
+        phone: evt.data.phone_numbers[0]?.phone_number,
       },
     });
     console.log(`User with and ID of ${id} and type of ${eventType}`);

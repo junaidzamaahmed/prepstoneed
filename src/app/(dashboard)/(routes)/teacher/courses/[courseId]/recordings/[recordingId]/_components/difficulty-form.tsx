@@ -10,60 +10,66 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Difficulty } from "@prisma/client";
 import { toast } from "sonner";
 
-export default function DifficultyForm({
-  testId,
-  section,
+export default function VideoSourceForm({
+  courseId,
+  recording,
 }: {
-  testId: string;
-  section: any;
+  courseId: string;
+  recording: any;
 }) {
   const form = useForm({});
   const [disable, setDisable] = useState(false);
+  const router = useRouter();
 
-  const handleDifficultyChange = async (value: string) => {
+  const handleVideoSourceChange = async (value: string) => {
     try {
       setDisable(true);
-      await axios.patch(`/api/tests/${testId}/sections/${section.id}/`, {
-        difficulty: value,
+      await axios.patch(`/api/courses/${courseId}/recordings/${recording.id}`, {
+        videoSource: Number(value),
       });
       setDisable(false);
-      toast.success("Difficulty updated");
+      toast.success("Video Source Updated");
+      router.refresh();
     } catch (error) {
-      toast.error("Error updating difficulty");
+      toast.error("Error updating source");
     }
   };
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium">
-        Difficulty
+        Video Source
         <div>
           <Form {...form}>
             <form className="w-full space-y-6">
               <FormField
                 control={form.control}
-                name="difficulty"
+                name="videoSource"
                 render={({ field }) => (
                   <FormItem className="space-y-3 ">
                     <FormControl>
                       <RadioGroup
                         disabled={disable}
-                        onValueChange={handleDifficultyChange}
-                        defaultValue={section?.difficulty}
+                        onValueChange={handleVideoSourceChange}
+                        defaultValue={String(recording?.videoSource)}
                         className="space-y-1"
                       >
-                        {Object.keys(Difficulty).map((key, index) => (
-                          <FormItem key={key} className="space-x-2">
-                            <FormControl>
-                              <RadioGroupItem value={key} />
-                            </FormControl>
-                            <FormLabel className="font-normal">{key}</FormLabel>
-                          </FormItem>
-                        ))}
+                        <FormItem className="space-x-2">
+                          <FormControl>
+                            <RadioGroupItem value="0" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Mux</FormLabel>
+                        </FormItem>
+                        <FormItem className="space-x-2">
+                          <FormControl>
+                            <RadioGroupItem value="1" />
+                          </FormControl>
+                          <FormLabel className="font-normal">YouTube</FormLabel>
+                        </FormItem>
                       </RadioGroup>
                     </FormControl>
                     <FormMessage />

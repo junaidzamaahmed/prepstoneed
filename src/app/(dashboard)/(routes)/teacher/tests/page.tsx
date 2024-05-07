@@ -11,9 +11,6 @@ const TestsPage = async () => {
   }
 
   const tests = await db.quiz.findMany({
-    where: {
-      userId,
-    },
     orderBy: {
       createdAt: "desc",
     },

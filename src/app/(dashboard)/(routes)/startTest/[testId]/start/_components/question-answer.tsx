@@ -91,7 +91,7 @@ export default function QuestionAnswer({
                 Question {question?.position}
               </div>
               <div>
-                {question.qtype === "MCQ" ? (
+                {question?.qtype === "MCQ" ? (
                   <Form {...form}>
                     <form className="w-full space-y-6">
                       <FormField

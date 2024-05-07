@@ -10,7 +10,13 @@ interface CourseCardProps {
 }
 export default function CourseCard({ course }: CourseCardProps) {
   return (
-    <Link href={`/startCourse/${course.id}`}>
+    <Link
+      href={
+        course.id == "279057e5-db68-49f2-9e38-44455799d79c"
+          ? "courses/dsat"
+          : `/startCourse/${course.id}`
+      }
+    >
       <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
           <Image

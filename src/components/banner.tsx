@@ -1,5 +1,6 @@
 import { AlertTriangle, CheckCircleIcon } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
+import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
@@ -33,7 +34,7 @@ export const Banner = ({ label, variant }: BannerProps) => {
   return (
     <div className={cn(bannerVariants({ variant }))}>
       <Icon className="h-4 w-4 mr-2" />
-      {label}
+      <span dangerouslySetInnerHTML={{ __html: label }}></span>
     </div>
   );
 };
