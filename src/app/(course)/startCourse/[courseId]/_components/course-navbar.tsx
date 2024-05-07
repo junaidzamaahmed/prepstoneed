@@ -1,9 +1,9 @@
 import NavbarRoutes from "@/components/navbar-routes";
-import { Course, Recordings } from "@prisma/client";
+import { Course, Quiz, Recordings } from "@prisma/client";
 import CourseMobileSidebar from "./course-mobile-sidebar";
 
 interface CourseNavbarProps {
-  course: Course & { recordings: Recordings[] };
+  course: Course & { recordings: Recordings[]; tests: Quiz[] };
 }
 export default function CourseNavbar({ course }: CourseNavbarProps) {
   return (
