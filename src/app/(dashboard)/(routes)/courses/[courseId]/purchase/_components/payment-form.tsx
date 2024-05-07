@@ -87,7 +87,7 @@ export default function PaymentForm({
           )}
         />
         <FormDescription className="mt-2">
-          Leave the fields blank if you're an offline student.
+          Leave the fields blank if you&apos;re an offline student.
         </FormDescription>
         <Button className="mt-2" disabled={disabled} type="submit">
           Submit
