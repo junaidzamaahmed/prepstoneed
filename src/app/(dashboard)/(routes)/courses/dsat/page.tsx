@@ -58,13 +58,25 @@ export default async function DSAT() {
           <div className="md:col-span-5 xl:col-span-4 col-span-12">
             <div className="bg-white w-full border border-1 rounded pb-1">
               <div>
-                {/* <Image
-                  src={"/assets/course.jpg"}
-                  width={500}
-                  height={500}
-                  className="w-full h-full rounded-t"
-                  alt="course image"
-                /> */}
+                {course?.imageUrl && (
+                  <Image
+                    // src={"/assets/course.jpg"}
+                    src={course?.imageUrl}
+                    width={500}
+                    height={500}
+                    className="w-full h-full rounded-t"
+                    alt="course image"
+                  />
+                )}
+                {!course?.imageUrl && (
+                  <Image
+                    src={"/assets/banner.jpg"}
+                    width={500}
+                    height={500}
+                    className="w-full h-full rounded-t"
+                    alt="course image"
+                  />
+                )}
                 {/* <iframe
                   width="560"
                   height="315"
@@ -83,7 +95,7 @@ export default async function DSAT() {
                   allowFullScreen
                   className="w-full h-64 rounded-t"
                 ></iframe> */}
-                <div className="pop-out1">
+                {/* <div className="pop-out1">
                   <iframe
                     src="https://drive.google.com/file/d/1ZuPDRPEzgVY1k_drZlTYbKFrGHXgX54q/preview"
                     // width="425"
@@ -100,7 +112,7 @@ export default async function DSAT() {
                       src="/logo.png"
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
               <p className="px-2 py-3 text-primary font-bold text-xl">
                 &#2547; {course?.price}
