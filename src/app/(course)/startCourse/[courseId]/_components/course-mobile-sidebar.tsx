@@ -1,10 +1,14 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Course, Quiz, Recordings } from "@prisma/client";
+import { Category, Course, Quiz, Recordings } from "@prisma/client";
 import { MenuIcon } from "lucide-react";
 import CourseSidebar from "./course-sidebar";
 
 interface CourseMobileSidebarProps {
-  course: Course & { recordings: Recordings[]; tests: Quiz[] };
+  course: Course & {
+    recordings: Recordings[];
+    tests: Quiz[];
+    category: Category;
+  };
 }
 export default function CourseMobileSidebar({
   course,
