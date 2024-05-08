@@ -20,10 +20,7 @@ const PurchasePage = async ({ params }: { params: { courseId: string } }) => {
   }
   const course = await db.course.findUnique({
     where: {
-      id:
-        params.courseId == "dsat"
-          ? "279057e5-db68-49f2-9e38-44455799d79c"
-          : params.courseId,
+      id: params.courseId,
     },
   });
   if (!course) {

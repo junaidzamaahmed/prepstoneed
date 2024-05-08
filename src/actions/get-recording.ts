@@ -13,7 +13,7 @@ export const getRecording = async ({
 }: GetRecordingProps) => {
   try {
     const purchase = await db.purchase.findUnique({
-      where: { userId_courseId: { userId, courseId } },
+      where: { userId_courseId: { userId: userId || "", courseId } },
     });
     const course = await db.course.findUnique({
       where: { id: courseId },

@@ -13,7 +13,7 @@ export default function HOME() {
         <div className="max-w-[1240px] w-full mx-auto px-3 xl:px-0 flex justify-center min-h-screen lg:min-h-[calc(100vh-80px)] flex-col">
           <div className="text-center space-y-10">
             <h1 className="text-3xl text-white font-semibold xl:text-5xl">
-              CRUSH YOUR <span className="text-primary">GOAL</span>
+              CRUSH YOUR <span className="text-secondary">GOAL</span>
             </h1>
             <p className="text-[18px] md:text-[20px] text-gray-50 max-w-[580px] mx-auto">
               Our online self-study courses put test-takers on the path to rapid
@@ -30,9 +30,14 @@ export default function HOME() {
           </div>
 
           <div className="grid gap-5 xl:gap-1 items-center *:max-w-[14rem] *:w-full *:mx-auto my-8 md:grid-cols-4">
-            <Link href="/courses/dsat">
+            <Link href="/courses/279057e5-db68-49f2-9e38-44455799d79c">
               <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
-                DSAT
+                DSAT B-04
+              </button>
+            </Link>
+            <Link href="/courses/644b6a1c-5090-4b39-b694-49322ff733d9">
+              <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
+                DSAT B-03
               </button>
             </Link>
             <Link href="/sat/satTests">
@@ -40,12 +45,12 @@ export default function HOME() {
                 DSAT Mock
               </button>
             </Link>
-            <Link href="/comingSoon">
+            {/* <Link href="/comingSoon">
               <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
                 DU IBA
               </button>
-            </Link>
-            <Link href="/comingSoon">
+            </Link> */}
+            <Link href="/courses/b7a5b443-b31b-4e38-a650-793c0dce5653">
               <button className="text-gray-50 xl:text-4xl text-lg  uppercase bg-primary py-4 px-6 rounded-[4px] hover:bg-blue-400 transition duration-200 text-center mx-auto w-full">
                 BUP FBS
               </button>

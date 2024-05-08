@@ -12,12 +12,12 @@ export default async function RecordingPage({
   params: { courseId: string; recordingId: string };
 }) {
   const { userId } = auth();
-  if (!userId) {
-    return redirect("/");
+  let user = null;
+  if (userId) {
+    user = await db.user.findUnique({
+      where: { externalId: userId },
+    });
   }
-  const user = await db.user.findUnique({
-    where: { externalId: userId },
-  });
   const data = await getRecording({
     recordingId: params.recordingId,
     courseId: params.courseId,

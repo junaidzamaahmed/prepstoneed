@@ -11,10 +11,6 @@ export default async function CourseLayout({
   children: React.ReactNode;
   params: { courseId: string };
 }) {
-  const { userId } = auth();
-  if (!userId) {
-    return redirect("/");
-  }
   const course = await db.course.findUnique({
     where: { id: params.courseId },
     include: {
@@ -26,6 +22,7 @@ export default async function CourseLayout({
         where: { isPublished: true },
         orderBy: { createdAt: "asc" },
       },
+      category: true,
     },
   });
   if (!course) {

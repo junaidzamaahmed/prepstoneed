@@ -20,12 +20,12 @@ export default async function CoursePage({
   params: { courseId: string };
 }) {
   const { userId } = auth();
-  if (!userId) {
-    return redirect("/");
+  let user = null;
+  if (userId) {
+    user = await db.user.findUnique({
+      where: { externalId: userId },
+    });
   }
-  const user = await db.user.findUnique({
-    where: { externalId: userId },
-  });
 
   const course = await db.course.findUnique({
     where: { id: params.courseId },

@@ -6,14 +6,17 @@ import { redirect } from "next/navigation";
 
 const Navbar = async () => {
   const { userId } = auth();
-  if (!userId) {
-    return redirect("/");
+  // if (!userId) {
+  //   return redirect("/");
+  // }
+  let userRole = null;
+  if (userId) {
+    userRole = await db.user.findUnique({
+      where: {
+        externalId: userId,
+      },
+    });
   }
-  const userRole = await db.user.findUnique({
-    where: {
-      externalId: userId,
-    },
-  });
 
   return (
     <nav
@@ -21,7 +24,10 @@ const Navbar = async () => {
       className="p-4 border-b- h-full flex items-center shadow-sm bg-white"
     >
       <MobileSidebar />
-      <NavbarRoutes teacher={userRole?.role === "TEACHER"} />
+      <NavbarRoutes
+        teacher={userRole?.role === "TEACHER"}
+        signedIn={userRole ? true : false}
+      />
     </nav>
   );
 };

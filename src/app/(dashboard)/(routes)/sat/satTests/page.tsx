@@ -5,9 +5,14 @@ import { UserTable } from "../../../_components/user-table";
 
 export default async function Home() {
   const { userId } = auth();
-  if (!userId) {
-    return redirect("/");
-  }
+  // let userRole = null;
+  // if (userId) {
+  //   userRole = await db.user.findUnique({
+  //     where: {
+  //       externalId: userId,
+  //     },
+  //   });
+  // }
 
   const tests = await db.quiz.findMany({
     where: {
@@ -22,14 +27,9 @@ export default async function Home() {
       },
     },
   });
-  const userRole = await db.user.findUnique({
-    where: {
-      externalId: userId,
-    },
-  });
-  if (userRole?.role === "STUDENT") {
-    return redirect("/");
-  }
+  // if (userRole?.role === "STUDENT") {
+  //   return redirect("/");
+  // }
   return (
     <div className="p-4">
       <h3 className="text-3xl font-semibold text-primary">

@@ -23,8 +23,14 @@ async function main() {
         // {
         //   name: "Math",
         // },
+        // {
+        //   name: "DU",
+        // },
         {
-          name: "DU",
+          name: "DSAT",
+        },
+        {
+          name: "BUP",
         },
       ],
     });
