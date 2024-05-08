@@ -7,7 +7,7 @@ interface CourseMobileSidebarProps {
   course: Course & {
     recordings: Recordings[];
     tests: Quiz[];
-    category: Category;
+    category: Category | null;
   };
 }
 export default function CourseMobileSidebar({
