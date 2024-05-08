@@ -17,13 +17,17 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import Image from "next/image";
+import { ImageIcon, Pencil, PlusCircle, Trash } from "lucide-react";
+import { FileUpload } from "@/components/file-upload";
+import { useState } from "react";
 
 const formSchema = z.object({
   id: z.string().min(1, { message: "ID is required" }),
   name: z.string().min(1, { message: "Name is required" }),
   email: z.string().email({ message: "Invalid email" }),
-  bio: z.string().min(1, { message: "Bio is required" }),
-  imageUrl: z.string().url({ message: "Invalid URL" }),
+  bio: z.string().min(1, { message: "Bio is required" }).optional(),
+  imageUrl: z.string().url({ message: "Invalid URL" }).optional(),
 });
 
 export default function EditInstructorForm({
@@ -40,14 +44,18 @@ export default function EditInstructorForm({
   } | null;
 }) {
   const router = useRouter();
+  const [imageUrl, setImageUrl] = useState<string | null | undefined>(
+    instructor?.imageUrl
+  );
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       id: instructor?.id,
       name: instructor?.name,
       email: instructor?.email,
-      bio: instructor?.bio || "",
-      imageUrl: instructor?.imageUrl || "",
+      bio: instructor?.bio || null || undefined,
+      imageUrl: instructor?.imageUrl || null || undefined,
     },
   });
   const { isSubmitting, isValid } = form.formState;
@@ -61,22 +69,22 @@ export default function EditInstructorForm({
       toast.error("Something went wrong!");
     }
   };
+  const [isEditing, setIsEditing] = useState(false);
+
+  const toggleEdit = () => setIsEditing((current: any) => !current);
 
   return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
         <h1 className="text-2xl">Edit Instructor</h1>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 mt-8"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Instructor Name</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
@@ -84,7 +92,7 @@ export default function EditInstructorForm({
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>Instructor name</FormDescription>
+                  <FormDescription>name</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -94,7 +102,7 @@ export default function EditInstructorForm({
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Instructor Bio</FormLabel>
+                  <FormLabel>Bio</FormLabel>
                   <FormControl>
                     <Textarea
                       disabled={isSubmitting}
@@ -111,7 +119,7 @@ export default function EditInstructorForm({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Instructor Email</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -124,12 +132,12 @@ export default function EditInstructorForm({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="imageUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Instructor Image URL</FormLabel>
+                  <FormLabel>Image URL</FormLabel>
                   <FormControl>
                     <Input
                       type="url"
@@ -141,8 +149,78 @@ export default function EditInstructorForm({
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <div className="flex items-center gap-x-2">
+            /> */}
+            <div className="mt-6 border rounded-md p-4">
+              <div className="font-medium flex items-center justify-between">
+                Image
+                <Button
+                  onClick={
+                    // !imageUrl
+                    //   ?
+                    toggleEdit
+                    // : () =>
+                    //     onSubmit({
+                    //       id: instructor?.id!,
+                    //       name: instructor?.name!,
+                    //       email: instructor?.email!,
+                    //       bio: instructor?.bio || undefined,
+                    //       imageUrl: undefined,
+                    //     })
+                  }
+                  variant="ghost"
+                >
+                  {isEditing && <>Cancel</>}
+                  {!isEditing && !imageUrl && (
+                    <>
+                      <PlusCircle className="h-4 w-4 mr-2" />
+                      Add an image
+                    </>
+                  )}
+                  {!isEditing && imageUrl && (
+                    <>
+                      {/* <Trash className="h-4 w-4 text-red-600" /> */}
+                      <Pencil className="h-4 w-4 mr-2" />
+                      Edit
+                    </>
+                  )}
+                </Button>
+              </div>
+              {!isEditing &&
+                (!imageUrl ? (
+                  <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
+                    <ImageIcon className="h-10 w-10 text-slate-500" />
+                  </div>
+                ) : (
+                  <div className="relative aspect-video mt-2">
+                    <Image
+                      alt="Upload"
+                      fill
+                      className="object-cover rounded-md"
+                      src={imageUrl}
+                    />
+                  </div>
+                ))}
+              {isEditing && (
+                <div>
+                  <FileUpload
+                    endpoint="questionImage"
+                    onChange={async (url) => {
+                      if (url) {
+                        setImageUrl(url);
+                        form.setValue("imageUrl", url);
+                        toggleEdit();
+                        form.trigger("imageUrl");
+                      }
+                    }}
+                  />
+                  <p className="text-xs text-muted-foreground mt-4">
+                    Upload image of size less than 512KB
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-x-2 mt-2">
               <Button type="submit" disabled={!isValid || isSubmitting}>
                 Save
               </Button>

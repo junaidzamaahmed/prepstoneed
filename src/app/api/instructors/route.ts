@@ -31,10 +31,9 @@ export async function GET() {
 
 export async function DELETE(req: Request) {
   try {
-    const { instructorId } = await req.json();
     const instructor = await db.instructor.delete({
       where: {
-        id: instructorId,
+        id: req.headers.get("id") as string,
       },
     });
     return NextResponse.json(instructor);

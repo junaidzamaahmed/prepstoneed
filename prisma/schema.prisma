@@ -185,9 +185,8 @@ model Course{
 
   categoryId String?
   category Category? @relation(fields: [categoryId], references: [id])
-  instructorId String?
-  instructors Instructor? @relation(fields: [instructorId], references: [id])
 
+  instructors InstructorInstructs[]
   recordings Recordings[]
   purchases Purchase[]
   CoursePoints CoursePoints[]
@@ -247,10 +246,21 @@ model Instructor{
   email String @unique
   bio String? @db.Text
   imageUrl String?
-  courses Course[]
+
+  courses InstructorInstructs[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+model InstructorInstructs{
+  id String @id @default(uuid())
+  instructorId String
+  courseId String
+
+  instructor Instructor @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([instructorId, courseId])
 }
 
 model CoursePoints{

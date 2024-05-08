@@ -101,7 +101,7 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
                 {test.price === 0 ? "Free" : test.price} Taka
               </p>
             </div>
-            {userAttempts?.length && userAttempts?.length >= 3 && (
+            {userAttempts?.length != undefined && userAttempts?.length >= 3 && (
               <Banner
                 label="You have crossed your attempt limit. You can not attempt this test anymore."
                 variant="warning"

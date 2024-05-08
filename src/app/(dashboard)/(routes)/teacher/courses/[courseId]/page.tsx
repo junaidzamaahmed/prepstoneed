@@ -11,13 +11,13 @@ import { VideoForm } from "./_components/video-form";
 import { TestActions } from "./_components/actions";
 import Link from "next/link";
 import { Banner } from "@/components/banner";
-import { InstructorForm } from "./_components/instructor-form";
 import { CourseFeaturesForm } from "./_components/course-features";
 import { CoursePointsForm } from "./_components/course-points";
 import { ImageForm } from "./_components/image_form";
 import { CourseFAQForm } from "./_components/course-faq";
 import { CourseRoutineForm } from "./_components/course-routine";
 import SelectQuiz from "./_components/select-quiz";
+import SelectInstructor from "./_components/select-instructor";
 
 const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -39,6 +39,7 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
       FAQ: true,
       CourseFeatures: true,
       tests: true,
+      instructors: { include: { instructor: true } },
     },
   });
   const tests = await db.quiz.findMany({});
@@ -121,13 +122,11 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
                 value: category.id,
               }))}
             />
-            <InstructorForm
+            <SelectInstructor
               initialData={course}
               courseId={course.id}
-              options={instructors.map((instructor) => ({
-                label: instructor.name,
-                value: instructor.id,
-              }))}
+              instructors={instructors}
+              assigned={course.instructors}
             />
             <PriceForm initialData={course} courseId={course.id} />
             <SelectQuiz

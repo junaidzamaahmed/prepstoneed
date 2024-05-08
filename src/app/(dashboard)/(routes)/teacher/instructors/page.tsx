@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,7 +18,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Instructors from "./_components/instructors";
+import { ImageForm } from "./_components/image_form";
+import Image from "next/image";
+import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import { useState } from "react";
+import { FileUpload } from "@/components/file-upload";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -30,15 +33,27 @@ const formSchema = z.object({
 
 const CreateInstructor = async () => {
   const router = useRouter();
+  const [imageUrl, setImageUrl] = useState<string | undefined>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      imageUrl: imageUrl,
+    },
   });
   const { isSubmitting, isValid } = form.formState;
+  const [isEditing, setIsEditing] = useState(false);
+
+  const toggleEdit = () => setIsEditing((current: any) => !current);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post("/api/instructors", values);
       toast.success("Instructor added successfully!");
-      form.reset();
+      form.setValue("name", "");
+      form.setValue("email", "");
+      form.setValue("bio", "");
+      form.setValue("imageUrl", "");
+      setImageUrl(undefined);
       router.refresh();
     } catch (error) {
       toast.error("Something went wrong!");
@@ -47,18 +62,15 @@ const CreateInstructor = async () => {
   return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
-        <h1 className="text-2xl">Instructors</h1>
+        <h1 className="text-2xl">Add Instructor</h1>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 mt-8"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Instructor Name</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
@@ -66,7 +78,6 @@ const CreateInstructor = async () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>Instructor name</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -76,7 +87,7 @@ const CreateInstructor = async () => {
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Instructor Bio</FormLabel>
+                  <FormLabel>Bio</FormLabel>
                   <FormControl>
                     <Textarea
                       disabled={isSubmitting}
@@ -93,7 +104,7 @@ const CreateInstructor = async () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Instructor Email</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -106,12 +117,12 @@ const CreateInstructor = async () => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="imageUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Instructor Image URL</FormLabel>
+                  <FormLabel>Image URL</FormLabel>
                   <FormControl>
                     <Input
                       type="url"
@@ -123,9 +134,71 @@ const CreateInstructor = async () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
+            {/* <ImageForm
+              imageUrl={form.getValues("imageUrl")}
+              setImageUrl={setImageUrl}
+            /> */}
+            <div className="mt-6 border rounded-md p-4">
+              <div className="font-medium flex items-center justify-between">
+                Image
+                <Button onClick={toggleEdit} variant="ghost">
+                  {isEditing && <>Cancel</>}
+                  {!isEditing && !imageUrl && (
+                    <>
+                      <PlusCircle className="h-4 w-4 mr-2" />
+                      Add an image
+                    </>
+                  )}
+                  {!isEditing && imageUrl && (
+                    <>
+                      <Pencil className="h-4 w-4 mr-2" />
+                      Edit
+                    </>
+                  )}
+                </Button>
+              </div>
+              {!isEditing &&
+                (!imageUrl ? (
+                  <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
+                    <ImageIcon className="h-10 w-10 text-slate-500" />
+                  </div>
+                ) : (
+                  <div className="relative aspect-video mt-2">
+                    <Image
+                      alt="Upload"
+                      fill
+                      className="object-cover rounded-md"
+                      src={imageUrl}
+                    />
+                  </div>
+                ))}
+              {isEditing && (
+                <div>
+                  <FileUpload
+                    endpoint="questionImage"
+                    onChange={async (url) => {
+                      if (url) {
+                        setImageUrl(url);
+                        form.setValue("imageUrl", url);
+                        toggleEdit();
+                        form.trigger("imageUrl");
+                      }
+                    }}
+                  />
+                  <p className="text-xs text-muted-foreground mt-4">
+                    Upload image of size less than 256KB
+                  </p>
+                </div>
+              )}
+            </div>
+
             <div className="flex items-center gap-x-2">
-              <Button type="submit" disabled={!isValid || isSubmitting}>
+              <Button
+                className="mt-2"
+                type="submit"
+                disabled={!isValid || isSubmitting}
+              >
                 Add
               </Button>
             </div>
