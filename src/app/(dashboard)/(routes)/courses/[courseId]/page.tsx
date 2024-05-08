@@ -27,11 +27,11 @@ export default async function Course({
       CourseRoutine: true,
       FAQ: true,
       CourseFeatures: true,
-    },
-  });
-  const ins = await db.instructor.findUnique({
-    where: {
-      id: courseData?.instructorId || "",
+      instructors: {
+        include: {
+          instructor: true,
+        },
+      },
     },
   });
   return (
@@ -41,21 +41,23 @@ export default async function Course({
         <p className="mt-3 text-sm">{courseData?.description}</p>
         <div className="border border-1 border-black/20 rounded-lg my-5 p-4">
           <h3 className="font-semibold text-lg">Course Instructor</h3>
-          <div className="flex align-middle" key={courseData?.instructorId}>
-            <div>
-              <Image
-                className="w-20 h-20 rounded-full my-3"
-                height={100}
-                width={100}
-                src={ins?.imageUrl || instructor}
-                alt="Instructor Image"
-              />
+          {courseData?.instructors.map((ins) => (
+            <div className="flex align-middle" key={ins.instructor.id}>
+              <div>
+                <Image
+                  className="w-20 h-20 rounded-full my-3"
+                  height={100}
+                  width={100}
+                  src={ins.instructor.imageUrl || instructor}
+                  alt="Instructor Image"
+                />
+              </div>
+              <div className="flex flex-col justify-center ps-2">
+                <p className="text-lg font-semibold">{ins?.instructor?.name}</p>
+                <p className="text-sm">{ins?.instructor.bio}</p>
+              </div>
             </div>
-            <div className="flex flex-col justify-center ps-2">
-              <p className="text-lg font-semibold">{ins?.name}</p>
-              <p className="text-sm">{ins?.bio}</p>
-            </div>
-          </div>
+          ))}
         </div>
         <h3 className="text-lg font-semibold my-1">
           What you&apos;ll learn in this course
