@@ -9,14 +9,14 @@ import Link from "next/link";
 const PurchasePage = async ({ params }: { params: { courseId: string } }) => {
   // const router = useRouter();
   const { userId } = auth();
-  if (!userId) {
-    return redirect("/");
+  let user = null;
+  if (userId) {
+    user = await db.user.findUnique({
+      where: { externalId: userId },
+    });
   }
-  const user = await db.user.findUnique({
-    where: { externalId: userId },
-  });
   if (!user?.id) {
-    return redirect("/");
+    return redirect("/sign-in");
   }
   const course = await db.course.findUnique({
     where: {
