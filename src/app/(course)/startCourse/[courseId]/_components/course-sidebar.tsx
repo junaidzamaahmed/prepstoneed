@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { PlayIcon, UnlockIcon } from "lucide-react";
+import Link from "next/link";
 // import Link from "next/link";
 // import { headers } from "next/headers";
 
@@ -351,21 +352,20 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
 
               <AccordionContent className="my-1">
                 {course?.tests.map((test) => (
-                  <div
-                    key={test.id}
-                    className="flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group"
-                  >
-                    <div className="flex items-center space-x-2 hover:text-secondary">
-                      <PlayIcon
-                        size={16}
-                        className="pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all"
-                      />
-                      <p className="font-medium">{test.title}</p>
+                  <Link key={test.id} href={`startTest/${test.id}`}>
+                    <div className="flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group">
+                      <div className="flex items-center space-x-2 hover:text-secondary">
+                        <PlayIcon
+                          size={16}
+                          className="pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all"
+                        />
+                        <p className="font-medium">{test.title}</p>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </AccordionContent>
-            </AccordionItem>{" "}
+            </AccordionItem>
             {course?.category?.name == "BUP" && (
               <AccordionItem value="item-6">
                 <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">
