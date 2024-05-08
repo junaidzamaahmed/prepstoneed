@@ -45,7 +45,7 @@ export const InstructorForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      instructorId: initialData?.instructorId || "",
+      // instructorId: initialData?.i || "",
     },
   });
 
@@ -62,9 +62,9 @@ export const InstructorForm = ({
     }
   };
 
-  const selectedOption = options.find(
-    (option) => option.value === initialData.instructorId
-  );
+  // const selectedOption = options.find(
+  // (option) => option.value === initialData.instructorId
+  // );
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
@@ -83,11 +83,11 @@ export const InstructorForm = ({
       {!isEditing && (
         <p
           className={cn(
-            "text-sm mt-2",
-            !initialData.instructorId && "text-slate-500 italic"
+            "text-sm mt-2"
+            // !initialData.instructorId && "text-slate-500 italic"
           )}
         >
-          {selectedOption?.label || "No instructor"}
+          {/* {selectedOption?.label || "No instructor"} */}
         </p>
       )}
       {isEditing && (
