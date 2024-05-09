@@ -26,7 +26,6 @@ export default async function CoursePage({
       where: { externalId: userId },
     });
   }
-
   const course = await db.course.findUnique({
     where: { id: params.courseId },
     include: {
@@ -36,7 +35,7 @@ export default async function CoursePage({
       tests: {
         include: {
           attempts: {
-            where: { userID: user?.id },
+            where: { userID: user?.id || "" },
           },
         },
       },
