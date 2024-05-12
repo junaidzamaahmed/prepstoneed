@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
 import Image from "next/image";
 import { redirect, useRouter } from "next/navigation";
 import PaymentForm from "./_components/payment-form";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
 
 const PurchasePage = async ({ params }: { params: { courseId: string } }) => {
   // const router = useRouter();
