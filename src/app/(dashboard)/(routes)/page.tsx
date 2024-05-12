@@ -1,6 +1,9 @@
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 export default function HOME() {
+  const { userId } = auth();
+  console.log("userId", userId);
   return (
     <div>
       <div
