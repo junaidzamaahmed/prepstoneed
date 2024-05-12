@@ -16,7 +16,9 @@ const PurchasePage = async ({ params }: { params: { courseId: string } }) => {
     });
   }
   if (!user?.id) {
-    return redirect("/sign-in");
+    return redirect(
+      "/sign-in?after_sign_in_url=%2F&after_sign_up_url=%2F&redirect_url=%2F"
+    );
   }
   const course = await db.course.findUnique({
     where: {
