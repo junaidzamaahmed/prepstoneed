@@ -10,14 +10,11 @@ const PurchasePage = async ({ params }: { params: { courseId: string } }) => {
   // const router = useRouter();
   const { userId } = auth();
   let user = null;
-  console.log("userId", userId);
-  console.log("params", params.courseId);
   if (userId) {
     user = await db.user.findUnique({
       where: { externalId: userId },
     });
   }
-  console.log("user", user);
   if (!user?.id) {
     return redirect(
       "/sign-in?after_sign_in_url=%2F&after_sign_up_url=%2F&redirect_url=%2F"
@@ -28,7 +25,6 @@ const PurchasePage = async ({ params }: { params: { courseId: string } }) => {
       id: params.courseId,
     },
   });
-  console.log("course", course);
   if (!course) {
     return redirect("/");
   }
