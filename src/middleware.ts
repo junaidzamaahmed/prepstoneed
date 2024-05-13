@@ -11,7 +11,7 @@ export default authMiddleware({
     "/courses/(.*)",
     "/startCourse/(.*)",
     "/sat/satTests",
-    "/api/access/request",
+    "/api/(.*)",
   ],
   // ignoredRoutes: ["/api/(.*)"],
   // ignoredRoutes: ["/"],
