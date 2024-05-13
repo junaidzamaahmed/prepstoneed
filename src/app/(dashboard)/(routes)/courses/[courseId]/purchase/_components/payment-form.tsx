@@ -45,14 +45,7 @@ export default function PaymentForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setDisabled(true);
-      // await axios.post("/api/access/request", values);
-      await fetch("/api/access/request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      await axios.post("/api/access/request", values);
 
       toast.success(
         "Your request has been submitted. Please check back in a few hours."
