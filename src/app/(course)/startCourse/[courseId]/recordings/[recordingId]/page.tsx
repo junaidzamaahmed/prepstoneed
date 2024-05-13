@@ -1,5 +1,5 @@
 import { getRecording } from "@/actions/get-recording";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import VideoPlayer from "./_components/video-player";
 import { Lock } from "lucide-react";

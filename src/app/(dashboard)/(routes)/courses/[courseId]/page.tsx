@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { db } from "@/lib/db";
 import { Banner } from "@/components/banner";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import CourseSidebarItem from "@/app/(course)/startCourse/[courseId]/_components/course-sidebar-item";
 
 export default async function DSAT({

@@ -34,7 +34,7 @@ const NavbarRoutes = ({
             </Button>
           </Link>
         ))}
-      <UserButton afterSignOutUrl="/" />
+      <UserButton />
       <SignedOut>
         <SignInButton>
           <Button size="sm" variant="default">
