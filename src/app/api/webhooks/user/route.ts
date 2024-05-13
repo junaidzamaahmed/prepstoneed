@@ -71,7 +71,6 @@ export async function POST(req: Request) {
         phone: evt.data.phone_numbers[0]?.phone_number,
       },
     });
-    console.log(`User with and ID of ${id} and type of ${eventType}`);
   }
 
   if (eventType === "session.created") {
@@ -81,12 +80,7 @@ export async function POST(req: Request) {
         status: 400,
       });
     }
-    console.log(`Session with and ID of ${id} and type of ${eventType}`);
-    console.log(`${forwardedFor}`);
   }
-
-  // console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  // console.log("Webhook body:", body);
 
   return new Response("", { status: 200 });
 }

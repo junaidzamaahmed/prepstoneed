@@ -6,7 +6,6 @@ export async function POST(req: Request) {
   try {
     const { userId } = auth();
     const test = await req.json();
-    console.log(test);
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }

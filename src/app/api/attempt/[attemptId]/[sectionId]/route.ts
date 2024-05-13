@@ -12,7 +12,6 @@ export async function PUT(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    console.log(attemptId, sectionId);
     const attempt = await db.quizAttempt.findUnique({
       where: {
         id: attemptId,

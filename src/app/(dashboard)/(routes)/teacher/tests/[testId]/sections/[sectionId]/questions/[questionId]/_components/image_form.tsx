@@ -90,7 +90,6 @@ export const ImageForm = ({
             onChange={async (url) => {
               if (url) {
                 await onSubmit({ imageUrl: url });
-                console.log(url);
               }
             }}
           />

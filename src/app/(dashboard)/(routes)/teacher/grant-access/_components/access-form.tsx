@@ -40,7 +40,6 @@ async function AccessForm({ users, courses }: AccessFormProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
       await axios.post("/api/access", values);
       toast.success("Access granted");
     } catch (error) {
