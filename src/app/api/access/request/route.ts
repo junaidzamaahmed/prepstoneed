@@ -6,6 +6,7 @@ export async function POST(req: Request) {
   try {
     const { userId } = auth();
     const values = await req.json();
+    console.log("[ACCESS_REQUEST]", values, userId);
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -18,6 +19,7 @@ export async function POST(req: Request) {
         trxId: values.trxId,
       },
     });
+    console.log(access);
     return NextResponse.json(access);
   } catch (error) {
     console.log("[ACCESS_REQUEST]", error);
