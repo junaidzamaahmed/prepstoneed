@@ -1,18 +1,15 @@
+"use server";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { currentUser } from "@clerk/nextjs/server";
-
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    // const { userId } = auth();
-    const user = await currentUser();
-
+    const { userId } = auth();
     const { uid, cid } = await req.json();
 
-    console.log(user?.id, uid, cid);
-    if (!user?.id) {
+    console.log(userId, uid, cid);
+    if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const purchase = await db.purchase.findUnique({
