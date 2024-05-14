@@ -80,7 +80,6 @@ export async function POST(req: Request) {
         status: 400,
       });
     }
-    console.log("Session created", evt.data);
   }
   if (eventType === "session.ended") {
     // Update the session in your database
@@ -91,6 +90,4 @@ export async function POST(req: Request) {
     }
     console.log("Session ended", evt.data);
   }
-
-  return new Response("", { status: 200 });
 }

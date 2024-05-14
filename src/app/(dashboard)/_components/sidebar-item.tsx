@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 interface SidebarItemProps {
   icon: LucideIcon;
@@ -21,15 +20,6 @@ export const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
   const onClick = () => {
     router.push(href);
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("https://prepstoneedbd.com/api/get-ip-address", {
-        method: "GET",
-      });
-      console.log(await res.json());
-    };
-    fetchData();
-  }, []);
 
   return (
     <button

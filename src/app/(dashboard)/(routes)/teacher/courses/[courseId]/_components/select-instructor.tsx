@@ -40,7 +40,6 @@ export default function SelectInstructor({
       });
       toast.success("Instructor added to course");
       setSelected((prev) => [...prev, instructor]);
-      console.log(instructor);
       setDisabled(false);
     } catch {
       toast.error("Failed to add instructor to course");
@@ -53,7 +52,6 @@ export default function SelectInstructor({
       await axios.delete(`/api/instructors/courseAssignment/`, {
         headers: { instructorId: instructor.id, courseId: courseId },
       });
-      console.log(instructor);
       setSelected((prev) => prev.filter((s) => s.id !== instructor.id));
       toast.success("Instructor removed from course");
       setDisabled(false);
