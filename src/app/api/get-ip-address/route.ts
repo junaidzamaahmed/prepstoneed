@@ -12,5 +12,7 @@ export async function GET(req: NextRequest) {
   //     message: "Hello from the API",
   //   };
   //   console.log(data);
-  return new NextResponse(forwardedFor ?? realIp);
+  return new NextResponse(
+    forwardedFor ? forwardedFor.split(",")[0].trim() : realIp && realIp.trim()
+  );
 }
