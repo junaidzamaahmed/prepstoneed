@@ -13,6 +13,10 @@ export async function GET(req: NextRequest) {
   //   };
   //   console.log(data);
   return new NextResponse(
-    forwardedFor ? forwardedFor.split(",")[0].trim() : realIp && realIp.trim()
+    forwardedFor
+      ? forwardedFor.split(",")[0].trim()
+      : realIp
+      ? realIp.trim()
+      : null
   );
 }
