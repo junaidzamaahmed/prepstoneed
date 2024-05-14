@@ -5,7 +5,7 @@ export default async function HOME() {
   const res = await fetch("https://prepstoneedbd.com/api/get-ip-address", {
     method: "GET",
   });
-  console.log(res);
+  console.log(res.json());
   return (
     <div>
       <div
