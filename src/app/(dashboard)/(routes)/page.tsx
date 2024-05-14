@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-export default function HOME() {
+export default async function HOME() {
+  await fetch("/api/get-ip-address", {
+    method: "GET",
+  });
   return (
     <div>
       <div

@@ -81,7 +81,6 @@ export async function POST(req: Request) {
       });
     }
     console.log("Session created", evt.data);
-    console.log("Client IP: ", req.headers.get("x-forwarded-for"));
   }
   if (eventType === "session.ended") {
     // Update the session in your database
