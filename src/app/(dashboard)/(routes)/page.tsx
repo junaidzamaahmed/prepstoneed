@@ -2,9 +2,10 @@ import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 export default async function HOME() {
-  await fetch("https://prepstoneedbd.com/api/get-ip-address", {
+  const res = await fetch("https://prepstoneedbd.com/api/get-ip-address", {
     method: "GET",
   });
+  console.log(res);
   return (
     <div>
       <div

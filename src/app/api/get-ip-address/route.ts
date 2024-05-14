@@ -12,5 +12,5 @@ export async function GET(req: NextRequest) {
   //     message: "Hello from the API",
   //   };
   //   console.log(data);
-  return new NextResponse("OK", { status: 200 });
+  return new NextResponse(forwardedFor ?? realIp);
 }
