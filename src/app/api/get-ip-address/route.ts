@@ -1,17 +1,11 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let ipAddress = req.headers["x-real-ip"] as string;
-
-  const forwardedFor = req.headers["x-forwarded-for"] as string;
-  if (!ipAddress && forwardedFor) {
-    ipAddress = forwardedFor?.split(",").at(0) ?? "Unknown";
-    console.log("IP Address: ", ipAddress);
-  } else {
-    console.log("IP Address not found");
-  }
-
-  res.status(200).json(ipAddress);
-};
-
-export default handler;
+export async function GET(req: NextRequest) {
+  const data = {
+    ok: true,
+    ip: req.headers.get("x-real-ip") ?? "127.0.0.1",
+    message: "Hello from the API",
+  };
+  console.log(data);
+  return new NextResponse(JSON.stringify(data, null, 2));
+}
