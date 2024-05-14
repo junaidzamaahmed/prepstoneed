@@ -11,8 +11,8 @@ const isPublicRoute = createRouteMatcher([
   "/startCourse/(.*)",
   "/sat/satTests",
   "/api/(.*)",
-  "/sign-in",
-  "/sign-up",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
 ]);
 export default clerkMiddleware((auth, req) => {
   if (!isPublicRoute(req)) auth().protect();
