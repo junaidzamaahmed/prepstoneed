@@ -32,6 +32,8 @@ export async function POST(req: Request) {
         data: {
           userId: values.userId,
           courseId: values.courseId,
+          trxId: values.trxId,
+          phone: values.phone,
         },
       }),
       db.accessRequest.delete({

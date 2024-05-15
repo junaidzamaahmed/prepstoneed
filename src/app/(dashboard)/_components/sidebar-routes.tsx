@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { usePathname } from "next/navigation";
+import { PiStudent } from "react-icons/pi";
 
 const guestRoutes = [
   {
@@ -49,6 +50,11 @@ const teacherRoutes = [
     icon: Unlock,
     label: "Grant Access",
     href: "/teacher/grant-access",
+  },
+  {
+    icon: PiStudent,
+    label: "Students",
+    href: "/teacher/students",
   },
 ];
 export const SidebarRoutes = () => {

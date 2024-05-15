@@ -22,10 +22,22 @@ export default function AccessRequests({
 }) {
   const [disabled, setDisabled] = useState(false);
   const router = useRouter();
-  const grantAccess = async (id: string, userId: string, courseId: string) => {
+  const grantAccess = async (
+    id: string,
+    userId: string,
+    courseId: string,
+    trxId: string,
+    phone: string
+  ) => {
     try {
       setDisabled(true);
-      await axios.post("/api/access/request/grant", { id, userId, courseId });
+      await axios.post("/api/access/request/grant", {
+        id,
+        userId,
+        courseId,
+        trxId,
+        phone,
+      });
       setDisabled(false);
       router.refresh();
     } catch {}
@@ -54,13 +66,19 @@ export default function AccessRequests({
                 }
               </TableCell>
               <TableCell>{request.trxId}</TableCell>
-              <TableCell>{request.phone || request.user.phone}</TableCell>
+              <TableCell>{request.phone}</TableCell>
               <TableCell className="text-right">
                 <Button
                   disabled={disabled}
                   className="bg-primary text-white"
                   onClick={() =>
-                    grantAccess(request.id, request.userId, request.courseId)
+                    grantAccess(
+                      request.id,
+                      request.userId,
+                      request.courseId,
+                      request.trxId,
+                      request.phone
+                    )
                   }
                 >
                   Grant Access

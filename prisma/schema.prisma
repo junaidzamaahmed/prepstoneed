@@ -205,6 +205,8 @@ model Purchase{
   id String @id @default(uuid())
   userId String
   courseId String
+  trxId String?
+  phone String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)

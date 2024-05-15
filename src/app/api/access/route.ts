@@ -30,7 +30,26 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(access);
   } catch (error) {
-    console.log("[ATTEMPT]", error);
+    console.log("[ACCESS]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { userId } = auth();
+    const headers = req.headers;
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+    const purchase = await db.purchase.delete({
+      where: {
+        id: headers.get("id")!,
+      },
+    });
+    return NextResponse.json(purchase);
+  } catch (error) {
+    console.log("[ACCESS]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
