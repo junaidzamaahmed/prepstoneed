@@ -82,7 +82,24 @@ export async function POST(req: Request) {
         });
       }
       const users = await clerkClient.users.getUserList();
-      console.log(users);
+      users.data.forEach(async (user) => {
+        await db.user.upsert({
+          where: {
+            externalId: user.id,
+          },
+          update: {
+            email: user.emailAddresses[0]?.emailAddress,
+            fullName: user.firstName + " " + user.lastName,
+            phone: user.phoneNumbers[0]?.phoneNumber,
+          },
+          create: {
+            externalId: user.id,
+            email: user.emailAddresses[0]?.emailAddress,
+            fullName: user.firstName + " " + user.lastName,
+            phone: user.phoneNumbers[0]?.phoneNumber,
+          },
+        });
+      });
     }
     if (eventType === "session.ended") {
       // Update the session in your database
