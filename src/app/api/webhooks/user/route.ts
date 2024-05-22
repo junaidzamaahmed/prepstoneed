@@ -81,6 +81,8 @@ export async function POST(req: Request) {
           status: 400,
         });
       }
+      const { userId } = auth();
+      console.log("user id: ", userId);
       const user = await currentUser();
       console.log(user);
     }
