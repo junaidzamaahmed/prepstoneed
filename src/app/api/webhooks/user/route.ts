@@ -81,7 +81,7 @@ export async function POST(req: Request) {
           status: 400,
         });
       }
-      const user = currentUser();
+      const user = await currentUser();
       console.log(user);
     }
     if (eventType === "session.ended") {
