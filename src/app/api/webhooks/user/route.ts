@@ -1,6 +1,6 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
-import { WebhookEvent } from "@clerk/nextjs/server";
+import { WebhookEvent, auth, currentUser } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 
 export async function POST(req: Request) {
@@ -81,6 +81,8 @@ export async function POST(req: Request) {
           status: 400,
         });
       }
+      const user = currentUser();
+      console.log(user);
     }
     if (eventType === "session.ended") {
       // Update the session in your database
