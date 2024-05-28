@@ -4,7 +4,9 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const { userId } = auth();
-
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
   try {
     const user = await db.user.findUnique({
       where: {

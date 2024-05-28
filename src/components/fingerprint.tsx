@@ -8,12 +8,18 @@ export default function Fingerprint() {
   const [fingerprint, setFingerprint] = useState<any>(null);
   const [check, setCheck] = useState<boolean>(false);
   const [existingFingerprints, setExistingFingerprints] = useState<any>(null);
-
+  const [userData, setUserData] = useState<any>(null);
   useEffect(() => {
     async function fetchExistingFingerprints() {
-      const response = await fetch("/api/fingerprints");
-      const data = await response.json();
-      setExistingFingerprints(data);
+      const userResponse = await fetch("/api/user");
+      if (userResponse.status === 401) {
+        signOut();
+      }
+      const data = await userResponse.json();
+      if (data?.browserFingerprint) {
+        setExistingFingerprints(data?.browserFingerprint);
+      }
+      setUserData(data);
       setCheck(true);
     }
 
@@ -29,7 +35,7 @@ export default function Fingerprint() {
     }
   }, [user]);
   useEffect(() => {
-    if (check && user?.id) {
+    if (check && user?.id && userData?.role != "TEACHER") {
       const existingFingerprint = existingFingerprints?.find(
         (existing: any) => {
           return existing.fingerprint === fingerprint;
