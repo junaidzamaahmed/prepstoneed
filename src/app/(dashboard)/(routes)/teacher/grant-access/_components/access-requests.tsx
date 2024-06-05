@@ -38,6 +38,19 @@ export default function AccessRequests({
         trxId,
         phone,
       });
+      // await fetch("/api/access/request/grant", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     id,
+      //     userId,
+      //     courseId,
+      //     trxId,
+      //     phone,
+      //   }),
+      // });
       setDisabled(false);
       router.refresh();
     } catch {}
