@@ -11,10 +11,11 @@ export default function Page() {
       <div className="container py-10">
         <h4 className="text-xl font-bold mb-2 mt-6">1. Acceptance of Terms</h4>
         <p>
-          By accessing or using Prepstone Education's services, website, or
-          online platforms (collectively referred to as "Services"), you agree
-          to be bound by these Terms and Conditions. If you do not agree to
-          these Terms and Conditions, you may not access or use the Services.
+          By accessing or using Prepstone Education&apos;s services, website, or
+          online platforms (collectively referred to as &quot;Services&quot;),
+          you agree to be bound by these Terms and Conditions. If you do not
+          agree to these Terms and Conditions, you may not access or use the
+          Services.
         </p>
         <h4 className="text-xl font-bold mb-2 mt-6">
           2. Description of Services
@@ -80,8 +81,8 @@ export default function Page() {
           If you have any questions about these Terms and Conditions, please
           contact us at: <br /> Prepstone Education <br /> <br />
           <span className="font-bold">
-            By using Prepstone Education's Services, you acknowledge that you
-            have read, understood, and agreed to these Terms and Conditions.
+            By using Prepstone Education&apos;s Services, you acknowledge that
+            you have read, understood, and agreed to these Terms and Conditions.
           </span>
         </p>
       </div>
