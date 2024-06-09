@@ -16,7 +16,7 @@ export default async function Footer() {
   return (
     <footer className="py-10 bg-primary/90 text-white">
       <div className="container grid grid-cols-2 md:grid-cols-4">
-        <div className="col-span-2 md:col-span-1">
+        <div className="col-span-2 md:col-span-1 max-sm:pb-3">
           <div className="flex justify-center">
             <Image src={"/logo.png"} alt="logo" width={100} height={100} />
           </div>
@@ -65,7 +65,7 @@ export default async function Footer() {
             </li>
           </ul>
         </div>
-        <div className="col-span-1">
+        <div className="col-span-1 max-sm:pt-2">
           <p className="text-lg font-medium">Pay with</p>
           <ul className="list-none flex mt-3">
             <Image
@@ -85,7 +85,7 @@ export default async function Footer() {
           </ul>
         </div>
       </div>
-      <div className="py-2 flex justify-between container mt-3">
+      <div className="py-2 md:flex justify-between container mt-3 max-sm:text-center max-sm:space-y-2">
         <p className="text-sm font-medium">&copy; 2024 Prepstone</p>
         <div className="space-x-3">
           <Link className="font-medium text-sm" href={"/terms-and-conditions"}>
