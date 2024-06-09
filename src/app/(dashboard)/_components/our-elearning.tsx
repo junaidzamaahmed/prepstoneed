@@ -1,4 +1,4 @@
-import { Play, PlayCircle } from "lucide-react";
+import { PlayCircle } from "lucide-react";
 
 export default function OurELearning() {
   return (

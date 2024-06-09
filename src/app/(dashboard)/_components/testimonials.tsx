@@ -14,28 +14,20 @@ import { BsStarFill } from "react-icons/bs";
 
 const testimonials = [
   {
-    name: "Junaid Ahmed",
+    name: "Tajidul Haque Protul",
     location: "Dhaka, Bangladesh",
     rating: 5,
-    img: "/assets/1632307192368.jpg",
+    img: "/assets/profile.jpg",
     comment:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo corporis distinctio, odit ad nostrum odio non veniam! Exercitationem impedit doloribus atque inventore? Dolorem consequuntur eligendi culpa! Laudantium, eaque nostrum. Harum.",
+      "I recently had the privilege of being a part of PrepStone's classes for a few months, and I must say it was an incredible experience. From the moment I enrolled, they took excellent care of me, ensuring that my learning journey was not only productive but also enjoyable. PrepStone stands out for its commitment to providing timely solutions and valuable information to help students excel. \nThank you, PrepStone, for your dedication to students.",
   },
   {
-    name: "Junaid Muhammad",
+    name: "Najifa Yousuf Oishy",
     location: "Dhaka, Bangladesh",
     rating: 5,
-    img: "/assets/1632307192368.jpg",
+    img: "/assets/profile.jpg",
     comment:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo corporis distinctio, odit ad nostrum odio non veniam! Exercitationem impedit doloribus atque inventore? Dolorem consequuntur eligendi culpa! Laudantium, eaque nostrum. Harum.",
-  },
-  {
-    name: "Junaid Zama",
-    location: "Dhaka, Bangladesh",
-    rating: 5,
-    img: "/assets/1632307192368.jpg",
-    comment:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo corporis distinctio, odit ad nostrum odio non veniam! Exercitationem impedit doloribus atque inventore? Dolorem consequuntur eligendi culpa! Laudantium, eaque nostrum. Harum.",
+      "Honestly,after DU exam,I was so confused how to prepare for JU IBA. Then when I got to know this platform and I didn't think about anything and got admitted myself.Now I am literally grateful that I took the right decision.The mentors are very friendly and dedicated.I got much more than I have expected from this platform. I am grateful to all mentors. JajakAllahu Khayran.",
   },
 ];
 
@@ -87,13 +79,7 @@ export default function Testimonials() {
                         </div>
                       </div>
                       <div className="col-span-12 text-justify p-2">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Beatae, quasi accusantium quae illum vel atque veritatis
-                        labore cumque animi voluptate ducimus! Cum rem at
-                        ratione error eligendi id enim dignissimos cupiditate
-                        neque iure quaerat blanditiis, quis rerum sapiente
-                        officiis non libero quibusdam. Accusantium, non.
-                        Asperiores adipisci quasi ex consectetur suscipit?
+                        {review.comment}
                       </div>
                     </div>
                   </CardContent>

@@ -127,7 +127,7 @@ export default async function DSAT({
                 {purchase ? (
                   <Link
                     className="bg-secondary py-2 w-full text-center text-white block rounded hover:bg-secondary/80 transition"
-                    href="/startCourse/279057e5-db68-49f2-9e38-44455799d79c"
+                    href={`/startCourse/${course?.id}`}
                   >
                     Continue Learning
                   </Link>

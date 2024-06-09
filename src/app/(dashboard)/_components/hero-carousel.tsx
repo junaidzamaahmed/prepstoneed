@@ -27,65 +27,13 @@ const HeroCarousel: React.FC = () => {
                   PrepstoneEd <span className="text-slate-600">BD</span>
                 </h1>
                 <p className="tracking-widest leading-6 text-sm text-justify xl:max-w-[70%]">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Eligendi voluptatem, autem reprehenderit iste eius quis,
-                  laudantium nesciunt dolores rem, ducimus error quod fugiat.
-                  Delectus ea distinctio autem similique, libero laudantium
-                  soluta eveniet id temporibus officiis maiores recusandae
-                  voluptas culpa dolorum veritatis fugit tempora earum
-                  asperiores ex fugiat quaerat! Optio, sapiente?
-                </p>
-              </div>
-              <div className="p-4">
-                <Image
-                  width={500}
-                  height={500}
-                  alt="online learning"
-                  src={"/assets/undraw_online_learning_re_qw08.svg"}
-                />
-              </div>
-            </div>
-          </div>
-          <div className={styles.embla__slide}>
-            <div className="grid lg:grid-cols-2 max-lg:grid-cols-1 my-4">
-              <div className="flex flex-col justify-center">
-                <h1 className="text-secondary font-extrabold text-5xl mb-2">
-                  PrepstoneEd <span className="text-slate-600">BD</span>
-                </h1>
-                <p className="tracking-widest leading-6 text-sm text-justify xl:max-w-[70%]">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Eligendi voluptatem, autem reprehenderit iste eius quis,
-                  laudantium nesciunt dolores rem, ducimus error quod fugiat.
-                  Delectus ea distinctio autem similique, libero laudantium
-                  soluta eveniet id temporibus officiis maiores recusandae
-                  voluptas culpa dolorum veritatis fugit tempora earum
-                  asperiores ex fugiat quaerat! Optio, sapiente?
-                </p>
-              </div>
-              <div className="p-4">
-                <Image
-                  width={500}
-                  height={500}
-                  alt="online learning"
-                  src={"/assets/undraw_online_learning_re_qw08.svg"}
-                />
-              </div>
-            </div>
-          </div>
-          <div className={styles.embla__slide}>
-            <div className="grid lg:grid-cols-2 max-lg:grid-cols-1 my-4">
-              <div className="flex flex-col justify-center">
-                <h1 className="text-secondary font-extrabold text-5xl mb-2">
-                  PrepstoneEd <span className="text-slate-600">BD</span>
-                </h1>
-                <p className="tracking-widest leading-6 text-sm text-justify xl:max-w-[70%]">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Eligendi voluptatem, autem reprehenderit iste eius quis,
-                  laudantium nesciunt dolores rem, ducimus error quod fugiat.
-                  Delectus ea distinctio autem similique, libero laudantium
-                  soluta eveniet id temporibus officiis maiores recusandae
-                  voluptas culpa dolorum veritatis fugit tempora earum
-                  asperiores ex fugiat quaerat! Optio, sapiente?
+                  Prepstone is an online edtech platform started with a
+                  motivation to assist students to its highest capacity with
+                  some enthusiastic, brilliant minds. Prepstone is committed to
+                  help you in a very effective way. We are here to help you
+                  utilising the potential you hold and change the perception
+                  that online can be better way of learning and taking
+                  preparation.
                 </p>
               </div>
               <div className="p-4">
