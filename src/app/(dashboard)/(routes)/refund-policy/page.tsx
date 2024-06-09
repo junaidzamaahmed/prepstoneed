@@ -9,8 +9,8 @@ export default function Page() {
       <div className="container py-10">
         <p>
           At Prepstone Education, we strive to provide high-quality educational
-          services and ensure our students' satisfaction. We understand that
-          circumstances may change, and we want to be transparent about our
+          services and ensure our students&apos; satisfaction. We understand
+          that circumstances may change, and we want to be transparent about our
           refund policy:
         </p>
         <h6 className="font-bold my-2">Eligibility for Refund</h6>

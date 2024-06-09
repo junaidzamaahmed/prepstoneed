@@ -11,11 +11,12 @@ export default function Page() {
           Our Commitment to Privacy
         </h4>
         <p>
-          Prepstone Education ("we," "us," or "our") is committed to protecting
-          the privacy of our users ("you" or "your"). This Privacy Policy
-          explains how we collect, use, and share your information when you use
-          our website, mobile applications, and other online services
-          (collectively, the "Services").
+          Prepstone Education (&quot;we,&quot; &quot;us,&quot; or
+          &quot;our&quot;) is committed to protecting the privacy of our users
+          (&quot;you&quot; or &quot;your&quot;). This Privacy Policy explains
+          how we collect, use, and share your information when you use our
+          website, mobile applications, and other online services (collectively,
+          the &quot;Services&quot;).
         </p>
         <h4 className="text-xl font-bold mb-2 mt-6">Information We Collect</h4>
         <p>
@@ -89,11 +90,11 @@ export default function Page() {
         <h4 className="text-xl font-bold mb-2 mt-6">Your Privacy Choices</h4>
         <p>
           You can choose to opt out of receiving promotional emails from us by
-          clicking the "unsubscribe" link at the bottom of any email. You can
-          also update your account information or delete your account by
+          clicking the &quot;unsubscribe&quot; link at the bottom of any email.
+          You can also update your account information or delete your account by
           contacting us.
         </p>
-        <h4 className="text-xl font-bold mb-2 mt-6">Children's Privacy</h4>
+        <h4 className="text-xl font-bold mb-2 mt-6">Children&apos;s Privacy</h4>
         <p>
           Our Services are not intended for children under the age of 13. We do
           not knowingly collect personal information from children under the age
