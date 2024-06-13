@@ -3,12 +3,15 @@
 import { useClerk } from "@clerk/nextjs";
 import { getFingerprint } from "@thumbmarkjs/thumbmarkjs";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+
 export default function Fingerprint() {
   const { signOut, user } = useClerk();
   const [fingerprint, setFingerprint] = useState<any>(null);
   const [check, setCheck] = useState<boolean>(false);
   const [existingFingerprints, setExistingFingerprints] = useState<any>(null);
   const [userData, setUserData] = useState<any>(null);
+  const cookieFP = Cookies.get("fingerprint_prepstone");
   useEffect(() => {
     async function fetchExistingFingerprints() {
       const userResponse = await fetch("/api/user");
@@ -56,11 +59,17 @@ export default function Fingerprint() {
           .catch((error) => {
             console.error("Error:", error);
           });
-
-        console.log("Fingerprint not found in database");
+        Cookies.set("fingerprint_prepstone", fingerprint, { expires: 1000 });
+      } else if (
+        existingFingerprints?.find((existing: any) => {
+          return existing.fingerprint === Cookies.get("fingerprint_prepstone");
+        })
+      ) {
       } else if (!existingFingerprint && existingFingerprints?.length > 0) {
         alert("You are not allowed to login from more than one browser.");
         signOut();
+      } else if (!Cookies.get("fingerprint_prepstone")) {
+        Cookies.set("fingerprint_prepstone", fingerprint, { expires: 1000 });
       }
     }
   }, [existingFingerprints]);
