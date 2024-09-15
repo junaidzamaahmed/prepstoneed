@@ -81,25 +81,25 @@ export async function POST(req: Request) {
           status: 400,
         });
       }
-      // const users = await clerkClient.users.getUserList();
-      // users.data.forEach(async (user) => {
-      //   await db.user.upsert({
-      //     where: {
-      //       externalId: user.id,
-      //     },
-      //     update: {
-      //       email: user.emailAddresses[0]?.emailAddress,
-      //       fullName: user.firstName + " " + user.lastName,
-      //       phone: user.phoneNumbers[0]?.phoneNumber,
-      //     },
-      //     create: {
-      //       externalId: user.id,
-      //       email: user.emailAddresses[0]?.emailAddress,
-      //       fullName: user.firstName + " " + user.lastName,
-      //       phone: user.phoneNumbers[0]?.phoneNumber,
-      //     },
-      //   });
-      // });
+      const users = await clerkClient.users.getUserList();
+      users.data.forEach(async (user) => {
+        await db.user.upsert({
+          where: {
+            externalId: user.id,
+          },
+          update: {
+            email: user.emailAddresses[0]?.emailAddress,
+            fullName: user.firstName + " " + user.lastName,
+            phone: user.phoneNumbers[0]?.phoneNumber,
+          },
+          create: {
+            externalId: user.id,
+            email: user.emailAddresses[0]?.emailAddress,
+            fullName: user.firstName + " " + user.lastName,
+            phone: user.phoneNumbers[0]?.phoneNumber,
+          },
+        });
+      });
     }
     if (eventType == "user.updated") {
       if (!id) {
