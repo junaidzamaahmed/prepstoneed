@@ -13,15 +13,15 @@ export async function POST(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const testOwner = await db.quiz.findUnique({
-      where: {
-        id: params.testId,
-        userId,
-      },
-    });
-    if (!testOwner) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    // const testOwner = await db.quiz.findUnique({
+    //   where: {
+    //     id: params.testId,
+    //     userId,
+    //   },
+    // });
+    // if (!testOwner) {
+    //   return new NextResponse("Unauthorized", { status: 401 });
+    // }
     const lastSection = await db.section.findFirst({
       where: {
         quizId: params.testId,

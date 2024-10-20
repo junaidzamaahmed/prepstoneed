@@ -13,15 +13,15 @@ export async function DELETE(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const testOwner = await db.quiz.findUnique({
-      where: {
-        id: testId,
-        userId: userId,
-      },
-    });
-    if (!testOwner) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    // const testOwner = await db.quiz.findUnique({
+    //   where: {
+    //     id: testId,
+    //     userId: userId,
+    //   },
+    // });
+    // if (!testOwner) {
+    //   return new NextResponse("Unauthorized", { status: 401 });
+    // }
     const section = await db.section.delete({
       where: {
         id: sectionId,
@@ -45,15 +45,15 @@ export async function PATCH(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const testOwner = await db.quiz.findUnique({
-      where: {
-        id: testId,
-        userId: userId,
-      },
-    });
-    if (!testOwner) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    // const testOwner = await db.quiz.findUnique({
+    //   where: {
+    //     id: testId,
+    //     userId: userId,
+    //   },
+    // });
+    // if (!testOwner) {
+    //   return new NextResponse("Unauthorized", { status: 401 });
+    // }
     const section = await db.section.update({
       where: {
         id: sectionId,

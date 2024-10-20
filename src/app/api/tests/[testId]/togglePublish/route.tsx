@@ -14,15 +14,15 @@ export async function PATCH(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const testOwner = await db.quiz.findUnique({
-      where: {
-        id: testId,
-        userId: userId,
-      },
-    });
-    if (!testOwner) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    // const testOwner = await db.quiz.findUnique({
+    //   where: {
+    //     id: testId,
+    //     userId: userId,
+    //   },
+    // });
+    // if (!testOwner) {
+    //   return new NextResponse("Unauthorized", { status: 401 });
+    // }
     const quiz = await db.quiz.update({
       where: {
         id: params.testId,

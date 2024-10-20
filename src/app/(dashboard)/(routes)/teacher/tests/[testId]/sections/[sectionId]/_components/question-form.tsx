@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,11 +25,14 @@ import { QuestionsList } from "./questions-list";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Editor } from "@/components/editor";
+import { FancyBox } from "@/components/fancy-box";
 
 interface QuestionFormProps {
   initialData: Section & { questions: Question[] };
   sectionId: string;
   testId: string;
+  questionCategories: any;
+  questionTags: any;
 }
 
 const formSchema = z.object({
@@ -45,15 +48,21 @@ const formSchema = z.object({
       position: z.number().gte(1).optional(),
     })
   ),
+  categoryId: z.string().optional(),
+  tags: z.array(z.string()).optional(),
 });
 
 export const QuestionForm = ({
   initialData,
   sectionId,
   testId,
+  questionCategories,
+  questionTags,
 }: QuestionFormProps) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState<any>([]);
+  const [selectedTags, setSelectedTags] = useState<any>([]);
 
   const toggleCreating = () => {
     setIsCreating((current) => !current);
@@ -79,6 +88,8 @@ export const QuestionForm = ({
         element.position = ansObj[index].position;
       });
       values.isPublished = true;
+      values.categoryId = selectedCategories[0]?.value;
+      values.tags = selectedTags.map((tag: any) => tag.value);
       const ques = await axios.post(
         `/api/tests/${testId}/sections/${sectionId}/questions`,
         values
@@ -89,6 +100,8 @@ export const QuestionForm = ({
       form.reset();
       setAnsObj(null);
       setAnswers("");
+      setSelectedCategories([]);
+      setSelectedTags([]);
       setRef(false);
     } catch {
       toast.error("Something went wrong");
@@ -143,6 +156,42 @@ export const QuestionForm = ({
       }
     });
     setAnsObj(ansObj);
+  };
+  const options = questionCategories.map((category: any) => ({
+    label: category.name,
+    value: category.id,
+  }));
+  const tagOptions = questionTags.map((category: any) => ({
+    label: category.name,
+    value: category.id,
+  }));
+
+  const onAddCategory = async (category: any) => {
+    try {
+      const res = await axios.post(`/api/question-categories`, {
+        name: category,
+      });
+      questionCategories.push(res.data);
+      options.push({ label: res.data.name, value: res.data.id });
+      toast.success("Category added");
+      return { label: res.data.name, value: res.data.id };
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
+
+  const onAddTags = async (tags: any) => {
+    try {
+      const res = await axios.post(`/api/question-tags`, {
+        name: tags,
+      });
+      questionTags.push(res.data);
+      tagOptions.push({ label: res.data.name, value: res.data.id });
+      toast.success("Tag added");
+      return { label: res.data.name, value: res.data.id };
+    } catch {
+      toast.error("Something went wrong");
+    }
   };
 
   return (
@@ -214,6 +263,49 @@ export const QuestionForm = ({
               )}
             />
 
+            {/* <QuestionCategoryForm /> */}
+            <p>Question Category</p>
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <FancyBox
+                      selectedValues={selectedCategories}
+                      setSelectedValues={setSelectedCategories}
+                      options={options}
+                      addFunction={onAddCategory}
+                      multiselect={false}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* <QuestionTagForm /> */}
+            <p>Question Tags</p>
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <FancyBox
+                      selectedValues={selectedTags}
+                      setSelectedValues={setSelectedTags}
+                      options={tagOptions}
+                      addFunction={onAddTags}
+                      multiselect={true}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="explanation"
@@ -275,10 +367,15 @@ export const QuestionForm = ({
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
-                              <Textarea
+                              {/* <Textarea
                                 className=""
                                 disabled={isSubmitting}
                                 placeholder="Answer here"
+                                {...field}
+                              /> */}
+                              <Editor
+                                placeholder="Answer here"
+                                disabled={isSubmitting}
                                 {...field}
                               />
                             </FormControl>

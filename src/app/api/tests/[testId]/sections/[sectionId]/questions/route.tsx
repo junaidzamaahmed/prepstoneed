@@ -13,15 +13,6 @@ export async function POST(
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const testOwner = await db.quiz.findUnique({
-      where: {
-        id: params.testId,
-        userId,
-      },
-    });
-    if (!testOwner) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
     const lastQuestion = await db.question.findFirst({
       where: {
         sectionId: params.sectionId,
@@ -31,7 +22,7 @@ export async function POST(
       },
     });
     const newPosition = lastQuestion ? lastQuestion.position + 1 : 1;
-    const section = await db.question.create({
+    const question = await db.question.create({
       data: {
         question: values.question,
         sectionId: params.sectionId,
@@ -47,10 +38,16 @@ export async function POST(
             position: a.position,
           })),
         },
+        categoryId: values.categoryId,
+        tagRelations: {
+          create: values.tags.map((t: any) => ({
+            tagId: t,
+          })),
+        },
       },
-      include: { answers: true },
+      include: { answers: true, category: true, tagRelations: true },
     });
-    return NextResponse.json(section);
+    return NextResponse.json(question);
   } catch (error) {
     console.log("[QUESTIONS]", error);
     return new NextResponse("Internal Error", { status: 500 });

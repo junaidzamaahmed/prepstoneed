@@ -12,29 +12,29 @@ generator client {
 
 // prisma/schema.prisma
 datasource db {
-  provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
   // uncomment next line if you use Prisma <5.10
   // directUrl = env("DATABASE_URL_UNPOOLED")
 }
+
 // generator dbml {
 //   provider = "prisma-dbml-generator"
 // }
 // User model
 model User {
-  id         String @id @default(uuid())
-  externalId String @unique
-  email      String @unique
-  role       Role   @default(STUDENT)
+  id         String  @id @default(uuid())
+  externalId String  @unique
+  email      String  @unique
+  role       Role    @default(STUDENT)
   fullName   String?
-  phone String?
-
+  phone      String?
 
   // Relationships
-  quizAttempts QuizAttempt[]
+  quizAttempts       QuizAttempt[]
   // createdQuiz  Quiz[]
-  purchases Purchase[]
-  accessRequests AccessRequest[]
+  purchases          Purchase[]
+  accessRequests     AccessRequest[]
   browserFingerprint BrowserFingerprint[]
 
   createdAt DateTime @default(now())
@@ -42,8 +42,8 @@ model User {
 }
 
 model Category {
-  id   String @id @default(uuid())
-  name String @unique
+  id               String  @id @default(uuid())
+  name             String  @unique
   isCourseCategory Boolean @default(false)
 
   quizzes Quiz[]
@@ -66,7 +66,7 @@ model Quiz {
   courseId String?
   // user     User      @relation(fields: [userId], references: [id])
 
-  course Course? @relation(fields: [courseId], references: [id], onDelete: Cascade,onUpdate: Cascade)
+  course   Course?       @relation(fields: [courseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   attempts QuizAttempt[]
   sections Section[]
 
@@ -97,14 +97,39 @@ model Question {
   imageUrl    String? @db.Text
   isPublished Boolean @default(false)
   qtype       Qtype   @default(MCQ)
+  categoryId  String?
 
   // Relationships
-  section   Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  answers   Answer[]
-  responses UserResponse[]
+  section      Section               @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  answers      Answer[]
+  responses    UserResponse[]
+  category     QuestionCategory?     @relation(fields: [categoryId], references: [id])
+  tagRelations QuestionTagRelation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model QuestionCategory {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  questions Question[]
+}
+
+model QuestionTagRelation {
+  questionId String
+  tagId      String
+
+  question Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  tag      QuestionTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([questionId, tagId])
+}
+
+model QuestionTag {
+  id                String                @id @default(uuid())
+  name              String                @unique
+  questionRelations QuestionTagRelation[]
 }
 
 // Answer model
@@ -175,41 +200,41 @@ enum Qtype {
   INPUT
 }
 
-model Course{
-  id String @id @default(uuid())
-  title String
+model Course {
+  id          String  @id @default(uuid())
+  title       String
   description String? @db.Text
 
   isPublished Boolean @default(false)
-  isFree Boolean @default(false)
-  price Int?
-  imageUrl String?
+  isFree      Boolean @default(false)
+  price       Int?
+  imageUrl    String?
 
   categoryId String?
-  category Category? @relation(fields: [categoryId], references: [id])
+  category   Category? @relation(fields: [categoryId], references: [id])
 
-  instructors InstructorInstructs[]
-  recordings Recordings[]
-  purchases Purchase[]
-  CoursePoints CoursePoints[]
+  instructors    InstructorInstructs[]
+  recordings     Recordings[]
+  purchases      Purchase[]
+  CoursePoints   CoursePoints[]
   CourseFeatures CourseFeatures[]
-  CourseRoutine CourseRoutine[]
-  FAQ FAQ[]
-  tests Quiz[]
+  CourseRoutine  CourseRoutine[]
+  FAQ            FAQ[]
+  tests          Quiz[]
   accessRequests AccessRequest[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Purchase{
-  id String @id @default(uuid())
-  userId String
+model Purchase {
+  id       String  @id @default(uuid())
+  userId   String
   courseId String
-  trxId String?
-  phone String?
+  trxId    String?
+  phone    String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
@@ -218,37 +243,38 @@ model Purchase{
   @@unique([userId, courseId])
 }
 
-model Recordings{
-  id String @id @default(uuid())
-  title String
-  description String? @db.Text
-  isFree Boolean @default(false)
-  muxData MuxData?
-  isPublished Boolean @default(false)
-  position Int
-  videoUrl String? @db.Text
-  videoSource Int? @default(0)
+model Recordings {
+  id          String   @id @default(uuid())
+  title       String
+  description String?  @db.Text
+  isFree      Boolean  @default(false)
+  muxData     MuxData?
+  isPublished Boolean  @default(false)
+  position    Int
+  videoUrl    String?  @db.Text
+  videoSource Int?     @default(0)
 
   courseId String
-  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 model MuxData {
-  id String @id @default(uuid())
-  assetId String
+  id         String  @id @default(uuid())
+  assetId    String
   playbackId String?
 
-  recordingId String @unique
-  recording Recordings @relation(fields: [recordingId], references: [id], onDelete: Cascade)
+  recordingId String     @unique
+  recording   Recordings @relation(fields: [recordingId], references: [id], onDelete: Cascade)
 }
 
-model Instructor{
-  id String @id @default(uuid())
-  name String
-  email String @unique
-  bio String? @db.Text
+model Instructor {
+  id       String  @id @default(uuid())
+  name     String
+  email    String  @unique
+  bio      String? @db.Text
   imageUrl String?
 
   courses InstructorInstructs[]
@@ -256,60 +282,64 @@ model Instructor{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-model InstructorInstructs{
-  id String @id @default(uuid())
+
+model InstructorInstructs {
+  id           String @id @default(uuid())
   instructorId String
-  courseId String
+  courseId     String
 
   instructor Instructor @relation(fields: [instructorId], references: [id], onDelete: Cascade)
-  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course     Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@unique([instructorId, courseId])
 }
 
-model CoursePoints{
-  id String @id @default(uuid())
-  courseId String
+model CoursePoints {
+  id          String @id @default(uuid())
+  courseId    String
   description String
 
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
-model CourseFeatures{
-  id String @id @default(uuid())
+
+model CourseFeatures {
+  id       String @id @default(uuid())
   courseId String
-  feature String
+  feature  String
 
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
-model CourseRoutine{
-  id String @id @default(uuid())
+
+model CourseRoutine {
+  id       String @id @default(uuid())
   courseId String
-  day String
-  time String
-  title String
+  day      String
+  time     String
+  title    String
 
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
-model FAQ{
-  id String @id @default(uuid())
+
+model FAQ {
+  id       String @id @default(uuid())
   question String
-  answer String
+  answer   String
 
   courseId String
-  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model AccessRequest{
-  id String @id @default(uuid())
-  userId String
+model AccessRequest {
+  id       String  @id @default(uuid())
+  userId   String
   courseId String
-  trxId String?
-  phone String?
+  trxId    String?
+  phone    String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
@@ -318,13 +348,14 @@ model AccessRequest{
   @@unique([userId, courseId])
 }
 
-model BrowserFingerprint{
-  fingerprint String 
-  userId String 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model BrowserFingerprint {
+  fingerprint String
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@id([fingerprint, userId])
   @@unique([fingerprint, userId])
 }

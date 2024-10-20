@@ -1,3 +1,4 @@
+import React from "react";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
@@ -36,6 +37,8 @@ const SectionIdPage = async ({
       },
     },
   });
+  const questionCategories = await db.questionCategory.findMany({});
+  const questionTags = await db.questionTag.findMany({});
   if (!section) {
     return redirect("/");
   }
@@ -99,6 +102,8 @@ const SectionIdPage = async ({
           initialData={section}
           testId={params.testId}
           sectionId={section.id}
+          questionCategories={questionCategories}
+          questionTags={questionTags}
         />
       </div>
     </>

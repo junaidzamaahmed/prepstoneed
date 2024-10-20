@@ -1,4 +1,5 @@
 "use client";
+import { Preview } from "@/components/preview";
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { RadioGroupItem } from "@/components/ui/radio-group";
 import { StrikethroughIcon } from "lucide-react";
@@ -26,7 +27,7 @@ export default function Answer({ answer }: { answer: any }) {
             striked ? "line-through decoration-2 decoration-double" : null
           }`}
         >
-          {answer?.text}
+          <Preview value={answer?.text} />
         </FormLabel>
       </FormItem>
     </>

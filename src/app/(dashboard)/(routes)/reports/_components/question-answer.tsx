@@ -69,7 +69,7 @@ export default function QuestionAnswer({
                               }`}
                             >
                               <FormLabel className="font-normal select-none">
-                                {answer?.text}
+                                <Preview value={answer?.text} />
                               </FormLabel>
                             </FormItem>
                           ))}

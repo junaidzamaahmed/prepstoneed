@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Grip, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Preview } from "@/components/preview";
 
 interface AnswersListProps {
   items: Answer[];
@@ -101,7 +102,7 @@ export const AnswersList = ({
                         <Grip className="h-5 w-5" />
                       </div>
                       <RadioGroupItem value={answer.id} id={answer.id} />
-                      {answer.text}
+                      <Preview value={answer.text} />
                       <div className="ml-auto pr-2 flex items-center gap-x-2">
                         {answer.isCorrect && (
                           <Badge

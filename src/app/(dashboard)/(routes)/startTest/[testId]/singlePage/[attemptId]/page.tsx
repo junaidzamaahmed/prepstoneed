@@ -53,7 +53,7 @@ export default async function TEST({
             <CountdownTimer
               attemptId={attempt.id}
               targetDate={attempt?.endTime}
-            />{" "}
+            />
           </span>
           <button className="text-primary">
             <MoreVertical />
