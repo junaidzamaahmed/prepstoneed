@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { AnswersList } from "./answers-list";
+import { Editor } from "@/components/editor";
 
 interface AnswerFormProps {
   initialData: Question & { answers: Answer[] };
@@ -145,7 +146,7 @@ export const AnswerForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
+                    <Editor
                       disabled={isSubmitting}
                       placeholder="e.g. 'Answer 1'"
                       {...field}

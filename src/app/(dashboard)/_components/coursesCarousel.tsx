@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { EmblaOptionsType } from "embla-carousel";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
@@ -19,7 +20,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import styles from "./courseCarouselStyles.module.css";
 
 type PropType = {
   courses: Course[];
@@ -28,7 +28,7 @@ type PropType = {
 
 const CoursesCarousel: React.FC<PropType> = (props) => {
   const { courses, options } = props;
-  const [emblaRef, emblaApi] = useEmblaCarousel(options);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ ...options, align: "start" });
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
@@ -41,35 +41,35 @@ const CoursesCarousel: React.FC<PropType> = (props) => {
   } = usePrevNextButtons(emblaApi);
 
   return (
-    <section className={styles.embla}>
-      <div className={styles.embla__viewport} ref={emblaRef}>
-        <div className={styles.embla__container}>
+    <div className="relative">
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex">
           {courses?.map((course) => (
-            <div className={styles.embla__slide} key={course.id}>
-              <Card className="mx-2 p-0">
+            <div
+              className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_25%] pl-4"
+              key={course.id}
+            >
+              <Card className="h-full flex flex-col">
                 <CardHeader className="p-0">
                   <Image
                     alt="course image"
-                    height={400}
+                    height={200}
                     width={400}
-                    className="w-full h-full object-cover rounded-t-lg"
-                    src={course.imageUrl || ""}
+                    className="w-full h-48 object-cover rounded-t-lg"
+                    src={course.imageUrl || "/placeholder.svg"}
                   />
-                  <CardTitle className="text-md px-3 py-2">
+                </CardHeader>
+                <CardContent className="flex-grow p-4">
+                  <CardTitle className="text-lg mb-2 line-clamp-2">
                     {course.title}
                   </CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <p className="text-primary font-semibold text-xl px-3 py-2">
-                    &#2547;
-                    {course.price}
+                  <p className="text-primary font-semibold text-xl">
+                    &#2547;{course.price}
                   </p>
                 </CardContent>
-                <CardFooter className="flex justify-between px-2 py-2">
+                <CardFooter className="p-4 pt-0">
                   <Link className="w-full" href={`/courses/${course.id}`}>
-                    <Button className="bg-primary/10 border border-primary/30 text-primary hover:bg-primary/5 w-full">
-                      Start
-                    </Button>
+                    <Button className="w-full">Start Course</Button>
                   </Link>
                 </CardFooter>
               </Card>
@@ -78,25 +78,23 @@ const CoursesCarousel: React.FC<PropType> = (props) => {
         </div>
       </div>
 
-      <div className={styles.embla__controls}>
-        <div className={styles.embla__buttons}>
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-        </div>
-
-        <div className={styles.embla__dots}>
-          {scrollSnaps.map((_, index) => (
-            <DotButton
-              key={index}
-              onClick={() => onDotButtonClick(index)}
-              className={`${styles.embla__dot} ${
-                index === selectedIndex ? styles.embla__dot__selected : ""
-              }`}
-            />
-          ))}
-        </div>
+      <div className="flex justify-center mt-4 space-x-2">
+        <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+        <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
       </div>
-    </section>
+
+      <div className="flex justify-center mt-4 space-x-2">
+        {scrollSnaps.map((_, index) => (
+          <DotButton
+            key={index}
+            onClick={() => onDotButtonClick(index)}
+            className={`w-2 h-2 rounded-full transition-colors ${
+              index === selectedIndex ? "bg-primary" : "bg-muted"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 

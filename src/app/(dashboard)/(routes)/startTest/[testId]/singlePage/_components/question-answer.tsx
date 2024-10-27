@@ -1,27 +1,17 @@
 "use client";
-
 import { Preview } from "@/components/preview";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { RadioGroup } from "@/components/ui/radio-group";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import Answer from "./answer";
+import AnswerContent from "./AnswerContent";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import QuestionContent from "./QuestionContent";
 
 export default function QuestionAnswer({
   question,
@@ -34,174 +24,88 @@ export default function QuestionAnswer({
   toggleDisable: (val: boolean) => void;
   disable: boolean;
 }) {
-  const form = useForm({});
-  const [selected, setSelected] = useState(
-    question?.responses[0]?.selectedAnswerID
-  );
-
   const correctAnswer = question?.answers.find(
     (answer: any) => answer.isCorrect
   );
+
+  const [selectedAnswer, setSelectedAnswer] = useState(
+    question?.responses[0]?.selectedAnswerID || ""
+  );
+
+  const form = useForm({
+    defaultValues: {
+      input: question?.responses[0]?.inputText || "",
+    },
+  });
+  const handleAnswerChange = async (value: string) => {
+    try {
+      const response = await axios.put(
+        `/api/userResponse/${attemptId}/${question.id}/`,
+        [value, correctAnswer.id === value]
+      );
+      question.responses[0] = response.data;
+      setSelectedAnswer(value);
+    } catch (error) {
+      console.error("Error changing answer:", error);
+    }
+  };
+
   const onSubmit = async (values: any) => {
     if (values.input === "") return;
-    toggleDisable(true);
-    const response = await axios.put(
-      `/api/userResponse/${attemptId}/${question.id}/`,
-      [values, correctAnswer.text == values.input]
-    );
-    question.responses[0] = response.data;
-    toggleDisable(false);
+    try {
+      const response = await axios.put(
+        `/api/userResponse/${attemptId}/${question.id}/`,
+        [values, correctAnswer.text === values.input]
+      );
+      question.responses[0] = response.data;
+    } catch (error) {
+      console.error("Error submitting answer:", error);
+    }
   };
-  const handleAnswerChange = async (value: string) => {
-    toggleDisable(true);
-    const response = await axios.put(
-      `/api/userResponse/${attemptId}/${question.id}/`,
-      [value, correctAnswer.id == value]
-    );
-    question.responses[0] = response.data;
-    toggleDisable(false);
-  };
-  useEffect(() => {
-    form.setValue("type", selected);
-  }, [selected, form, question]);
-  // Get screen size with error handling
-  let width = 0;
-  if (typeof window !== "undefined") {
-    width = window.innerWidth;
-  }
+
   return (
-    <>
-      <ResizablePanelGroup
-        direction="horizontal"
-        className="grid grid-cols-1 md:grid-cols-2 gap-2 md:max-h-[65vh] border-b border-black/20"
-      >
-        <ResizablePanel
-          minSize={width <= 768 ? 100 : 0}
-          defaultSize={width <= 768 ? 100 : 50}
-          className="p-4 max-h-[60vh]"
-        >
-          <ScrollArea className="h-[60vh]">
-            <Preview value={question?.question} />
-          </ScrollArea>
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={width <= 768 ? 100 : 50}>
-          <ScrollArea className="h-[60vh]">
-            <div className="p-4 hidden md:block">
-              <div className="bg-primary text-white text-xl p-2 rounded-md px-4">
-                Question {question?.position}
-              </div>
-              <div>
-                {question.qtype === "MCQ" ? (
-                  <Form {...form}>
-                    <form className="w-full space-y-6">
-                      <FormField
-                        control={form.control}
-                        name="type"
-                        render={({ field }) => (
-                          <FormItem className="space-y-3">
-                            <FormLabel className="ml-1">
-                              Please select your answer:
-                            </FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                disabled={disable}
-                                onValueChange={handleAnswerChange}
-                                defaultValue={
-                                  question?.responses[0]?.selectedAnswerID
-                                }
-                                className="space-y-1"
-                              >
-                                {question?.answers.map((answer: any) => (
-                                  <Answer
-                                    key={answer.position}
-                                    answer={answer}
-                                  />
-                                ))}
-                              </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </form>
-                  </Form>
-                ) : (
-                  <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit)}
-                      className="w-full space-y-6"
-                    >
-                      <FormField
-                        control={form.control}
-                        name="input"
-                        render={({ field }) => (
-                          <FormItem className="space-y-3">
-                            <FormLabel className="ml-1">Your Answer:</FormLabel>
-                            <FormControl>
-                              <Input
-                                defaultValue={question?.responses[0]?.inputText}
-                                disabled={disable}
-                                type="text"
-                                placeholder="Write your answer here..."
-                                {...field}
-                              />
-                            </FormControl>
-                            <Button type="submit" disabled={disable}>
-                              Save Answer
-                            </Button>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </form>
-                  </Form>
-                )}
-              </div>
-            </div>
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
-        </ResizablePanel>
-      </ResizablePanelGroup>
-      {/* MOBILE */}
-      <div className="p-4 md:hidden">
-        <div className="bg-primary text-white text-xl p-2 rounded-md px-4">
+    <Card className="w-full mx-auto shadow-lg">
+      <CardHeader className="bg-primary text-primary-foreground m-4 py-3 rounded-full">
+        <CardTitle className="text-xl font-bold">
           Question {question?.position}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-6">
+        <div className="md:hidden space-y-2">
+          <div className="h-full">
+            <QuestionContent question={question} />
+          </div>
+          <AnswerContent
+            question={question}
+            disable={disable}
+            handleAnswerChange={handleAnswerChange}
+            onSubmit={onSubmit}
+            selectedAnswer={selectedAnswer}
+            form={form}
+          />
         </div>
-        <div>
-          <Form {...form}>
-            <form
-              //   onSubmit={handleSubmit()}
-              className="w-full space-y-6"
-            >
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel className="ml-1">
-                      Please select your answer:
-                    </FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        disabled={disable}
-                        onValueChange={handleAnswerChange}
-                        defaultValue={question?.responses[0]?.selectedAnswerID}
-                        className="space-y-1"
-                      >
-                        {question?.answers.map((answer: any) => (
-                          <Answer key={answer.position} answer={answer} />
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+        <div className="hidden md:block">
+          <ResizablePanelGroup
+            direction="horizontal"
+            className="rounded-lg border"
+          >
+            <ResizablePanel defaultSize={50} minSize={30}>
+              <QuestionContent question={question} />
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel defaultSize={50} minSize={30}>
+              <AnswerContent
+                question={question}
+                disable={disable}
+                handleAnswerChange={handleAnswerChange}
+                onSubmit={onSubmit}
+                selectedAnswer={selectedAnswer}
+                form={form}
               />
-            </form>
-          </Form>
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </div>
-      </div>
-    </>
+      </CardContent>
+    </Card>
   );
 }

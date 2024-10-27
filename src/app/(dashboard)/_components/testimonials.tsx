@@ -1,6 +1,6 @@
 "use client";
-import Autoplay from "embla-carousel-autoplay";
 
+import Autoplay from "embla-carousel-autoplay";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -19,7 +19,7 @@ const testimonials = [
     rating: 5,
     img: "/assets/profile.jpg",
     comment:
-      "I recently had the privilege of being a part of PrepStone's classes for a few months, and I must say it was an incredible experience. From the moment I enrolled, they took excellent care of me, ensuring that my learning journey was not only productive but also enjoyable. PrepStone stands out for its commitment to providing timely solutions and valuable information to help students excel. \nThank you, PrepStone, for your dedication to students.",
+      "I recently had the privilege of being a part of PrepStone's classes for a few months, and I must say it was an incredible experience. From the moment I enrolled, they took excellent  care of me, ensuring that my learning journey was not only productive but also enjoyable. PrepStone stands out for its commitment to providing timely solutions and valuable information to help students excel. \nThank you, PrepStone, for your dedication to students.",
   },
   {
     name: "Najifa Yousuf Oishy",
@@ -33,64 +33,64 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <div className="container my-36">
-      <div className="px-5 pt-5 pb-52 bg-gradient-to-b from-primary to-primary/60 rounded-xl">
-        <h3 className="text-white font-bold text-3xl">
+    <section className="py-16 bg-gradient-to-b from-primary/10 to-background">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">
           What Our Students Say About Us
-        </h3>
-      </div>
-      <Carousel
-        plugins={[
-          Autoplay({
-            delay: 5000,
-          }),
-        ]}
-        className="mx-auto lg:w-[40vw] -mt-40"
-      >
-        <CarouselContent>
-          {testimonials.map((review, index) => (
-            <CarouselItem key={index}>
-              <div className="p-1 m-2">
-                <Card className=" shadow-lg">
-                  <CardContent className="flex items-center justify-center">
-                    <div className="grid grid-cols-12">
-                      <div className="col-span-2 p-3 row-span-2">
-                        <Image
-                          src={review.img}
-                          alt="profile picture"
-                          width={100}
-                          height={100}
-                          className="xl:p-2 h-full aspect-square rounded-full"
-                        />
-                      </div>
-                      <div className="col-span-10 row-span-2 flex flex-col justify-center">
-                        <p className="font-medium">{review.name}</p>
-                        <p className="text-sm">{review.location}</p>
-                        <div className="flex">
+        </h2>
+        <Carousel
+          plugins={[
+            Autoplay({
+              delay: 5000,
+            }),
+          ]}
+          className="max-w-4xl mx-auto"
+        >
+          <CarouselContent>
+            {testimonials.map((review, index) => (
+              <CarouselItem key={index}>
+                <Card className="shadow-lg">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+                      <Image
+                        src={review.img}
+                        alt={`${review.name}'s profile picture`}
+                        width={100}
+                        height={100}
+                        className="rounded-full"
+                      />
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg">{review.name}</h3>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {review.location}
+                        </p>
+                        <div className="flex mb-4">
                           {Array.from({ length: review.rating }).map(
                             (_, index) => (
                               <BsStarFill
-                                className="text-yellow-500 me-[2px]"
                                 key={index}
-                                size={12}
+                                className="text-yellow-500 mr-1"
+                                size={16}
                               />
                             )
                           )}
                         </div>
-                      </div>
-                      <div className="col-span-12 text-justify p-2">
-                        {review.comment}
+                        <p className="text-muted-foreground">
+                          {review.comment}
+                        </p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="ml-10" />
-        <CarouselNext className="mr-10" />
-      </Carousel>
-    </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="hidden md:flex justify-center mt-8 gap-4">
+            <CarouselPrevious />
+            <CarouselNext />
+          </div>
+        </Carousel>
+      </div>
+    </section>
   );
 }

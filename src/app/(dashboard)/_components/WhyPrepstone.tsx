@@ -4,61 +4,68 @@ import { PiHandshake, PiMoney, PiPaperPlane } from "react-icons/pi";
 import { VscVmConnect } from "react-icons/vsc";
 
 export default function WhyPrepstone() {
+  const features = [
+    {
+      icon: <PiPaperPlane size={48} />,
+      title: "Easy",
+      description: "Easy to access our interactive classes",
+    },
+    {
+      icon: <PiHandshake size={48} />,
+      title: "1v1",
+      description: "1v1 sessions need based",
+    },
+    {
+      icon: <Users2 size={48} />,
+      title: "Groups",
+      description: "Dedicated Problem solving Telegram Groups",
+    },
+    {
+      icon: <VideoIcon size={48} />,
+      title: "Videos",
+      description: "High quality recorded videos",
+    },
+    {
+      icon: <PiMoney size={48} />,
+      title: "Affordable",
+      description: "Affordable Course fees",
+    },
+    {
+      icon: <VscVmConnect size={48} />,
+      title: "Interactive",
+      description: "Small class size for making classes more interactive",
+    },
+  ];
+
   return (
-    <div className="my-36 container">
-      <h3 className="text-center text-3xl font-semibold text-primary">
-        Why should you choose Prepstone ?
-      </h3>
-      <p className="text-center mx-auto my-5">
-        Prepstone is committed to help students to ace their Academic and
-        Admission Tests. These things will make you have a better experience-
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-        <div className=" bg-blue-900 text-white rounded-xl p-8 text-center">
-          <div className="flex justify-center w-full">
-            <PiPaperPlane size={48} />
-          </div>
-          <p className="my-1 text-2xl font-semibold">Easy</p>
-          <p className="text-sm">Easy to access our interactive classes</p>
-        </div>
-        <div className=" bg-blue-900 text-white rounded-xl p-8 text-center">
-          <div className="flex justify-center w-full">
-            <PiHandshake size={48} />
-          </div>
-          <p className="my-1 text-2xl font-semibold">1v1</p>
-          <p className="text-sm">1v1 sessions need based</p>
-        </div>
-        <div className=" bg-blue-900 text-white rounded-xl p-8 text-center">
-          <div className="flex justify-center w-full">
-            <Users2 size={48} />
-          </div>
-          <p className="my-1 text-2xl font-semibold">Groups</p>
-          <p className="text-sm">Dedicated Problem solving Telegram Groups</p>
-        </div>
-        <div className=" bg-blue-900 text-white rounded-xl p-8 text-center">
-          <div className="flex justify-center w-full">
-            <VideoIcon size={48} />
-          </div>
-          <p className="my-1 text-2xl font-semibold">Videos</p>
-          <p className="text-sm">High quality recorded videos</p>
-        </div>
-        <div className=" bg-blue-900 text-white rounded-xl p-8 text-center">
-          <div className="flex justify-center w-full">
-            <PiMoney size={48} />
-          </div>
-          <p className="my-1 text-2xl font-semibold">Affordable</p>
-          <p className="text-sm">Affordable Course fees</p>
-        </div>
-        <div className=" bg-blue-900 text-white rounded-xl p-8 text-center">
-          <div className="flex justify-center w-full">
-            <VscVmConnect size={48} />
-          </div>
-          <p className="my-1 text-2xl font-semibold">Interactive</p>
-          <p className="text-sm">
-            Small class size for making classes more interactive
-          </p>
+    <section className="py-16 bg-gradient-to-b from-primary/5 to-primary/10">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">
+          Why Choose Prepstone?
+        </h2>
+        <p className="text-center text-lg text-muted-foreground max-w-2xl mx-auto mb-12">
+          Prepstone is committed to helping students ace their Academic and
+          Admission Tests. Here's what makes us stand out:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl p-6 shadow-lg transition-transform hover:scale-105"
+            >
+              <div className="flex justify-center mb-4 text-primary">
+                {feature.icon}
+              </div>
+              <h3 className="text-xl font-semibold text-center mb-2">
+                {feature.title}
+              </h3>
+              <p className="text-center text-muted-foreground">
+                {feature.description}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -56,7 +56,7 @@ export default async function DSAT({
                   key={feature.id}
                 >
                   <CheckCircle2Icon size={32} className="mx-auto mb-2" />
-                  <p>{feature.feature}</p>
+                  <p className="text-sm">{feature.feature}</p>
                 </div>
               ))}
             </div>

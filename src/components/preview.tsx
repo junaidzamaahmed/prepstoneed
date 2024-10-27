@@ -22,6 +22,11 @@ export const Preview = ({ value }: PreviewProps) => {
   );
 
   return (
-    <ReactQuill theme="bubble" value={value} readOnly className="select-none" />
+    <ReactQuill
+      theme="bubble"
+      value={value}
+      readOnly
+      className="select-none cursor-default"
+    />
   );
 };

@@ -1,11 +1,12 @@
 "use client";
+
 import React from "react";
 import { EmblaOptionsType } from "embla-carousel";
 import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import styles from "./herostyles.module.css";
+import { Button } from "@/components/ui/button";
 
 const HeroCarousel: React.FC = () => {
   const options: EmblaOptionsType = {};
@@ -17,51 +18,52 @@ const HeroCarousel: React.FC = () => {
     useDotButton(emblaApi);
 
   return (
-    <section className={`${styles.embla} container`}>
-      <div className={styles.embla__viewport} ref={emblaRef}>
-        <div className={styles.embla__container}>
-          <div className={styles.embla__slide}>
-            <div className="grid lg:grid-cols-2 max-lg:grid-cols-1 my-4">
-              <div className="flex flex-col justify-center">
-                <h1 className="text-secondary font-extrabold text-5xl mb-2">
-                  PrepstoneEd <span className="text-slate-600">BD</span>
-                </h1>
-                <p className="tracking-widest leading-6 text-sm text-justify xl:max-w-[70%]">
-                  Prepstone is an online edtech platform started with a
-                  motivation to assist students to its highest capacity with
-                  some enthusiastic, brilliant minds. Prepstone is committed to
-                  help you in a very effective way. We are here to help you
-                  utilising the potential you hold and change the perception
-                  that online can be better way of learning and taking
-                  preparation.
-                </p>
-              </div>
-              <div className="p-4">
-                <Image
-                  width={500}
-                  height={500}
-                  alt="online learning"
-                  src={"/assets/undraw_online_learning_re_qw08.svg"}
-                />
+    <section className="relative overflow-hidden">
+      <div className="embla__viewport" ref={emblaRef}>
+        <div className="embla__container">
+          <div className="embla__slide">
+            <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32">
+              <div className="grid lg:grid-cols-2 gap-8 items-center">
+                <div className="space-y-6">
+                  <h1 className="text-4xl md:text-4xl lg:text-6xl font-extrabold text-primary">
+                    PrepstoneEd <span className="text-secondary">BD</span>
+                  </h1>
+                  <p className="text-lg text-muted-foreground">
+                    Prepstone is an online edtech platform started with a
+                    motivation to assist students to its highest capacity with
+                    some enthusiastic, brilliant minds. Prepstone is committed
+                    to help you in a very effective way. We are here to help you
+                    utilising the potential you hold and change the perception
+                    that online can be better way of learning and taking
+                    preparation.
+                  </p>
+                  <Button size="lg" className="text-lg">
+                    Get Started
+                  </Button>
+                </div>
+                <div className="hidden lg:block">
+                  <Image
+                    width={600}
+                    height={600}
+                    alt="online learning"
+                    src="/assets/undraw_online_learning_re_qw08.svg"
+                    className="w-full h-auto"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className={styles.embla__controls}>
-        {/* <div className="embla__buttons">
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-        </div> */}
-
-        <div className={styles.embla__dots}>
+      <div className="absolute bottom-4 left-0 right-0">
+        <div className="embla__dots flex justify-center space-x-2">
           {scrollSnaps.map((_, index) => (
             <DotButton
               key={index}
               onClick={() => onDotButtonClick(index)}
-              className={`${styles.embla__dot} ${
-                index === selectedIndex ? styles.embla__dot__selected : ""
+              className={`w-3 h-3 rounded-full transition-colors ${
+                index === selectedIndex ? "bg-primary" : "bg-muted"
               }`}
             />
           ))}

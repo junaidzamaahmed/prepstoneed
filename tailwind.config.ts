@@ -11,6 +11,11 @@ const config = withUt({
   ],
   prefix: "",
   theme: {
+    fontFamily: {
+      sans: ["Poppins", "sans-serif"],
+      poppins: ["Poppins", "sans-serif"],
+      "sans-serif": ["Poppins", "sans-serif"],
+    },
     container: {
       center: true,
       padding: "2rem",

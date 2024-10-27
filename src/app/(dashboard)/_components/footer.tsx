@@ -8,95 +8,155 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { Separator } from "@/components/ui/separator";
 
 export default async function Footer() {
   const cat = await db.category.findMany({
     include: { _count: { select: { courses: true } } },
   });
+
   return (
-    <footer className="py-10 bg-primary/90 text-white">
-      <div className="container grid grid-cols-2 md:grid-cols-4">
-        <div className="col-span-2 md:col-span-1 max-sm:pb-3">
-          <div className="flex justify-center">
-            <Image src={"/logo.png"} alt="logo" width={100} height={100} />
+    <footer className="bg-primary text-primary-foreground">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="space-y-4">
+            <div className="flex justify-center md:justify-start">
+              <Image
+                src="/logo.png"
+                alt="PrepstoneEd logo"
+                width={100}
+                height={100}
+              />
+            </div>
+            <p className="text-xl font-semibold text-center md:text-left">
+              PrepstoneEd
+            </p>
+            <div className="flex justify-center md:justify-start space-x-4">
+              <Link
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
+                <FacebookIcon className="w-6 h-6 hover:text-primary-foreground/80 transition-colors" />
+              </Link>
+              <Link
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <InstagramIcon className="w-6 h-6 hover:text-primary-foreground/80 transition-colors" />
+              </Link>
+              <Link
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+              >
+                <LinkedinIcon className="w-6 h-6 hover:text-primary-foreground/80 transition-colors" />
+              </Link>
+              <Link href="mailto:support@prepstoneedbd.com" aria-label="Email">
+                <MailIcon className="w-6 h-6 hover:text-primary-foreground/80 transition-colors" />
+              </Link>
+            </div>
           </div>
-          <p className="text-center font-semibold text-xl my-3">PrepstoneEd</p>
-          <div className="flex justify-center space-x-3 mt-2">
-            <Link href={"https://facebook.com"} target="_blank">
-              <FacebookIcon />
-            </Link>
-            <Link href={"https://instagram.com"} target="_blank">
-              <InstagramIcon />
-            </Link>
-            <Link href={"https://linkedin.com"} target="_blank">
-              <LinkedinIcon />
-            </Link>
-            <Link href={"mailto:support@prepstoneedbd.com"} target="_blank">
-              <MailIcon />
-            </Link>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Courses</h3>
+            <ul className="space-y-2">
+              {cat.map((category) =>
+                category._count.courses > 0 ? (
+                  <li key={category.id}>
+                    <Link
+                      href={`/courses`}
+                      className="hover:text-primary-foreground/80 transition-colors"
+                    >
+                      {category.name}
+                    </Link>
+                  </li>
+                ) : null
+              )}
+            </ul>
           </div>
-        </div>
-        <div className="col-span-1">
-          <p className="text-lg font-medium">Courses</p>
-          <ul className="list-none">
-            {cat.map((category) =>
-              category._count.courses > 0 ? (
-                <li
-                  key={category.id}
-                  className="me-4 py-2 font-medium hover:bg-black/10 ps-2 rounded-sm"
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Company</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/about-us"
+                  className="hover:text-primary-foreground/80 transition-colors"
                 >
-                  <Link href={`/courses/`}>{category.name}</Link>
-                </li>
-              ) : null
-            )}
-          </ul>
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact-us"
+                  className="hover:text-primary-foreground/80 transition-colors"
+                >
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/success-story"
+                  className="hover:text-primary-foreground/80 transition-colors"
+                >
+                  Success Story
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Pay with</h3>
+            <div className="flex space-x-4">
+              <Image
+                src="/assets/bkash.png"
+                alt="bKash logo"
+                width={60}
+                height={40}
+                className="rounded-sm"
+              />
+              <Image
+                src="/assets/nagad.jpg"
+                alt="Nagad logo"
+                width={60}
+                height={40}
+                className="rounded-sm"
+              />
+            </div>
+          </div>
         </div>
-        <div className="col-span-1">
-          <p className="text-lg font-medium">Company</p>
-          <ul className="list-none">
-            <li className="me-4 py-2 font-medium hover:bg-black/10 ps-2 rounded-sm">
-              <Link href={`/about-us/`}>About Us</Link>
-            </li>
-            <li className="me-4 py-2 font-medium hover:bg-black/10 ps-2 rounded-sm">
-              <Link href={`/contact-us/`}>Contact Us</Link>
-            </li>
-            <li className="me-4 py-2 font-medium hover:bg-black/10 ps-2 rounded-sm">
-              <Link href={`/success-story/`}>Success Story</Link>
-            </li>
-          </ul>
-        </div>
-        <div className="col-span-1 max-sm:pt-2">
-          <p className="text-lg font-medium">Pay with</p>
-          <ul className="list-none flex mt-3">
-            <Image
-              src={"/assets/bkash.png"}
-              alt="bkash logo"
-              className="w-10 h-8 rounded-sm me-2"
-              width={500}
-              height={500}
-            />
-            <Image
-              src={"/assets/nagad.jpg"}
-              alt="nagad logo"
-              className="w-10 h-8 rounded-sm me-2"
-              width={500}
-              height={500}
-            />
-          </ul>
-        </div>
-      </div>
-      <div className="py-2 md:flex justify-between container mt-3 max-sm:text-center max-sm:space-y-2">
-        <p className="text-sm font-medium">&copy; 2024 Prepstone</p>
-        <div className="space-x-3">
-          <Link className="font-medium text-sm" href={"/terms-and-conditions"}>
-            Terms and Conditions
-          </Link>
-          <Link className="font-medium text-sm" href={"/privacy-policy"}>
-            Privacy Policy
-          </Link>
-          <Link className="font-medium text-sm" href={"/refund-policy"}>
-            Refund Policy
-          </Link>
+
+        <Separator className="my-8 bg-primary-foreground/20" />
+
+        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <p className="text-sm">
+            &copy; {new Date().getFullYear()} Prepstone. All rights reserved.
+          </p>
+          <div className="flex flex-wrap justify-center md:justify-end space-x-4 text-sm">
+            <Link
+              href="/terms-and-conditions"
+              className="hover:text-primary-foreground/80 transition-colors"
+            >
+              Terms and Conditions
+            </Link>
+            <Link
+              href="/privacy-policy"
+              className="hover:text-primary-foreground/80 transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/refund-policy"
+              className="hover:text-primary-foreground/80 transition-colors"
+            >
+              Refund Policy
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

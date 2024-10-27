@@ -44,9 +44,8 @@ export default function CountdownTimer({
   }, [targetDate]);
 
   return (
-    <span className="text-xl">
-      {formatTime(remainingTime)}{" "}
-      <span className="text-xs">hour(s) remaining</span>
+    <span className="text-sm md:text-xl">
+      {formatTime(remainingTime)} <span className="text-xs">hour(s) left</span>
     </span>
   );
 }

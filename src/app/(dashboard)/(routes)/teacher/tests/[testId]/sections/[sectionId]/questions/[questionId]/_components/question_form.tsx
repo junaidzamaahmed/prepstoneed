@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Edit, Pencil } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import { Editor } from "@/components/editor";
+import { Preview } from "@/components/preview";
 
 interface QuestionFormProps {
   initialData: Question;
@@ -89,7 +91,7 @@ export const QuestionForm = ({
             !initialData.question && "text-slate-500 italic"
           )}
         >
-          {initialData.question || "No question"}
+          <Preview value={initialData.question} />
         </p>
       )}
       {isEditing && (
@@ -104,7 +106,7 @@ export const QuestionForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
+                    <Editor
                       disabled={isSubmitting}
                       placeholder="e.g. 'What's your name?'"
                       {...field}

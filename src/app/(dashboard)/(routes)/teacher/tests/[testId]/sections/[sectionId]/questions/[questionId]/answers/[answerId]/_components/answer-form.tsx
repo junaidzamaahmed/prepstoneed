@@ -22,6 +22,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Editor } from "@/components/editor";
+import { Preview } from "@/components/preview";
 
 interface AnswerFormProps {
   initialData: Answer;
@@ -95,7 +97,7 @@ export const AnswerForm = ({
             !initialData.text && "text-slate-500 italic"
           )}
         >
-          {initialData.text || "No answer"}
+          <Preview value={initialData.text} />
         </p>
       )}
       {isEditing && (
@@ -110,7 +112,7 @@ export const AnswerForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
+                    <Editor
                       disabled={isSubmitting}
                       placeholder="e.g. 'There goes your answer...'"
                       {...field}
