@@ -18,6 +18,7 @@ import { CourseFAQForm } from "./_components/course-faq";
 import { CourseRoutineForm } from "./_components/course-routine";
 import SelectQuiz from "./_components/select-quiz";
 import SelectInstructor from "./_components/select-instructor";
+import { ClassLinkForm } from "./_components/class-link-form";
 
 const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -114,6 +115,7 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
             </div>
             <TitleForm initialData={course} courseId={course.id} />
             <DescriptionForm initialData={course} courseId={course.id} />
+            <ClassLinkForm initialData={course} courseId={course.id} />
             <CategoryForm
               initialData={course}
               courseId={course.id}

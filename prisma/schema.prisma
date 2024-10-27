@@ -209,6 +209,7 @@ model Course {
   isFree      Boolean @default(false)
   price       Int?
   imageUrl    String?
+  classLink   String?
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])

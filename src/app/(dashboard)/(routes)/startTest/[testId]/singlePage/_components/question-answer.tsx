@@ -39,27 +39,33 @@ export default function QuestionAnswer({
   });
   const handleAnswerChange = async (value: string) => {
     try {
+      toggleDisable(true);
       const response = await axios.put(
         `/api/userResponse/${attemptId}/${question.id}/`,
         [value, correctAnswer.id === value]
       );
       question.responses[0] = response.data;
       setSelectedAnswer(value);
+      toggleDisable(false);
     } catch (error) {
       console.error("Error changing answer:", error);
+      toggleDisable(false);
     }
   };
 
   const onSubmit = async (values: any) => {
     if (values.input === "") return;
     try {
+      toggleDisable(true);
       const response = await axios.put(
         `/api/userResponse/${attemptId}/${question.id}/`,
         [values, correctAnswer.text === values.input]
       );
       question.responses[0] = response.data;
+      toggleDisable(false);
     } catch (error) {
       console.error("Error submitting answer:", error);
+      toggleDisable(false);
     }
   };
 

@@ -154,7 +154,11 @@ export default async function DSAT({
       </section>
       <Banner
         variant="success"
-        label={`A live class is going on right now! Click <a style="color:yellow;text-decoration:underline;" href="https://www.google.com" target="_blank">here</a> to join the class. `}
+        label={`A live class is going on right now! Click <a style="color:yellow;text-decoration:underline;" href="${
+          course?.classLink || "#"
+        }" target="${
+          course?.classLink != "" ? "_blank" : "_self"
+        }">here</a> to join the class. `}
       />
       <section>
         <div className="container grid grid-cols-12 gap-4 p-10">

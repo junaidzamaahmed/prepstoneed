@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Preview } from "@/components/preview";
 import { Label } from "@/components/ui/label";
+import Answer from "./answer";
 
 export default function AnswerContent({
   question,
@@ -45,18 +46,19 @@ export default function AnswerContent({
               className="space-y-2"
             >
               {question?.answers.map((answer: any) => (
-                <div
-                  key={answer.id}
-                  className="flex items-center space-x-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors p-2"
-                >
-                  <RadioGroupItem value={answer.id} id={answer.id} />
-                  <Label
-                    htmlFor={answer.id}
-                    className="flex-grow cursor-pointer"
-                  >
-                    <Preview value={answer.text} />
-                  </Label>
-                </div>
+                // <div
+                //   key={answer.id}
+                //   className="flex items-center space-x-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors p-2"
+                // >
+                //   <RadioGroupItem value={answer.id} id={answer.id} />
+                //   <Label
+                //     htmlFor={answer.id}
+                //     className="flex-grow cursor-pointer"
+                //   >
+                //     <Preview value={answer.text} />
+                //   </Label>
+                // </div>
+                <Answer answer={answer} key={answer.id} />
               ))}
             </RadioGroup>
           </div>
