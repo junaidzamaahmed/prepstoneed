@@ -44,7 +44,7 @@ export default function Testimonials() {
               delay: 5000,
             }),
           ]}
-          className="max-w-4xl mx-auto"
+          className="max-w-4xl mx-auto max-lg:px-8"
         >
           <CarouselContent>
             {testimonials.map((review, index) => (
@@ -85,7 +85,7 @@ export default function Testimonials() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <div className="hidden md:flex justify-center mt-8 gap-4">
+          <div className="hidden md:flex justify-center mt-8 gap-4 max-w-full">
             <CarouselPrevious />
             <CarouselNext />
           </div>

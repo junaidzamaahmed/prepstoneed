@@ -7,20 +7,15 @@ import { useEffect, useState } from "react";
 
 export default function Answer({
   answer,
-}: // selectedAnswer,
-{
+  disable,
+}: {
   answer: any;
-  // selectedAnswer: string;
+  disable: boolean;
 }) {
-  // const [isChecked, setIsChecked] = useState(selectedAnswer == answer?.id);
   const [striked, setStriked] = useState(false);
-
   const handleStrikethrough = () => {
     setStriked((prev) => !prev);
   };
-  // useEffect(() => {
-  //   setIsChecked(selectedAnswer == answer?.id);
-  // }, [selectedAnswer]);
   return (
     <div className="cursor-pointer ps-2 flex items-center space-x-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
       <StrikethroughIcon
@@ -29,7 +24,7 @@ export default function Answer({
         }`}
         onClick={handleStrikethrough}
       />
-      <RadioGroupItem value={answer.id} id={answer.id} />
+      <RadioGroupItem value={answer.id} id={answer.id} disabled={disable} />
       <Label
         htmlFor={answer.id}
         className={`text-sm flex-grow cursor-pointer w-full ${

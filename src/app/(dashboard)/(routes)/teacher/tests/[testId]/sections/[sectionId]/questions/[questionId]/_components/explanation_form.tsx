@@ -19,7 +19,8 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
+import { Editor } from "@/components/editor";
+import { Preview } from "@/components/preview";
 
 interface ExplanationFormProps {
   initialData: Question;
@@ -89,7 +90,7 @@ export const ExplanationForm = ({
             !initialData.explanation && "text-slate-500 italic"
           )}
         >
-          {initialData.explanation || "No explanation"}
+          <Preview value={initialData?.explanation || "No explanation"} />
         </p>
       )}
       {isEditing && (
@@ -104,7 +105,7 @@ export const ExplanationForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
+                    <Editor
                       disabled={isSubmitting}
                       placeholder="e.g. 'This test is about...'"
                       {...field}

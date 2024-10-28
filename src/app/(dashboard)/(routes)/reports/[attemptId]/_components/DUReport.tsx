@@ -157,17 +157,17 @@ export default function DUReport({
       {
         label: "Correct Answers",
         data: Object.values(data).map((item) => item.correct),
-        backgroundColor: "rgba(25,78,158,1)",
+        backgroundColor: "rgba(2, 89, 15, 1)",
       },
       {
         label: "Incorrect Answers",
         data: Object.values(data).map((item) => item.incorrect),
-        backgroundColor: "rgba(255, 99, 132, 0.6)",
+        backgroundColor: "rgba(199, 34, 34, 1)",
       },
       {
         label: "Unattempted",
         data: Object.values(data).map((item) => item.unattempted),
-        backgroundColor: "rgba(201, 203, 207, 0.6)",
+        backgroundColor: "rgba(135, 206, 235, 1)",
       },
     ],
   });
@@ -182,9 +182,9 @@ export default function DUReport({
       {
         data: [correct, incorrect, unattempted],
         backgroundColor: [
-          "rgba(25, 78, 158, 1)",
-          "rgba(255, 99, 132, 0.6)",
-          "rgba(201, 203, 207, 0.6)",
+          "rgba(2, 89, 15, 1)",
+          "rgba(199, 34, 34, 1)",
+          "rgba(135, 206, 235, 1)",
         ],
       },
     ],
@@ -227,17 +227,17 @@ export default function DUReport({
         {
           label: "Correct",
           data: correctData,
-          backgroundColor: "rgba(25, 78, 158, 1)",
+          backgroundColor: "rgba(2, 89, 15, 1)",
         },
         {
           label: "Incorrect",
           data: incorrectData,
-          backgroundColor: "rgba(255, 99, 132, 0.6)",
+          backgroundColor: "rgba(199, 34, 34, 1)",
         },
         {
           label: "Unattempted",
           data: unattemptedData,
-          backgroundColor: "rgba(201, 203, 207, 0.6)",
+          backgroundColor: "rgba(135, 206, 235, 1)",
         },
       ],
     };
@@ -448,30 +448,35 @@ export default function DUReport({
                                           <h3 className="font-semibold mb-2">
                                             Your Answer:
                                           </h3>
-                                          <p>
-                                            {isUnattempted
-                                              ? "Not answered"
-                                              : response.selectedAnswerID
-                                              ? selectedQuestion.answers.find(
-                                                  (a) =>
-                                                    a.id ===
-                                                    response.selectedAnswerID
-                                                )?.text
-                                              : response.inputText ||
-                                                "No answer provided"}
-                                          </p>
+                                          <Preview
+                                            value={
+                                              isUnattempted
+                                                ? "Not answered"
+                                                : response.selectedAnswerID
+                                                ? selectedQuestion.answers.find(
+                                                    (a) =>
+                                                      a.id ===
+                                                      response.selectedAnswerID
+                                                  )?.text ||
+                                                  "No answer provided"
+                                                : response.inputText !=
+                                                  undefined
+                                                ? response.inputText
+                                                : "No answer provided"
+                                            }
+                                          />
                                         </div>
                                         <div>
                                           <h3 className="font-semibold mb-2">
                                             Correct Answer:
                                           </h3>
-                                          <p>
-                                            {
+                                          <Preview
+                                            value={
                                               selectedQuestion.answers.find(
                                                 (a) => a.isCorrect
-                                              )?.text
+                                              )?.text || "No correct answer"
                                             }
-                                          </p>
+                                          />
                                         </div>
                                         <div>
                                           <h3 className="font-semibold mb-2">
@@ -502,7 +507,7 @@ export default function DUReport({
                                                     !a.isCorrect && (
                                                       <XCircle className="mr-2 h-4 w-4" />
                                                     )}
-                                                  {a.text}
+                                                  <Preview value={a.text} />
                                                 </li>
                                               )
                                             )}
@@ -513,9 +518,11 @@ export default function DUReport({
                                             <h3 className="font-semibold mb-2">
                                               Explanation:
                                             </h3>
-                                            <p>
-                                              {selectedQuestion.explanation}
-                                            </p>
+                                            <Preview
+                                              value={
+                                                selectedQuestion.explanation
+                                              }
+                                            />
                                           </div>
                                         )}
                                       </div>
