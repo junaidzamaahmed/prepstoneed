@@ -264,7 +264,7 @@ export default function DUReport({
             Score: {score} / {totalQuestions}
           </p>
           <p className="text-lg mb-4">
-            Percentage: {(score / totalQuestions).toFixed(2)}%
+            Accuracy: {(score / totalQuestions).toFixed(2)}%
           </p>
           <p className="text-lg mb-2">
             Attempted: {attemptedQuestions} / {totalQuestions}
