@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import { PlayIcon, UnlockIcon } from "lucide-react";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 // import Link from "next/link";
 // import { headers } from "next/headers";
 
@@ -252,12 +253,12 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
               <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">
                 <div className="text-left">
                   <p>
-                    Resources for{" "}
+                    Resources
                     {course?.category?.name == "DSAT"
                       ? "DSAT"
                       : course?.category?.name == "BUP" && "BUP FBS"}
                   </p>
-                  <p className="text-black/70 text-xs mb-2 block">1 Lecture</p>
+                  <p className="text-black/70 text-xs mb-2 block">1 Resource</p>
                 </div>
               </AccordionTrigger>
 
@@ -361,6 +362,11 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
                         />
                         <p className="font-medium">{test.title}</p>
                       </div>
+                      {test.price == 0 ? (
+                        <Badge variant="destructive" className="bg-primary">
+                          Free
+                        </Badge>
+                      ) : null}
                     </div>
                   </Link>
                 ))}

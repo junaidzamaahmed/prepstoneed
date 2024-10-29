@@ -58,13 +58,14 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
   test.sections.forEach((section) => {
     questions += section.questions.length;
   });
+  const isTestFree = test.price === 0;
 
   return (
     <div className="bg-gray-100 flex align-middle h-[calc(100vh-80px)]">
       <div className="container mx-auto my-auto">
         <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
           <div className="px-6 py-4">
-            {!test?.course?.purchases.length && (
+            {!isTestFree && !test?.course?.purchases.length && (
               <Banner
                 label="You do not have access to this test. Please contact us for access."
                 variant="warning"
@@ -98,7 +99,7 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
             <div className="mb-4">
               <h3 className="text-lg font-bold mb-2">Price</h3>
               <p className="text-slate-600">
-                {test.price === 0 ? "Free" : test.price} Taka
+                {test.price === 0 ? "Free" : `${test.price} Taka`}
               </p>
             </div>
             {userAttempts?.length != undefined && userAttempts?.length >= 3 && (
@@ -109,7 +110,7 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
             )}
             <Button
               className="mt-1"
-              disabled={disabled}
+              disabled={isTestFree ? false : disabled}
               category={test?.category!}
             >
               Start Test

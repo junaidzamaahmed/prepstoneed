@@ -58,7 +58,7 @@ model Quiz {
   title       String
   description String? @db.Text
   duration    Int
-  price       Int?
+  price       Int?    @default(1)
   isPublished Boolean @default(false)
 
   // Relationships
