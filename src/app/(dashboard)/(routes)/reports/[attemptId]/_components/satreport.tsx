@@ -105,7 +105,7 @@ export default function Satreport({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2">
         <p className="text-[6rem] text-primary font-bold">
-          {attempt?.quiz.category?.name == "DU" ? "DU" : "SAT"}
+          {attempt?.quiz.category?.name == "DU" ? "DU" : "DSAT"}
         </p>
         <div className="pt-8">
           <p>
