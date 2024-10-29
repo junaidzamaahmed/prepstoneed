@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import { Editor } from "@/components/editor";
 
 interface DescriptionFormProps {
   initialData: Quiz;
@@ -97,7 +98,7 @@ export const DescriptionForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
+                    <Editor
                       disabled={isSubmitting}
                       placeholder="e.g. 'This test is about...'"
                       {...field}

@@ -19,6 +19,7 @@ import { CourseRoutineForm } from "./_components/course-routine";
 import SelectQuiz from "./_components/select-quiz";
 import SelectInstructor from "./_components/select-instructor";
 import { ClassLinkForm } from "./_components/class-link-form";
+import SelectPracticeTests from "./_components/select-practice-tests";
 
 const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -40,6 +41,11 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
       FAQ: true,
       CourseFeatures: true,
       tests: true,
+      practiceTestRelations: {
+        include: {
+          quiz: true,
+        },
+      },
       instructors: { include: { instructor: true } },
     },
   });
@@ -135,6 +141,11 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
               initialData={course}
               courseId={course.id}
               tests={tests}
+            />
+            <SelectPracticeTests
+              tests={tests}
+              initialData={course}
+              courseId={course.id}
             />
           </div>
           <div>

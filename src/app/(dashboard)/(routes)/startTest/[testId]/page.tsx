@@ -58,7 +58,7 @@ const QuizDetailsPage = async ({ params }: { params: { testId: string } }) => {
   test.sections.forEach((section) => {
     questions += section.questions.length;
   });
-  const isTestFree = test.price === 0;
+  const isTestFree = test?.isFree;
 
   return (
     <div className="bg-gray-100 flex align-middle h-[calc(100vh-80px)]">

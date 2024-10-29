@@ -312,7 +312,7 @@ export const QuestionForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
+                    <Editor
                       disabled={isSubmitting}
                       placeholder="Correct answer explanation"
                       {...field}

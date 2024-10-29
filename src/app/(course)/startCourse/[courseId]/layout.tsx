@@ -22,6 +22,9 @@ export default async function CourseLayout({
         orderBy: { createdAt: "asc" },
       },
       category: true,
+      practiceTestRelations: {
+        include: { quiz: true },
+      },
     },
   });
   if (!course) {

@@ -13,6 +13,7 @@ import { SectionForm } from "./_components/section-form";
 import { TestActions } from "./_components/actions";
 import Link from "next/link";
 import { Banner } from "@/components/banner";
+import FreeForm from "./_components/free-form";
 
 const TestIdPage = async ({ params }: { params: { testId: string } }) => {
   const { userId } = auth();
@@ -100,6 +101,7 @@ const TestIdPage = async ({ params }: { params: { testId: string } }) => {
             <TitleForm initialData={test} testId={test.id} />
             <DurationForm initialData={test} testId={test.id} />
             <DescriptionForm initialData={test} testId={test.id} />
+            <FreeForm testId={test.id} isFree={test.isFree} />
             <CategoryForm
               initialData={test}
               testId={test.id}

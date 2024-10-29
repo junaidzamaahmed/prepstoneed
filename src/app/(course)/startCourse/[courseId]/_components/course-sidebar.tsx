@@ -1,6 +1,12 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { Category, Course, Quiz, Recordings } from "@prisma/client";
+import {
+  Category,
+  Course,
+  PracticeTestRelations,
+  Quiz,
+  Recordings,
+} from "@prisma/client";
 import { redirect } from "next/navigation";
 import CourseSidebarItem from "./course-sidebar-item";
 import {
@@ -20,6 +26,7 @@ interface CourseSidebarProps {
     recordings: Recordings[];
     tests: Quiz[];
     category: Category | null;
+    practiceTestRelations: (PracticeTestRelations & { quiz: Quiz })[];
   };
 }
 export default async function CourseSidebar({ course }: CourseSidebarProps) {
@@ -307,35 +314,7 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
                 ))}
               </AccordionContent>
             </AccordionItem>
-            {course?.category?.name == "BUP" && (
-              <AccordionItem value="item-4">
-                <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">
-                  <div className="text-left">
-                    <p>Practice Tests</p>
-                    <p className="text-black/70 text-xs mb-2 block">
-                      {course?.tests.length} Tests
-                    </p>
-                  </div>
-                </AccordionTrigger>
 
-                <AccordionContent className="my-1">
-                  {/* {course?.tests.map((test) => (
-                      <div
-                        key={test.id}
-                        className="flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group"
-                      >
-                        <div className="flex items-center space-x-2 hover:text-secondary">
-                          <PlayIcon
-                            size={16}
-                            className="pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all"
-                          />
-                          <p className="font-medium">{test.title}</p>
-                        </div>
-                      </div>
-                    ))} */}
-                </AccordionContent>
-              </AccordionItem>
-            )}
             <AccordionItem value="item-5">
               <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">
                 <div className="text-left">
@@ -350,7 +329,6 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
                   </p>
                 </div>
               </AccordionTrigger>
-
               <AccordionContent className="my-1">
                 {course?.tests.map((test) => (
                   <Link key={test.id} href={`/startTest/${test.id}`}>
@@ -362,7 +340,7 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
                         />
                         <p className="font-medium">{test.title}</p>
                       </div>
-                      {test.price == 0 ? (
+                      {test.isFree ? (
                         <Badge variant="destructive" className="bg-primary">
                           Free
                         </Badge>
@@ -372,6 +350,43 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
                 ))}
               </AccordionContent>
             </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">
+                <div className="text-left">
+                  <p>Practice Tests</p>
+                  <p className="text-black/70 text-xs mb-2 block">
+                    {course?.practiceTestRelations.length} Tests
+                  </p>
+                </div>
+              </AccordionTrigger>
+
+              <AccordionContent className="my-1">
+                {course?.practiceTestRelations.map((practiceTestRelation) => (
+                  <Link
+                    key={practiceTestRelation.quiz.id}
+                    href={`/startTest/${practiceTestRelation.quiz.id}`}
+                  >
+                    <div className="flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group">
+                      <div className="flex items-center space-x-2 hover:text-secondary">
+                        <PlayIcon
+                          size={16}
+                          className="pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all"
+                        />
+                        <p className="font-medium">
+                          {practiceTestRelation.quiz.title}
+                        </p>
+                      </div>
+                      {practiceTestRelation.quiz.isFree ? (
+                        <Badge variant="destructive" className="bg-primary">
+                          Free
+                        </Badge>
+                      ) : null}
+                    </div>
+                  </Link>
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+
             {course?.category?.name == "BUP" && (
               <AccordionItem value="item-6">
                 <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">

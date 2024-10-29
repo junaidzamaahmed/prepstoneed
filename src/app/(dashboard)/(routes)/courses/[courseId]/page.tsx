@@ -12,6 +12,7 @@ import { db } from "@/lib/db";
 import { Banner } from "@/components/banner";
 import { auth } from "@clerk/nextjs/server";
 import CourseSidebarItem from "@/app/(course)/startCourse/[courseId]/_components/course-sidebar-item";
+import { Preview } from "@/components/preview";
 
 export default async function DSAT({
   params,
@@ -169,9 +170,9 @@ export default async function DSAT({
                 : course?.category?.name == "BUP" &&
                   "BUP FBS 2nd Timers Elite Batch 2.0"}
             </h2>
-            <p className="text-black/70 font-medium w-[80%] ">
-              {course?.description}
-            </p>
+            <div className="text-black/70 font-medium w-[80%]">
+              <Preview value={course?.description || ""} />
+            </div>
 
             {/* <table className="text-left w-full table-auto border-collapse border border-slate-400">
               <thead>
