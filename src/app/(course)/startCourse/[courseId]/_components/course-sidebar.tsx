@@ -26,7 +26,7 @@ interface CourseSidebarProps {
     recordings: Recordings[];
     tests: Quiz[];
     category: Category | null;
-    practiceTestRelations: (PracticeTestRelations & { quiz: Quiz })[];
+    practiceTestRelations: any[];
   };
 }
 export default async function CourseSidebar({ course }: CourseSidebarProps) {
