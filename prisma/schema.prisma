@@ -226,6 +226,7 @@ model Course {
   tests                 Quiz[]
   accessRequests        AccessRequest[]
   practiceTestRelations PracticeTestRelations[]
+  courseNotices         CourseNotice[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -330,6 +331,16 @@ model CourseRoutine {
   day      String
   time     String
   title    String
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model CourseNotice {
+  id       String  @id @default(uuid())
+  courseId String
+  title    String?
+  subtitle String?
+  date     String?
 
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }

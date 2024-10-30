@@ -39,6 +39,8 @@ export default async function CoursePage({
           },
         },
       },
+      CourseRoutine: true,
+      courseNotices: true,
     },
   });
   let totalAttempts = 0;
@@ -63,7 +65,7 @@ export default async function CoursePage({
   // );
 
   return (
-    <div className="bg-accent/60">
+    <div className="bg-accent/60 min-h-screen">
       <div className="p-6 container">
         <div className="my-1">
           <p className="text-xl">
@@ -71,7 +73,7 @@ export default async function CoursePage({
           </p>
           <p>Here&apos;s the course overview.</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
           <div className="w-full h-30 bg-primary text-white p-4 rounded-sm">
             <h3 className="text-xl flex items-center">
               <PiNotebook className="mr-2" /> Tests
@@ -88,7 +90,7 @@ export default async function CoursePage({
             </p>
             <p>Recorded Lectures</p>
           </div>
-          <div className="w-full h-30 bg-green-900 text-white p-4 rounded-sm">
+          {/* <div className="w-full h-30 bg-green-900 text-white p-4 rounded-sm">
             <h3 className="text-xl flex items-center">
               <PiQuestionBold className="mr-2" /> Practice
             </h3>
@@ -96,9 +98,9 @@ export default async function CoursePage({
               {totalQuestionsAttempted}
             </p>
             <p>Questions Attempted</p>
-          </div>
+          </div> */}
         </div>
-        <div className="my-4 grid grid-cols-12 gap-4">
+        {/* <div className="my-4 grid grid-cols-12 gap-4">
           <div className="col-span-12 lg:col-span-8 w-full shadow-xl p-6 bg-white">
             <div className="flex justify-between">
               <p className="text-lg">Your Goals</p>
@@ -158,7 +160,118 @@ export default async function CoursePage({
               </div>
             </div>
           </div>
+        </div> */}
+        <div className="my-4 grid grid-cols-12 gap-4">
+          <div className="col-span-12 lg:col-span-8 w-full shadow-xl p-6 bg-white">
+            <div className="flex justify-between">
+              <p className="text-lg">Routine</p>
+            </div>
+            {/* <div className="my-3 grid grid-cols-3 gap-4">
+              <div className="bg-accent p-4 text-center">
+                <p className="text-primary text-2xl font-bold">1600</p>
+                <p>Combined</p>
+              </div>
+              <div className="bg-accent p-4 text-center">
+                <p className="text-primary text-2xl font-bold">800</p>
+                <p>Reading and Writing</p>
+              </div>
+              <div className="bg-accent p-4 text-center">
+                <p className="text-primary text-2xl font-bold">800</p>
+                <p>Math</p>
+              </div>
+            </div> */}
+            {/* Course routine table using shadcn ui */}
+            <Table>
+              <TableCaption>
+                A list of your course routine for the week.
+              </TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Day</TableHead>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Time</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {course.CourseRoutine.map((routine) => {
+                  return (
+                    <TableRow key={routine.id}>
+                      <TableCell>{routine.day}</TableCell>
+                      <TableCell>{routine.title}</TableCell>
+                      <TableCell>{routine.time}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+            {/* <div className="w-full bg-gradient-to-r from-primary to-secondary mx-auto mt-10 rounded-full">
+              <p className="text-white text-sm p-3 text-center">
+                Refer your friends for free practice tests and premium package
+              </p>
+            </div> */}
+          </div>
+          <div className="col-span-12 lg:col-span-4 shadow-xl p-6 space-y-2 bg-white">
+            <p className="text-lg ">Notices</p>
+            {/* <div className="bg-accent grid grid-cols-6 p-3 rounded-md">
+              <div className="col-span-2 bg-primary rounded-md text-center p-2">
+                <p className="text-white font-semibold text-md">04</p>
+                <p className="text-white text-md">May</p>
+              </div>
+              <div className="col-span-4 text-center p-2">
+                <p className="text-md font-medium">Digital SAT Exam</p>
+                <Link
+                  target="_blank"
+                  href="https://satsuite.collegeboard.org/sat/dates-deadlines"
+                  className="text-sm text-primary py-1"
+                >
+                  Register before Apr 19
+                </Link>
+              </div>
+            </div>
+            <div className="bg-accent grid grid-cols-6 p-3 rounded-md">
+              <div className="col-span-2 bg-primary rounded-md text-center p-2">
+                <p className="text-white font-semibold text-md">01</p>
+                <p className="text-white text-md">Jun</p>
+              </div>
+              <div className="col-span-4 text-center p-2">
+                <p className="text-md font-medium">Digital SAT Exam</p>
+                <Link
+                  target="_blank"
+                  href="https://satsuite.collegeboard.org/sat/dates-deadlines"
+                  className="text-sm text-primary py-1"
+                >
+                  Register before May 16
+                </Link>
+              </div>
+            </div> */}
+            {course.courseNotices.map((notice) => (
+              <div
+                key={notice.courseId}
+                className="bg-accent grid grid-cols-6 p-3 rounded-md"
+              >
+                <div className="col-span-2 bg-primary rounded-md text-center p-2">
+                  <p className="text-white font-semibold text-md">
+                    {notice.date?.split(" ")[0]}
+                  </p>
+                  <p className="text-white text-md">
+                    {notice.date?.split(" ")[1]}
+                  </p>
+                </div>
+                <div className="col-span-4 text-center p-2">
+                  <p className="text-md font-medium">{notice.title}</p>
+                  <p
+                    // target="_blank"
+                    // href="https://satsuite.collegeboard.org/sat/dates-deadlines"
+                    className="text-sm text-primary py-1"
+                  >
+                    {notice.subtitle}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+
         <div className="mt-5 bg-white shadow-xl p-6">
           <p className="text-lg mb-3">Recently Attempted Tests</p>
           <Table>

@@ -8,7 +8,7 @@ import { Loader2, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Course, CourseRoutine } from "@prisma/client";
+import { Course, CourseNotice, CourseRoutine } from "@prisma/client";
 
 import {
   Form,
@@ -21,23 +21,23 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RoutineList } from "./routine-list";
+import { NoticeList } from "./notice-list";
 
-interface CourseRoutineFormProps {
-  initialData: Course & { CourseRoutine: CourseRoutine[] };
+interface CourseNoticeFormProps {
+  initialData: Course & { courseNotices: CourseNotice[] };
   courseId: string;
 }
 
 const formSchema = z.object({
-  day: z.string().min(1),
-  time: z.string().min(1),
-  title: z.string().min(1),
+  title: z.string(),
+  subtitle: z.string(),
+  date: z.string(),
 });
 
-export const CourseRoutineForm = ({
+export const CourseNoticeForm = ({
   initialData,
   courseId,
-}: CourseRoutineFormProps) => {
+}: CourseNoticeFormProps) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -55,8 +55,8 @@ export const CourseRoutineForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${courseId}/courseRoutine`, values);
-      toast.success("Routine created");
+      await axios.post(`/api/courses/${courseId}/courseNotices`, values);
+      toast.success("Notice created");
       toggleCreating();
       form.reset();
       router.refresh();
@@ -67,10 +67,10 @@ export const CourseRoutineForm = ({
 
   const deleteRoutine = async (id: string) => {
     try {
-      await axios.delete(`/api/courses/${courseId}/courseRoutine`, {
+      await axios.delete(`/api/courses/${courseId}/courseNotices`, {
         data: { id },
       });
-      toast.success("Routine deleted");
+      toast.success("Notice deleted");
       form.reset();
       router.refresh();
     } catch {
@@ -86,14 +86,14 @@ export const CourseRoutineForm = ({
         </div>
       )}
       <div className="font-medium flex items-center justify-between">
-        Routine
+        Notice
         <Button onClick={toggleCreating} variant="ghost">
           {isCreating ? (
             <>Cancel</>
           ) : (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Add Routine
+              Add Notice
             </>
           )}
         </Button>
@@ -123,14 +123,14 @@ export const CourseRoutineForm = ({
             />
             <FormField
               control={form.control}
-              name="day"
+              name="subtitle"
               render={({ field }) => (
                 <FormItem>
-                  <Label>Day</Label>
+                  <Label>Subtitle</Label>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="Day"
+                      placeholder="Register from 30 October"
                       {...field}
                     />
                   </FormControl>
@@ -140,14 +140,14 @@ export const CourseRoutineForm = ({
             />
             <FormField
               control={form.control}
-              name="time"
+              name="date"
               render={({ field }) => (
                 <FormItem>
-                  <Label>Time</Label>
+                  <Label>Date</Label>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="Time"
+                      placeholder="30 June"
                       {...field}
                     />
                   </FormControl>
@@ -165,13 +165,13 @@ export const CourseRoutineForm = ({
         <div
           className={cn(
             "text-sm mt-2",
-            !initialData.CourseRoutine.length && "text-slate-500 italic"
+            !initialData.courseNotices.length && "text-slate-500 italic"
           )}
         >
-          {!initialData.CourseRoutine.length && "No routine added yet."}
-          <RoutineList
+          {!initialData.courseNotices.length && "No notice added yet."}
+          <NoticeList
             deleteRoutine={deleteRoutine}
-            items={initialData.CourseRoutine || []}
+            items={initialData.courseNotices || []}
           />
         </div>
       )}

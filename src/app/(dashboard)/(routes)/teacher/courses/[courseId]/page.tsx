@@ -20,6 +20,7 @@ import SelectQuiz from "./_components/select-quiz";
 import SelectInstructor from "./_components/select-instructor";
 import { ClassLinkForm } from "./_components/class-link-form";
 import SelectPracticeTests from "./_components/select-practice-tests";
+import { CourseNoticeForm } from "./_components/course-notice-form";
 
 const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -47,6 +48,7 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
         },
       },
       instructors: { include: { instructor: true } },
+      courseNotices: true,
     },
   });
   const tests = await db.quiz.findMany({});
@@ -147,6 +149,7 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
               initialData={course}
               courseId={course.id}
             />
+            <CourseNoticeForm courseId={params.courseId} initialData={course} />
           </div>
           <div>
             <div className="flex items-center gap-x-2">
