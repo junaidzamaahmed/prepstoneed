@@ -153,24 +153,24 @@ export default async function DSAT({
           </div>
         </div>
       </section>
-      <Banner
-        variant="success"
-        label={`A live class is going on right now! Click <a style="color:yellow;text-decoration:underline;" href="${
-          course?.classLink || "#"
-        }" target="${
-          course?.classLink != "" ? "_blank" : "_self"
-        }">here</a> to join the class. `}
-      />
+      {purchase && (
+        <Banner
+          variant="success"
+          label={`A live class is going on right now! Click <a style="color:yellow;text-decoration:underline;" href="${
+            course?.classLink || "#"
+          }" target="${
+            course?.classLink != "" ? "_blank" : "_self"
+          }">here</a> to join the class. `}
+        />
+      )}
+
       <section>
         <div className="container grid grid-cols-12 gap-4 p-10">
           <div className="md:col-span-7 xl:col-span-8 col-span-12">
             <h2 className="font-bold text-2xl mb-2 text-secondary">
-              {course?.category?.name == "DSAT"
-                ? "Digital SAT Suite: Overall Test Specifications"
-                : course?.category?.name == "BUP" &&
-                  "BUP FBS 2nd Timers Elite Batch 2.0"}
+              {course?.title}
             </h2>
-            <div className="text-black/70 font-medium w-[80%]">
+            <div className="text-black/70 font-medium w-[80%] ml-[-1rem]">
               <Preview value={course?.description || ""} />
             </div>
 

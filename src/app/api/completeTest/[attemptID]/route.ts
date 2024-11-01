@@ -52,9 +52,11 @@ export async function PUT(
     const allQuestions = attempt?.quiz.sections.flatMap(
       (section) => section.questions
     );
-
+    if (!allQuestions) {
+      return new NextResponse("No questions found", { status: 404 });
+    }
     const score =
-      attempt?.quiz?.category?.name != "SAT"
+      attempt?.quiz.category?.name != "SAT"
         ? allQuestions?.reduce((acc, question) => {
             if (question.responses.length === 0) {
               return acc;
@@ -62,7 +64,6 @@ export async function PUT(
             return question.responses[0].isCorrect ? acc + 1 : acc - 0.25;
           }, 0)
         : 0;
-
     const complete = await db.quizAttempt.update({
       where: {
         id: params.attemptID,
@@ -70,6 +71,7 @@ export async function PUT(
       data: {
         completed: true,
         score: score,
+        percentage: (score / allQuestions.length) * 100,
       },
     });
     return NextResponse.json(complete);

@@ -27,6 +27,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Category, Quiz, QuizAttempt, User } from "@prisma/client";
 import Link from "next/link";
+import axios from "axios";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { SortAsc, SortDesc } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -73,6 +77,9 @@ export default function AdminAnalyticsDashboard({
     useState<AnalyticsData>(initialData);
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
   const [selectedQuiz, setSelectedQuiz] = useState<string | null>(null);
+  const [selectedQuizAttempts, setSelectedQuizAttempts] = useState<
+    (QuizAttempt & { user: User })[]
+  >([]);
   const [studentAttempts, setStudentAttempts] = useState<StudentAttempt[]>([]);
   const [searchTermStudent, setSearchTermStudent] = useState("");
   const [searchTermQuiz, setSearchTermQuiz] = useState("");
@@ -94,10 +101,6 @@ export default function AdminAnalyticsDashboard({
       }
       return [];
     });
-  };
-
-  const handleQuizSelect = (quizId: string) => {
-    setSelectedQuiz(quizId);
   };
 
   const filteredStudents = analyticsData.students.filter(
@@ -129,6 +132,27 @@ export default function AdminAnalyticsDashboard({
   //       },
   //     ],
   //   };
+  const [sortAsc, setSortAsc] = useState(true);
+  const [disable, setDisable] = useState(false);
+  const router = useRouter();
+  const completeTest = async (attemptId: string) => {
+    try {
+      setDisable(true);
+      await axios.put(`/api/completeTest/${attemptId}`);
+      router.refresh();
+      toast.success("Attempt updated");
+      setDisable(false);
+    } catch (e) {
+      toast.error("Error completing test");
+    }
+  };
+  const handleQuizSelect = (quizId: string) => {
+    setSelectedQuiz(quizId);
+    setSelectedQuizAttempts(
+      (prev) =>
+        filteredQuizzes.find((quiz) => quiz.id === quizId)?.attempts || []
+    );
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -236,16 +260,38 @@ export default function AdminAnalyticsDashboard({
                       <TableHeader>
                         <TableRow>
                           <TableHead>Student</TableHead>
-                          <TableHead>Score</TableHead>
-                          <TableHead>Percentage</TableHead>
+                          <TableHead>
+                            <Button
+                              variant="ghost"
+                              className="p-0"
+                              onClick={() => {
+                                setSortAsc(!sortAsc);
+                                setSelectedQuizAttempts((prev) =>
+                                  prev.sort((a, b) =>
+                                    sortAsc
+                                      ? a.score - b.score
+                                      : b.score - a.score
+                                  )
+                                );
+                              }}
+                            >
+                              Score
+                              {sortAsc ? (
+                                <SortAsc className="ms-1 h-4 w-4" />
+                              ) : (
+                                <SortDesc className="ms-1 h-4 w-4" />
+                              )}
+                            </Button>
+                          </TableHead>
+                          <TableHead>Accuracy</TableHead>
                           <TableHead>Status</TableHead>
+                          <TableHead>Action</TableHead>
                           <TableHead>Reports</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {filteredQuizzes
-                          .find((quiz) => quiz.id === selectedQuiz)
-                          ?.attempts.map((attempt) => (
+                        {selectedQuizAttempts.length ? (
+                          selectedQuizAttempts.map((attempt) => (
                             <TableRow key={attempt.id}>
                               <TableCell>
                                 {attempt.user.fullName}
@@ -261,6 +307,17 @@ export default function AdminAnalyticsDashboard({
                                   : "In Progress"}
                               </TableCell>
                               <TableCell>
+                                <Button
+                                  disabled={disable}
+                                  variant="default"
+                                  onClick={() => completeTest(attempt.id)}
+                                >
+                                  {attempt.completed
+                                    ? "Recalculate score"
+                                    : "Complete"}
+                                </Button>
+                              </TableCell>
+                              <TableCell>
                                 <Button variant="link" asChild>
                                   <Link
                                     target="_blank"
@@ -271,7 +328,14 @@ export default function AdminAnalyticsDashboard({
                                 </Button>
                               </TableCell>
                             </TableRow>
-                          ))}
+                          ))
+                        ) : (
+                          <TableRow>
+                            <TableCell className="text-center" colSpan={5}>
+                              No attempts found
+                            </TableCell>
+                          </TableRow>
+                        )}
                       </TableBody>
                     </ScrollArea>
                   </Table>
@@ -334,35 +398,80 @@ export default function AdminAnalyticsDashboard({
                       <TableHeader>
                         <TableRow>
                           <TableHead>Quiz</TableHead>
-                          <TableHead>Score</TableHead>
-                          <TableHead>Percentage</TableHead>
+                          <TableHead>
+                            <Button
+                              variant="ghost"
+                              className="p-0"
+                              onClick={() => {
+                                setSortAsc(!sortAsc);
+                                setStudentAttempts((prev) =>
+                                  prev.sort((a, b) =>
+                                    sortAsc
+                                      ? a.score - b.score
+                                      : b.score - a.score
+                                  )
+                                );
+                              }}
+                            >
+                              Score
+                              {sortAsc ? (
+                                <SortAsc className="ms-1 h-4 w-4" />
+                              ) : (
+                                <SortDesc className="ms-1 h-4 w-4" />
+                              )}
+                            </Button>
+                          </TableHead>
+                          <TableHead>Accuracy</TableHead>
                           <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
                           <TableHead>Reports</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {studentAttempts.map((attempt) => (
-                          <TableRow key={attempt?.id}>
-                            <TableCell>{attempt?.quizTitle}</TableCell>
-                            <TableCell>{attempt?.score}</TableCell>
-                            <TableCell>
-                              {attempt?.percentage?.toFixed(2)}%
-                            </TableCell>
-                            <TableCell>
-                              {attempt?.completed ? "Completed" : "In Progress"}
-                            </TableCell>
-                            <TableCell>
-                              <Button variant="link" asChild>
-                                <Link
-                                  target="_blank"
-                                  href={`/reports/${attempt?.id}`}
+                        {studentAttempts.length ? (
+                          studentAttempts.map((attempt) => (
+                            <TableRow key={attempt?.id}>
+                              <TableCell>{attempt?.quizTitle}</TableCell>
+                              <TableCell>{attempt?.score}</TableCell>
+                              <TableCell>
+                                {attempt?.percentage?.toFixed(2)}%
+                              </TableCell>
+                              <TableCell>
+                                {attempt?.completed
+                                  ? "Completed"
+                                  : "In Progress"}
+                              </TableCell>
+                              <TableCell>
+                                <Button
+                                  disabled={disable}
+                                  variant="default"
+                                  onClick={() => completeTest(attempt.id)}
                                 >
-                                  View
-                                </Link>
-                              </Button>
+                                  {attempt.completed
+                                    ? "Recalculate score"
+                                    : "Complete"}
+                                </Button>
+                              </TableCell>
+
+                              <TableCell>
+                                <Button variant="link" asChild>
+                                  <Link
+                                    target="_blank"
+                                    href={`/reports/${attempt?.id}`}
+                                  >
+                                    View
+                                  </Link>
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        ) : (
+                          <TableRow>
+                            <TableCell className="text-center" colSpan={5}>
+                              No attempts found
                             </TableCell>
                           </TableRow>
-                        ))}
+                        )}
                       </TableBody>
                     </ScrollArea>
                   </Table>

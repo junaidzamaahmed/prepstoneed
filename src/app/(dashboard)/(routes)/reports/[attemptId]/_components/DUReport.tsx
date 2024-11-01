@@ -243,13 +243,6 @@ export default function DUReport({
     };
   };
 
-  // Calculate score using the following method: +1 for correct answer, -0.25 for incorrect answer and 0 for unattempted questions
-  const score = allQuestions.reduce((acc, question) => {
-    if (question.responses.length === 0) {
-      return acc;
-    }
-    return question.responses[0].isCorrect ? acc + 1 : acc - 0.25;
-  }, 0);
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">
@@ -261,10 +254,10 @@ export default function DUReport({
         </CardHeader>
         <CardContent>
           <p className="text-lg mb-2">
-            Score: {score} / {totalQuestions}
+            Score: {attempt.score} / {totalQuestions}
           </p>
           <p className="text-lg mb-4">
-            Accuracy: {(score / totalQuestions).toFixed(2)}%
+            Accuracy: {attempt.percentage.toFixed(2)}%
           </p>
           <p className="text-lg mb-2">
             Attempted: {attemptedQuestions} / {totalQuestions}
