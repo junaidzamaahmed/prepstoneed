@@ -14,6 +14,7 @@ import { TestActions } from "./_components/actions";
 import Link from "next/link";
 import { Banner } from "@/components/banner";
 import FreeForm from "./_components/free-form";
+import { LeaderboardForm } from "./_components/leaderboard";
 
 const TestIdPage = async ({ params }: { params: { testId: string } }) => {
   const { userId } = auth();
@@ -28,6 +29,20 @@ const TestIdPage = async ({ params }: { params: { testId: string } }) => {
       sections: {
         orderBy: {
           position: "asc",
+        },
+      },
+      leaderboardInfo: {
+        include: {
+          exceptUsers: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      },
+      attempts: {
+        include: {
+          user: true,
         },
       },
     },
@@ -111,6 +126,7 @@ const TestIdPage = async ({ params }: { params: { testId: string } }) => {
               }))}
             />
             <PriceForm initialData={test} testId={test.id} />
+            <LeaderboardForm initialData={test} testId={test.id} />
           </div>
           <div>
             <div className="flex items-center gap-x-2">

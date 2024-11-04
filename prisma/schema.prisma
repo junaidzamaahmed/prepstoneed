@@ -31,11 +31,12 @@ model User {
   phone      String?
 
   // Relationships
-  quizAttempts       QuizAttempt[]
+  quizAttempts              QuizAttempt[]
   // createdQuiz  Quiz[]
-  purchases          Purchase[]
-  accessRequests     AccessRequest[]
-  browserFingerprint BrowserFingerprint[]
+  purchases                 Purchase[]
+  accessRequests            AccessRequest[]
+  browserFingerprint        BrowserFingerprint[]
+  leaderboardUserExceptions LeaderboardUserExceptions[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -71,9 +72,31 @@ model Quiz {
   attempts          QuizAttempt[]
   sections          Section[]
   practiceRelations PracticeTestRelations[]
+  leaderboardInfo   LeaderboardInfo?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model LeaderboardInfo {
+  id     String  @id @default(uuid())
+  quizId String  @unique
+  show   Boolean @default(true)
+  limit  Int     @default(0)
+
+  quiz        Quiz                        @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  exceptUsers LeaderboardUserExceptions[]
+}
+
+model LeaderboardUserExceptions {
+  id                String @id @default(uuid())
+  userId            String
+  leaderboardInfoId String
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leaderboardInfo LeaderboardInfo @relation(fields: [leaderboardInfoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, leaderboardInfoId])
 }
 
 model Section {
