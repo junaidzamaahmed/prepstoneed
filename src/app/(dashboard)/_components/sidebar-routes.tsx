@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { usePathname } from "next/navigation";
-import { PiStudent } from "react-icons/pi";
+import { PiChartBarHorizontal, PiStudent } from "react-icons/pi";
 
 const guestRoutes = [
   {
@@ -23,6 +23,11 @@ const guestRoutes = [
     icon: Compass,
     label: "Dashboard",
     href: "/courses",
+  },
+  {
+    icon: PiChartBarHorizontal,
+    label: "Leaderboard",
+    href: "/leaderboard",
   },
 ];
 const teacherRoutes = [
