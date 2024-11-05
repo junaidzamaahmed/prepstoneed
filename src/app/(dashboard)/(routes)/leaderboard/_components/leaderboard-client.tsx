@@ -15,16 +15,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Trophy, Medal, Award, ArrowUpDown, Search } from "lucide-react";
 
-interface LeaderboardEntry {
-  attemptId: string;
+export interface LeaderboardEntry {
   userId: string;
   fullName: string | null;
   email: string;
   score: number;
   percentage: number;
+  attempts: number;
 }
 
-interface QuizLeaderboard {
+export interface QuizLeaderboard {
   quizId: string;
   quizTitle: string;
   leaderboard: LeaderboardEntry[];
@@ -97,7 +97,7 @@ export default function LeaderboardClient({
                   size={18}
                 />
                 <Input
-                  placeholder="Search tests..."
+                  placeholder="Search quizzes..."
                   value={quizSearch}
                   onChange={(e) => setQuizSearch(e.target.value)}
                   className="pl-8"
@@ -161,14 +161,15 @@ export default function LeaderboardClient({
                     <TableRow>
                       <TableHead className="w-[50px]">Rank</TableHead>
                       <TableHead>Name</TableHead>
-                      <TableHead>Score</TableHead>
+                      <TableHead>Highest Score</TableHead>
                       <TableHead>Accuracy</TableHead>
+                      <TableHead>Attempts</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filteredAndSortedLeaderboard.map((entry, index) => (
                       <TableRow
-                        key={entry.attemptId}
+                        key={entry.userId}
                         className="hover:bg-muted/50 transition-colors"
                       >
                         <TableCell>
@@ -203,6 +204,7 @@ export default function LeaderboardClient({
                         </TableCell>
                         <TableCell>{entry.score.toFixed(2)}</TableCell>
                         <TableCell>{entry.percentage.toFixed(2)}%</TableCell>
+                        <TableCell>{entry.attempts}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

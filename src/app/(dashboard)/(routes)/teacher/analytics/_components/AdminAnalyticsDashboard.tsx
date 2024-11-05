@@ -30,7 +30,7 @@ import Link from "next/link";
 import axios from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { SortAsc, SortDesc } from "lucide-react";
+import { SortAsc, SortDesc, Trash, Trash2 } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -144,6 +144,19 @@ export default function AdminAnalyticsDashboard({
       setDisable(false);
     } catch (e) {
       toast.error("Error completing test");
+      setDisable(false);
+    }
+  };
+  const deleteAttempt = async (attemptId: string) => {
+    try {
+      setDisable(true);
+      await axios.delete(`/api/attempt/${attemptId}`);
+      router.refresh();
+      toast.success("Attempt deleted");
+      setDisable(false);
+    } catch (e) {
+      toast.error("Error deleting attempt");
+      setDisable(false);
     }
   };
   const handleQuizSelect = (quizId: string) => {
@@ -306,7 +319,7 @@ export default function AdminAnalyticsDashboard({
                                   ? "Completed"
                                   : "In Progress"}
                               </TableCell>
-                              <TableCell>
+                              <TableCell className="inline-flex space-x-1 align-middle">
                                 <Button
                                   disabled={disable}
                                   variant="default"
@@ -315,6 +328,14 @@ export default function AdminAnalyticsDashboard({
                                   {attempt.completed
                                     ? "Recalculate score"
                                     : "Complete"}
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  disabled={disable}
+                                  className="border-red-500 text-red-500 py-1 px-2"
+                                  onClick={() => deleteAttempt(attempt.id)}
+                                >
+                                  <Trash2 className="h-4 w-4" />
                                 </Button>
                               </TableCell>
                               <TableCell>
@@ -450,6 +471,14 @@ export default function AdminAnalyticsDashboard({
                                   {attempt.completed
                                     ? "Recalculate score"
                                     : "Complete"}
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  disabled={disable}
+                                  className="border-red-500 text-red-500 py-1 px-2"
+                                  onClick={() => deleteAttempt(attempt.id)}
+                                >
+                                  <Trash2 className="h-4 w-4" />
                                 </Button>
                               </TableCell>
 
