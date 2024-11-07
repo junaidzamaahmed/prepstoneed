@@ -56,12 +56,20 @@ export async function PUT(
       return new NextResponse("No questions found", { status: 404 });
     }
     const score =
-      attempt?.quiz.category?.name != "SAT"
+      attempt?.quiz?.category?.name != "SAT" &&
+      attempt?.quiz?.category?.name != "BUP"
         ? allQuestions?.reduce((acc, question) => {
             if (question.responses.length === 0) {
               return acc;
             }
             return question.responses[0].isCorrect ? acc + 1 : acc - 0.25;
+          }, 0)
+        : attempt?.quiz?.category?.name === "BUP"
+        ? allQuestions?.reduce((acc, question) => {
+            if (question.responses.length === 0) {
+              return acc;
+            }
+            return question.responses[0].isCorrect ? acc + 1 : acc - 0.5;
           }, 0)
         : 0;
     const complete = await db.quizAttempt.update({
