@@ -63,7 +63,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         toast.success("Test started");
         router.push(
           `/startTest/${params.testId}/${
-            category.name == "DU" ? "singlePage" : "start"
+            category.name == "DU" || category.name == "BUP"
+              ? "singlePage"
+              : "start"
           }/${attempt.data.id}`
         );
         setDisabled(false);
