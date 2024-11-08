@@ -199,9 +199,9 @@ model UserResponse {
   inputText        String? @db.Text
 
   // Relationships
-  attempt        QuizAttempt @relation(fields: [attemptID], references: [id])
-  question       Question    @relation(fields: [questionID], references: [id])
-  selectedAnswer Answer?     @relation(fields: [selectedAnswerID], references: [id])
+  attempt        QuizAttempt @relation(fields: [attemptID], references: [id], onDelete: Cascade)
+  question       Question    @relation(fields: [questionID], references: [id], onDelete: Cascade)
+  selectedAnswer Answer?     @relation(fields: [selectedAnswerID], references: [id], onDelete: SetNull)
 
   @@unique([attemptID, questionID])
 }
