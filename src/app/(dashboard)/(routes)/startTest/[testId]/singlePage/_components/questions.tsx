@@ -42,35 +42,8 @@ export default function Questions({
     }
   };
 
-  const totalQuestions =
-    test?.sections?.reduce(
-      (acc: number, section: any) => acc + section.questions.length,
-      0
-    ) || 0;
-  const answeredQuestions =
-    test?.sections?.reduce(
-      (acc: number, section: any) =>
-        acc +
-        section.questions.filter(
-          (q: any) => q.responses && q.responses.length > 0
-        ).length,
-      0
-    ) || 0;
-  const progress = (answeredQuestions / totalQuestions) * 100;
-
   return (
     <div className="flex flex-col h-full">
-      <div className="p-4 space-y-2 bg-background sticky top-0 z-10 shadow-sm">
-        <div className="flex justify-between items-center">
-          <div className="space-y-1 flex-grow mr-4">
-            <Progress value={progress} className="w-full" />
-          </div>
-          <p className="text-sm text-muted-foreground whitespace-nowrap">
-            {answeredQuestions}/{totalQuestions}
-          </p>
-        </div>
-      </div>
-
       <ScrollArea className="flex-grow">
         <div className="md:p-4 space-y-8">
           {test?.sections?.map((section: any, sectionIndex: number) => (
