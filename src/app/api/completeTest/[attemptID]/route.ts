@@ -79,7 +79,15 @@ export async function PUT(
       data: {
         completed: true,
         score: score,
-        percentage: (score / allQuestions.length) * 100,
+        percentage:
+          allQuestions?.filter((question) => question.responses.length > 0)
+            .length > 0
+            ? (score /
+                allQuestions?.filter(
+                  (question) => question.responses.length > 0
+                ).length) *
+              100
+            : 0,
       },
     });
     return NextResponse.json(complete);
