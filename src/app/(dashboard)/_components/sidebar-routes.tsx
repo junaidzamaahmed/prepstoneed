@@ -8,6 +8,7 @@ import {
   List,
   Unlock,
   User,
+  FileMinus,
 } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { usePathname } from "next/navigation";
@@ -61,6 +62,11 @@ const teacherRoutes = [
     label: "Students",
     href: "/teacher/students",
   },
+  {
+    icon: FileMinus,
+    label: "Testimonials",
+    href: "/teacher/testimonials",
+  },
 ];
 export const SidebarRoutes = () => {
   const pathname = usePathname();
@@ -68,7 +74,7 @@ export const SidebarRoutes = () => {
   const routes = isTeacherPage ? teacherRoutes : guestRoutes;
 
   return (
-    <div className="flex flex-col w-full">
+    <div className='flex flex-col w-full'>
       {routes.map((route) => (
         <SidebarItem
           key={route.href}

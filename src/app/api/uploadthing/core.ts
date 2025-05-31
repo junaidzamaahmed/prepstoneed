@@ -13,6 +13,9 @@ export const ourFileRouter = {
   questionImage: f({ image: { maxFileSize: "512KB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
+  testimonialImage: f({ image: { maxFileSize: "512KB", maxFileCount: 1 } })
+    .middleware(() => handleAuth())
+    .onUploadComplete(() => {}),
   coursevideo: f({ video: { maxFileSize: "2GB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),

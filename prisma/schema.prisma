@@ -407,3 +407,13 @@ model BrowserFingerprint {
   @@id([fingerprint, userId])
   @@unique([fingerprint, userId])
 }
+
+//Testimonial 
+model Testimonial {
+  id       String  @id @default(uuid())
+  img      String?
+  name     String
+  location String
+  rating   Int
+  comment  String  @db.Text
+}
