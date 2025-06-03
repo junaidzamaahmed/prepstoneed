@@ -2,7 +2,7 @@ import React from "react";
 import HeroCarousel from "../_components/hero-carousel";
 import AllCoursesTabs from "../_components/AllCoursesTabs";
 import { db } from "@/lib/db";
-import HowToStart from "../_components/HowToStart";
+// import HowToStart from "../_components/HowToStart";
 import Testimonials from "../_components/testimonials";
 import WhyPrepstone from "../_components/WhyPrepstone";
 
@@ -25,7 +25,7 @@ export default async function Home() {
       <HeroCarousel />
       <WhyPrepstone />
       <AllCoursesTabs categories={categories} />
-      <HowToStart />
+      {/* <HowToStart /> */}
       <Testimonials />
     </div>
   );
