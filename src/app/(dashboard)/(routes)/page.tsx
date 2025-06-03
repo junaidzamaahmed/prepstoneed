@@ -23,8 +23,8 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <HeroCarousel />
-      <AllCoursesTabs categories={categories} />
       <WhyPrepstone />
+      <AllCoursesTabs categories={categories} />
       <HowToStart />
       <Testimonials />
     </div>

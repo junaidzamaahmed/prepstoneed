@@ -30,6 +30,11 @@ const guestRoutes = [
     label: "Leaderboard",
     href: "/leaderboard",
   },
+  {
+    icon: User,
+    label: "Teams",
+    href: "/teams",
+  },
 ];
 const teacherRoutes = [
   {
