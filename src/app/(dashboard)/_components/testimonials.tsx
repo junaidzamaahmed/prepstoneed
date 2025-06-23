@@ -1,25 +1,27 @@
-"use client";
+"use client"
 
-import Autoplay from "embla-carousel-autoplay";
-import { Card, CardContent } from "@/components/ui/card";
+import Autoplay from "embla-carousel-autoplay"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import Image from "next/image";
-import { BsStarFill } from "react-icons/bs";
+  type CarouselApi,
+} from "@/components/ui/carousel"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Star } from "lucide-react"
+import { useEffect, useState } from "react"
 
-const testimonials = [
+const defaultTestimonials: Testimonial[] = [
   {
     name: "Tajidul Haque Protul",
     location: "Dhaka, Bangladesh",
     rating: 5,
     img: "/assets/profile.jpg",
     comment:
-      "I recently had the privilege of being a part of PrepStone's classes for a few months, and I must say it was an incredible experience. From the moment I enrolled, they took excellent  care of me, ensuring that my learning journey was not only productive but also enjoyable. PrepStone stands out for its commitment to providing timely solutions and valuable information to help students excel. \nThank you, PrepStone, for your dedication to students.",
+      "I recently had the privilege of being a part of PrepStone's classes for a few months, and I must say it was an incredible experience. From the moment I enrolled, they took excellent care of me, ensuring that my learning journey was not only productive but also enjoyable. PrepStone stands out for its commitment to providing timely solutions and valuable information to help students excel.\nThank you, PrepStone, for your dedication to students.",
   },
   {
     name: "Najifa Yousuf Oishy",
@@ -27,70 +29,150 @@ const testimonials = [
     rating: 5,
     img: "/assets/profile.jpg",
     comment:
-      "Honestly,after DU exam,I was so confused how to prepare for JU IBA. Then when I got to know this platform and I didn't think about anything and got admitted myself.Now I am literally grateful that I took the right decision.The mentors are very friendly and dedicated.I got much more than I have expected from this platform. I am grateful to all mentors. JajakAllahu Khayran.",
+      "Honestly, after the DU exam, I was so confused about how to prepare for JU IBA. Then I discovered this platform and didn't think twice before enrolling. Now, I'm truly grateful I made that decision. The mentors are very friendly and dedicated. I received much more than I expected. I'm thankful to all the mentors. JazakAllahu Khayran.",
   },
-];
+]
+
+type Testimonial = {
+  name: string
+  location: string
+  rating: 1 | 2 | 3 | 4 | 5
+  img: string
+  comment: string
+}
 
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([])
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+
+  const getTestimonials = async () => {
+    try {
+      const res = await fetch("/api/testimonials")
+      if (!res.ok) {
+        throw new Error("Failed to fetch testimonials")
+      }
+      return res.json()
+    } catch (error) {
+      console.error("Error fetching testimonials:", error)
+      return null
+    }
+  }
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      const data = await getTestimonials()
+      if (Array.isArray(data) && data.length > 0) {
+        setTestimonials(data)
+      } else {
+        setTestimonials(defaultTestimonials)
+      }
+    }
+    fetchTestimonials()
+  }, [])
+
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    setCurrent(api.selectedScrollSnap())
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api])
+
   return (
     <section className="py-16 bg-gradient-to-b from-primary/10 to-background">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">
           What Our Students Say About Us
         </h2>
-        <Carousel
-          plugins={[
-            Autoplay({
-              delay: 5000,
-            }),
-          ]}
-          className="max-w-4xl mx-auto max-lg:px-8"
-        >
-          <CarouselContent>
-            {testimonials.map((review, index) => (
-              <CarouselItem key={index}>
-                <Card className="shadow-lg">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                      <Image
-                        src={review.img}
-                        alt={`${review.name}'s profile picture`}
-                        width={100}
-                        height={100}
-                        className="rounded-full"
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-lg">{review.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {review.location}
-                        </p>
-                        <div className="flex mb-4">
-                          {Array.from({ length: review.rating }).map(
-                            (_, index) => (
-                              <BsStarFill
-                                key={index}
-                                className="text-yellow-500 mr-1"
-                                size={16}
-                              />
-                            )
-                          )}
+        <div className="w-full max-w-4xl mx-auto">
+          <Carousel
+            setApi={setApi}
+            plugins={[
+              Autoplay({
+                delay: 5000,
+              }),
+            ]}
+            className="w-full"
+          >
+            <CarouselContent className="h-[450px]">
+              {testimonials.map((review, index) => (
+                <CarouselItem key={index} className="h-full flex">
+                  <Card className="border-0 shadow-none w-full h-full flex flex-col">
+                    <CardContent className="p-8 flex flex-col h-full">
+                      {/* Testimonial Text */}
+                      <div className="rounded-lg p-8 flex-1 flex items-center justify-center">
+                        <div className="max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                          <p className="text-center leading-relaxed text-sm md:text-base whitespace-pre-line">
+                            {review.comment}
+                          </p>
                         </div>
-                        <p className="text-muted-foreground">
-                          {review.comment}
-                        </p>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <div className="hidden md:flex justify-center mt-8 gap-4 max-w-full">
-            <CarouselPrevious />
-            <CarouselNext />
-          </div>
-        </Carousel>
+
+                      {/* Profile Section */}
+                      <div className="flex flex-col items-center space-y-4 mt-auto">
+                        {/* Avatar */}
+                        <Avatar className="w-16 h-16">
+                          <AvatarImage
+                            src={review.img || "/assets/defaultAvater.png"}
+                            alt={`${review.name}'s profile picture`}
+                            className="object-cover"
+                          />
+                          <AvatarFallback className="bg-gray-200 text-gray-600">
+                            {review.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+
+                        {/* Name and Location */}
+                        <div className="text-center">
+                          <h3 className="font-semibold text-gray-900 text-lg capitalize">{review.name}</h3>
+                          <p className="text-gray-500 text-sm capitalize">{review.location}</p>
+                        </div>
+
+                        {/* Star Rating */}
+                        <div className="flex space-x-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-4 h-4 ${
+                                i < review.rating ? "fill-yellow-400 text-yellow-400" : "fill-gray-200 text-gray-200"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+
+            {/* Navigation */}
+            <div className="flex justify-center items-center mt-6 space-x-4">
+              <CarouselPrevious className="relative translate-y-0 left-0" />
+              <div className="flex space-x-2 items-center">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => api?.scrollTo(index)}
+                    className={`transition-all duration-300 rounded-full ${
+                      index === current ? "w-8 h-2 bg-blue-500" : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
+                    }`}
+                  />
+                ))}
+              </div>
+              <CarouselNext className="relative translate-y-0 right-0" />
+            </div>
+          </Carousel>
+        </div>
       </div>
     </section>
-  );
+  )
 }
