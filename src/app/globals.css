@@ -118,3 +118,36 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+/* Custom Swiper Styles */
+.swiper-pagination {
+  position: relative !important;
+  margin-top: 1rem;
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: #e2e8f0;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  width: 24px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #3b82f6;
+}
+
+/* Hide default navigation arrows */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+}
+
+/* Add some spacing for the slides */
+.swiper-slide {
+  height: auto;
+  padding: 0.5rem 0;
+}

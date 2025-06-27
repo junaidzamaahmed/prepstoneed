@@ -48,6 +48,11 @@ const teacherRoutes = [
     href: "/teacher/courses",
   },
   {
+    icon: Layout,
+    label: "QBanks",
+    href: "/teacher/q-bank",
+  },
+  {
     icon: BarChart,
     label: "Analytics",
     href: "/teacher/analytics",

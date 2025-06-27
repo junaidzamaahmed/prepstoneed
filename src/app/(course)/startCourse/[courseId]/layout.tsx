@@ -25,6 +25,11 @@ export default async function CourseLayout({
       practiceTestRelations: {
         include: { quiz: true },
       },
+      qbanks:{
+        include:{
+          chapters: true
+        }
+      }
     },
   });
   if (!course) {

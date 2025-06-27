@@ -51,10 +51,13 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
       courseNotices: true,
     },
   });
+
   const tests = await db.quiz.findMany({});
+  const qbanks = await db.qBank.findMany({});
   if (!course) {
     return redirect("/");
   }
+
 
   const categories = await db.category.findMany({
     orderBy: {
