@@ -8,7 +8,7 @@ import { Loader2, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Quiz, Section } from "@prisma/client";
+import { QBank, QBankChapter, Quiz, Section } from "@prisma/client";
 
 import {
   Form,
@@ -23,15 +23,15 @@ import { Input } from "@/components/ui/input";
 import { SectionsList } from "./sections-list";
 
 interface SectionFormProps {
-  initialData: Quiz & { sections: Section[] };
-  testId: string;
+  initialData: QBank & { chapters: QBankChapter[] };
+  qBankId: string;
 }
 
 const formSchema = z.object({
-  name: z.string().min(1),
+  title: z.string().min(1),
 });
 
-export const SectionForm = ({ initialData, testId }: SectionFormProps) => {
+export const SectionForm = ({ initialData, qBankId }: SectionFormProps) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -44,7 +44,7 @@ export const SectionForm = ({ initialData, testId }: SectionFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      title: "",
     },
   });
 
@@ -52,8 +52,8 @@ export const SectionForm = ({ initialData, testId }: SectionFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/tests/${testId}/sections`, values);
-      toast.success("Section created");
+      await axios.post(`/api/qbanks/${qBankId}/chapter`, values);
+      toast.success("chapter created");
       toggleCreating();
       router.refresh();
     } catch {
@@ -64,7 +64,7 @@ export const SectionForm = ({ initialData, testId }: SectionFormProps) => {
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
       setIsUpdating(true);
-      await axios.put(`/api/tests/${testId}/sections/reorder`, {
+      await axios.put(`/api/qbanks/${qBankId}/chapter/reorder`, {
         list: updateData,
       });
       toast.success("Sections reordered");
@@ -76,7 +76,7 @@ export const SectionForm = ({ initialData, testId }: SectionFormProps) => {
     }
   };
   const onEdit = (id: string) => {
-    router.push(`/teacher/tests/${testId}/sections/${id}`);
+    router.push(`/teacher/q-bank/${qBankId}/sections/${id}`);
   };
 
   return (
@@ -87,14 +87,14 @@ export const SectionForm = ({ initialData, testId }: SectionFormProps) => {
         </div>
       )}
       <div className="font-medium flex items-center justify-between">
-        Sections
+        Chapters
         <Button onClick={toggleCreating} variant="ghost">
           {isCreating ? (
             <>Cancel</>
           ) : (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Add a section
+              Add a Chapter
             </>
           )}
         </Button>
@@ -107,7 +107,7 @@ export const SectionForm = ({ initialData, testId }: SectionFormProps) => {
           >
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -131,14 +131,14 @@ export const SectionForm = ({ initialData, testId }: SectionFormProps) => {
         <div
           className={cn(
             "text-sm mt-2",
-            !initialData.sections.length && "text-slate-500 italic"
+            !initialData.chapters.length && "text-slate-500 italic"
           )}
         >
-          {!initialData.sections.length && "No Sections"}
+          {!initialData.chapters.length && "No Chapters"}
           <SectionsList
             onEdit={onEdit}
             onReorder={onReorder}
-            items={initialData.sections || []}
+            items={initialData.chapters || []}
           />
         </div>
       )}

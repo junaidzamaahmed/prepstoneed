@@ -2,22 +2,15 @@ import React from "react";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-
+import { NameForm } from "./_components/name-form";
 import { IconBadge } from "@/components/icon-badge";
-import {
-  ArrowLeft,
-  File,
-  MessageCircleQuestion,
-  TextSelectIcon,
-} from "lucide-react";
-
+import { ArrowLeft, File, TextSelectIcon } from "lucide-react";
+import { QuestionForm } from "./_components/question-form";
 import Link from "next/link";
 import { Banner } from "@/components/banner";
-import { SectionActions } from "./_components/actions";
+import { SectionActions } from "./questions/[questionId]/_components/actions";
 import { PositionForm } from "./_components/position-form";
-import { TheoryForm } from "./_components/thoery-form";
-import { NameForm } from "./_components/name-form";
-import { QuestionForm } from "./_components/question-form";
+import DifficultyForm from "./_components/difficulty-form";
 
 const SectionIdPage = async ({
   params,
@@ -82,7 +75,7 @@ const SectionIdPage = async ({
         </div>
         <div className='py-2 flex justify-end'>
           <SectionActions
-            disabled={true}
+            disabled={!isComplete}
             sectionId={params.sectionId}
             testId={params.qBankId}
             isPublished={section.isPublished}
@@ -90,38 +83,30 @@ const SectionIdPage = async ({
         </div>
         <div className='flex items-center gap-x-2'>
           <IconBadge icon={File} />
-          <h2 className='text-xl'>Edit this chapter </h2>
+          <h2 className='text-xl'>Edit chapter this section</h2>
         </div>
-        <NameForm
+        {/* <NameForm
           initialData={section}
-          qBankId={params.qBankId}
-          chapterId={params.sectionId}
-        />
-        {/* <PositionForm
+          testId={params.qbankId}
+          sectionId={params.sectionId}
+        /> */}
+        <PositionForm
           initialData={section}
           testId={params.qBankId}
           sectionId={params.sectionId}
-        /> */}
+        />
+        {/* <DifficultyForm testId={params.qbankId} section={section} /> */}
         <div className='mt-4 flex items-center gap-x-2'>
           <IconBadge icon={TextSelectIcon} />
-          <h2 className='text-xl'>Theory</h2>
+          <h2 className='text-xl'>Content</h2>
         </div>
-        <TheoryForm
+        {/* <QuestionForm
           initialData={section}
-          qBankId={params.qBankId}
-          chapterId={params.sectionId}
-        />
-        <div className='mt-4 flex items-center gap-x-2'>
-          <IconBadge icon={MessageCircleQuestion} />
-          <h2 className='text-xl'>Question</h2>
-        </div>
-        <QuestionForm
-                  initialData={section}
-                  testId={params.qBankId}
-                  sectionId={section.id}
-                  questionCategories={questionCategories}
-                  questionTags={questionTags}
-                />
+          testId={params.qbankId}
+          sectionId={section.id}
+          questionCategories={questionCategories}
+          questionTags={questionTags}
+        /> */}
       </div>
     </>
   );

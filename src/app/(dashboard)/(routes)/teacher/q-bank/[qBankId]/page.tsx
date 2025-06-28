@@ -18,12 +18,13 @@ const QBankPageId = async ({ params }: { params: { qBankId: string } }) => {
   if (!userId) {
     return redirect("/");
   }
+
   const test = await db.qBank.findUnique({
     where: {
       id: params.qBankId,
     },
     include: {
-      
+      chapters: true,
     }
   });
   if (!test) {
@@ -85,14 +86,6 @@ const QBankPageId = async ({ params }: { params: { qBankId: string } }) => {
             </div>
             <TitleForm initialData={test} qBankId={test.id} />
             {/* <DescriptionForm initialData={test} qBankId={test.id} /> */}
-            {/* <CategoryForm
-              initialData={test}
-              testId={test.id}
-              options={categories.map((category) => ({
-                label: category.name,
-                value: category.id,
-              }))}
-            /> */}
             
           </div>
           <div>
@@ -100,7 +93,7 @@ const QBankPageId = async ({ params }: { params: { qBankId: string } }) => {
               <IconBadge icon={Book} />
               <h2 className="text-xl">Theory Section Sections</h2>
             </div>
-            {/* <SectionForm initialData={test} qBankId={test.id} /> */}
+            <SectionForm initialData={test} qBankId={test.id} />
           </div>
         </div>
       </div>
