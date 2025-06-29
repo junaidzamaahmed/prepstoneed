@@ -23,9 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
+      <html lang='en' suppressHydrationWarning>
         <body className={poppins.className}>
-          <Fingerprint />
+          {/* <Fingerprint /> */}
           {children}
         </body>
       </html>

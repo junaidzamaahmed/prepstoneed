@@ -468,25 +468,3 @@ model TheoryBlock {
   position Int
 }
 
-// model QBankPracticeQuestion {
-//   id        String       @id @default(uuid())
-//   chapterId String
-//   chapter   QBankChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-
-//   question    String  @db.Text
-//   explanation String? @db.Text
-//   position    Int
-//   qtype       Qtype   @default(MCQ)
-
-//   answers QBankAnswer[]
-// }
-
-// model QBankAnswer {
-//   id         String                @id @default(uuid())
-//   questionId String
-//   question   QBankPracticeQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
-
-//   text      String  @db.Text
-//   isCorrect Boolean @default(false)
-//   position  Int
-// }
