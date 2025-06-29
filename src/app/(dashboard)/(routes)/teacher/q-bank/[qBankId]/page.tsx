@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import { ArrowLeft, Book, BookA, LayoutDashboard, ListChecks } from "lucide-react";
 import { TitleForm } from "./_components/title-form";
 import { DescriptionForm } from "./_components/description-form";
-import { CategoryForm } from "./_components/category-form";
 import { SectionForm } from "./_components/section-form";
 import { TestActions } from "./_components/actions";
 import Link from "next/link";
@@ -34,7 +33,7 @@ const QBankPageId = async ({ params }: { params: { qBankId: string } }) => {
 
   const requiredFields = [
     test.title,
-
+    test.chapters.find((chapter)=>(chapter.isPublished == true))
   ];
 
   const totalFields = requiredFields.length;
@@ -86,12 +85,11 @@ const QBankPageId = async ({ params }: { params: { qBankId: string } }) => {
             </div>
             <TitleForm initialData={test} qBankId={test.id} />
             {/* <DescriptionForm initialData={test} qBankId={test.id} /> */}
-            
           </div>
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={Book} />
-              <h2 className="text-xl">Theory Section Sections</h2>
+              <h2 className="text-xl">Add  Chapters</h2>
             </div>
             <SectionForm initialData={test} qBankId={test.id} />
           </div>

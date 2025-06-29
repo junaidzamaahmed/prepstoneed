@@ -64,7 +64,7 @@ export const AnswerForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(
-        `/api/tests/${testId}/sections/${sectionId}/questions/${questionId}/answers/${answerId}`,
+        `/api/qbanks/${testId}/chapter/${sectionId}/questions/${questionId}/answers/${answerId}`,
         values
       );
       toast.success("Question updated");

@@ -112,7 +112,7 @@ export const QuestionForm = ({
     try {
       setIsUpdating(true);
       await axios.put(
-        `/api/qbanks/${testId}/sections/${sectionId}/questions/reorder`,
+        `/api/qbanks/${testId}/chapter/${sectionId}/questions/reorder`,
         {
           list: updateData,
         }

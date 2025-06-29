@@ -31,13 +31,13 @@ export const AnswerActions = ({
       setIsLoading(true);
 
       await axios.delete(
-        `/api/tests/${testId}/sections/${sectionId}/questions/${questionId}/answers/${answerId}`
+        `/api/qbanks/${testId}/chapter/${sectionId}/questions/${questionId}/answers/${answerId}`
       );
 
       toast.success("Answer deleted");
       router.refresh();
       router.push(
-        `/teacher/tests/${testId}/sections/${sectionId}/questions/${questionId}`
+        `/teacher/q-bank/${testId}/sections/${sectionId}/questions/${questionId}`
       );
     } catch {
       toast.error("Something went wrong");

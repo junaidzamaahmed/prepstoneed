@@ -57,11 +57,10 @@ export const AnswerForm = ({
   });
 
   const { isSubmitting, isValid } = form.formState;
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.post(
-        `/api/tests/${testId}/sections/${sectionId}/questions/${questionId}/answers`,
+        `/api/qbanks/${testId}/chapter/${sectionId}/questions/${questionId}/answers`,
         values
       );
       toast.success("Answer created");
@@ -76,7 +75,7 @@ export const AnswerForm = ({
     try {
       setIsUpdating(true);
       await axios.put(
-        `/api/tests/${testId}/sections/${sectionId}/questions/${questionId}/answers/reorder`,
+        `/api/qbanks/${testId}/cahpter/${sectionId}/questions/${questionId}/answers/reorder`,
         {
           list: updateData,
         }
@@ -95,7 +94,7 @@ export const AnswerForm = ({
     try {
       setIsUpdating(true);
       await axios.put(
-        `/api/tests/${testId}/sections/${sectionId}/questions/${questionId}/answers/correctAnswer`,
+        `/api/qbanks/${testId}/chapters/${sectionId}/questions/${questionId}/answers/correctAnswer`,
         {
           list: updateData,
         }
@@ -110,7 +109,7 @@ export const AnswerForm = ({
   };
   const onEdit = (id: string) => {
     router.push(
-      `/teacher/tests/${testId}/sections/${sectionId}/questions/${questionId}/answers/${id}`
+      `/teacher/q-bank/${testId}/sections/${sectionId}/questions/${questionId}/answers/${id}`
     );
   };
 

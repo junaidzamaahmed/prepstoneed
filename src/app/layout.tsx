@@ -25,11 +25,12 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang='en' suppressHydrationWarning>
         <body className={poppins.className}>
-          {/* <Fingerprint /> */}
+          <Fingerprint />
           {children}
         </body>
       </html>
     </ClerkProvider>
+    // checking
     // <div className="bg-black h-full flex justify-center align-middle text-white">
     //   <p>UNDER MAINTENANCE!</p>
     // </div>

@@ -54,12 +54,12 @@ const SectionIdPage = async ({
   }
   const requiredFields = [
     section.title,
-    section.questions.find((question) => question.isPublished === true),
-    section.position,
+    section.questions.length > 0,
+    section.theoryBlocks.length > 0
   ];
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
-
+  
   const completionText = `(${completedFields}/${totalFields})`;
   const isComplete = requiredFields.every(Boolean);
   return (
@@ -82,7 +82,7 @@ const SectionIdPage = async ({
         </div>
         <div className='py-2 flex justify-end'>
           <SectionActions
-            disabled={true}
+            disabled={!isComplete}
             sectionId={params.sectionId}
             testId={params.qBankId}
             isPublished={section.isPublished}

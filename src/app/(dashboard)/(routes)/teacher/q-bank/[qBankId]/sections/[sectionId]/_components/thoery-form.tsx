@@ -76,7 +76,7 @@ export const TheoryForm = ({ initialData, qBankId, chapterId }: TheoryFormProps)
       )}
 
       <div className="font-medium flex items-center justify-between">
-        Chapters
+        Theories
         <Button onClick={() => setIsModalOpen(true)} variant="ghost">
           <PlusCircle className="h-4 w-4 mr-2" />
           Add a Theory
@@ -84,7 +84,7 @@ export const TheoryForm = ({ initialData, qBankId, chapterId }: TheoryFormProps)
       </div>
 
       <div className={cn("text-sm mt-2", !initialData.theoryBlocks.length && "text-slate-500 italic")}>
-        {!initialData.theoryBlocks.length && "No Chapters"}
+        {!initialData.theoryBlocks.length && "No Theories"}
         <TheoryList onReorder={onReorder} onEdit={onEdit} onDelete={onDelete} items={initialData.theoryBlocks || []} />
       </div>
 

@@ -32,7 +32,7 @@ export const SectionActions = ({
       setIsLoading(true);
 
       await axios.patch(
-        `/api/tests/${testId}/sections/${sectionId}/togglePublish`,
+        `/api/qbanks/${testId}/chapter/${sectionId}/togglePublish`,
         { isPublished: !isPublished }
       );
       isPublished
@@ -51,11 +51,11 @@ export const SectionActions = ({
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/tests/${testId}/sections/${sectionId}`);
+      await axios.delete(`/api/qbanks/${testId}/chapter/${sectionId}`);
 
-      toast.success("Section deleted");
+      toast.success("Chapter deleted");
       router.refresh();
-      router.push(`/teacher/tests/${testId}`);
+      router.push(`/teacher/q-bank/${testId}`);
     } catch {
       toast.error("Something went wrong");
     } finally {

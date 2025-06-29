@@ -15,7 +15,7 @@ const QuestionIdPage = async ({
   params,
 }: {
   params: {
-    testId: string;
+    qBankId: string;
     sectionId: string;
     questionId: string;
   };
@@ -59,7 +59,7 @@ const QuestionIdPage = async ({
         <div>
           <Link
             className="flex items-center text-sm hover:opacity-75 transition mb-6"
-            href={`/teacher/tests/${params.testId}/sections/${params.sectionId}/`}
+            href={`/teacher/q-bank/${params.qBankId}/sections/${params.sectionId}/`}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to section setup
@@ -69,7 +69,7 @@ const QuestionIdPage = async ({
           <QuestionActions
             disabled={!isComplete}
             sectionId={params.sectionId}
-            testId={params.testId}
+            testId={params.qBankId}
             questionId={question.id}
             isPublished={question.isPublished}
           />
@@ -80,19 +80,19 @@ const QuestionIdPage = async ({
         </div>
         <QuestionForm
           initialData={question}
-          testId={params.testId}
+          testId={params.qBankId}
           sectionId={params.sectionId}
           questionId={params.questionId}
         />
         <ImageForm
           initialData={question}
-          testId={params.testId}
+          testId={params.qBankId}
           sectionId={params.sectionId}
           questionId={params.questionId}
         />
         <ExplanationForm
           initialData={question}
-          testId={params.testId}
+          testId={params.qBankId}
           sectionId={params.sectionId}
           questionId={params.questionId}
         />
@@ -102,7 +102,7 @@ const QuestionIdPage = async ({
         </div>
         <AnswerForm
           initialData={question}
-          testId={params.testId}
+          testId={params.qBankId}
           questionId={params.questionId}
           sectionId={params.sectionId}
         />

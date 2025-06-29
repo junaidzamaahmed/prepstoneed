@@ -11,7 +11,7 @@ const SectionIdPage = async ({
   params,
 }: {
   params: {
-    testId: string;
+    qBankId: string;
     sectionId: string;
     questionId: string;
     answerId: string;
@@ -36,7 +36,7 @@ const SectionIdPage = async ({
       <div>
         <Link
           className="flex items-center text-sm hover:opacity-75 transition mb-6"
-          href={`/teacher/tests/${params.testId}/sections/${params.sectionId}/`}
+          href={`/teacher/q-bank/${params.qBankId}/sections/${params.sectionId}/`}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to section setup
@@ -45,7 +45,7 @@ const SectionIdPage = async ({
       <div className="py-2 flex justify-end">
         <AnswerActions
           sectionId={params.sectionId}
-          testId={params.testId}
+          testId={params.qBankId}
           questionId={params.questionId}
           answerId={params.answerId}
         />
@@ -56,7 +56,7 @@ const SectionIdPage = async ({
       </div>
       <AnswerForm
         initialData={answer}
-        testId={params.testId}
+        testId={params.qBankId}
         sectionId={params.sectionId}
         questionId={params.questionId}
         answerId={params.answerId}

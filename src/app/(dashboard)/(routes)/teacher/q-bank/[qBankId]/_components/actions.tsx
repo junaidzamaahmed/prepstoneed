@@ -50,9 +50,9 @@ export const TestActions = ({
 
       await axios.delete(`/api/qbanks/${qbankId}`);
 
-      toast.success("Test deleted");
+      toast.success("QBank deleted");
       router.refresh();
-      router.push(`/teacher/qbanks`);
+      router.push(`/teacher/q-bank`);
     } catch {
       toast.error("Something went wrong");
     } finally {
