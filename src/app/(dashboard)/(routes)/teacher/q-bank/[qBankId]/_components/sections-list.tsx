@@ -1,6 +1,6 @@
 "use client";
 
-import { QBankChapter, Section } from "@prisma/client";
+import { Section } from "@prisma/client";
 import { useEffect, useState } from "react";
 import {
   DragDropContext,
@@ -13,7 +13,7 @@ import { Grip, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface SectionsListProps {
-  items: QBankChapter[];
+  items: Section[];
   onReorder: (updateData: { id: string; position: number }[]) => void;
   onEdit: (id: string) => void;
 }
@@ -82,7 +82,7 @@ export const SectionsList = ({
                     >
                       <Grip className="h-5 w-5" />
                     </div>
-                    {section.title}
+                    {section.name}
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
                       <Badge
                         className={cn(

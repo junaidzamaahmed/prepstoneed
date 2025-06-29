@@ -2,28 +2,21 @@ import React from "react";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-
+import { NameForm } from "./_components/name-form";
 import { IconBadge } from "@/components/icon-badge";
-import {
-  ArrowLeft,
-  File,
-  MessageCircleQuestion,
-  TextSelectIcon,
-} from "lucide-react";
-
+import { ArrowLeft, File, MessageCircleQuestion } from "lucide-react";
+import { QuestionForm } from "./_components/question-form";
 import Link from "next/link";
 import { Banner } from "@/components/banner";
 import { SectionActions } from "./_components/actions";
 import { PositionForm } from "./_components/position-form";
-import { TheoryForm } from "./_components/thoery-form";
-import { NameForm } from "./_components/name-form";
-import { QuestionForm } from "./_components/question-form";
+import DifficultyForm from "./_components/difficulty-form";
 
 const SectionIdPage = async ({
   params,
 }: {
   params: {
-    qBankId: string;
+    testId: string;
     sectionId: string;
   };
 }) => {
@@ -32,14 +25,11 @@ const SectionIdPage = async ({
     return redirect("/");
   }
 
-  const section = await db.qBankChapter.findUnique({
+  const section = await db.section.findUnique({
     where: {
       id: params.sectionId,
     },
     include: {
-      theoryBlocks: {
-        orderBy: { position: "asc" },
-      },
       questions: {
         orderBy: {
           position: "asc",
@@ -53,7 +43,8 @@ const SectionIdPage = async ({
     return redirect("/");
   }
   const requiredFields = [
-    section.title,
+    section.difficulty,
+    section.name,
     section.questions.find((question) => question.isPublished === true),
     section.position,
   ];
@@ -66,62 +57,54 @@ const SectionIdPage = async ({
     <>
       {!section.isPublished && (
         <Banner
-          variant='warning'
-          label='This section is unpublished. It will not be visible in this test.'
+          variant="warning"
+          label="This section is unpublished. It will not be visible in this test."
         />
       )}
-      <div className='mt-10 mx-4'>
+      <div className="mt-10 mx-4">
         <div>
           <Link
-            className='flex items-center text-sm hover:opacity-75 transition mb-6'
-            href={`/teacher/q-bank/${params.qBankId}/`}
+            className="flex items-center text-sm hover:opacity-75 transition mb-6"
+            href={`/teacher/tests/${params.testId}/`}
           >
-            <ArrowLeft className='h-4 w-4 mr-2' />
+            <ArrowLeft className="h-4 w-4 mr-2" />
             Back to test setup
           </Link>
         </div>
-        <div className='py-2 flex justify-end'>
+        <div className="py-2 flex justify-end">
           <SectionActions
-            disabled={true}
+            disabled={!isComplete}
             sectionId={params.sectionId}
-            testId={params.qBankId}
+            testId={params.testId}
             isPublished={section.isPublished}
           />
         </div>
-        <div className='flex items-center gap-x-2'>
+        <div className="flex items-center gap-x-2">
           <IconBadge icon={File} />
-          <h2 className='text-xl'>Edit this chapter </h2>
+          <h2 className="text-xl">Edit this section</h2>
         </div>
         <NameForm
           initialData={section}
-          qBankId={params.qBankId}
-          chapterId={params.sectionId}
-        />
-        {/* <PositionForm
-          initialData={section}
-          testId={params.qBankId}
+          testId={params.testId}
           sectionId={params.sectionId}
-        /> */}
-        <div className='mt-4 flex items-center gap-x-2'>
-          <IconBadge icon={TextSelectIcon} />
-          <h2 className='text-xl'>Theory</h2>
-        </div>
-        <TheoryForm
-          initialData={section}
-          qBankId={params.qBankId}
-          chapterId={params.sectionId}
         />
-        <div className='mt-4 flex items-center gap-x-2'>
+        <PositionForm
+          initialData={section}
+          testId={params.testId}
+          sectionId={params.sectionId}
+        />
+        <DifficultyForm testId={params.testId} section={section} />
+        <div className="mt-4 flex items-center gap-x-2">
           <IconBadge icon={MessageCircleQuestion} />
-          <h2 className='text-xl'>Question</h2>
+          <h2 className="text-xl">Questions</h2>
         </div>
         <QuestionForm
-                  initialData={section}
-                  testId={params.qBankId}
-                  sectionId={section.id}
-                  questionCategories={questionCategories}
-                  questionTags={questionTags}
-                />
+          initialData={section}
+          testId={params.testId}
+          sectionId={section.id}
+          questionCategories={questionCategories}
+          questionTags={questionTags}
+        />
       </div>
     </>
   );

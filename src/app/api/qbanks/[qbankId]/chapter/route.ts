@@ -22,7 +22,6 @@ export async function POST(
       },
     });
     const newPosition = lastSection ? lastSection.position + 1 : 1;
-    
     const section = await db.qBankChapter.create({
       data: {
         title,
@@ -32,7 +31,7 @@ export async function POST(
     });
     return NextResponse.json(section);
   } catch (error) {
-    console.log("[CHAPTER_CREATE]", error);
+    console.log("[SECTIONS]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

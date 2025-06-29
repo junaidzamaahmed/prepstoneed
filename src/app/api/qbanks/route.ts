@@ -17,6 +17,8 @@ export async function POST(req: Request) {
       },
     });
 
+    console.log(qbank)
+
     return NextResponse.json(qbank);
   } catch (error) {
     console.log("[QBANK_POST]", error);

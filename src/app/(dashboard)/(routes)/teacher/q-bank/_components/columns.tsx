@@ -1,6 +1,6 @@
 "use client";
 
-import { QBank } from "@prisma/client";
+import { Quiz } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
 import Link from "next/link";
@@ -15,7 +15,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-export const columns: ColumnDef<QBank>[] = [
+export const columns: ColumnDef<Quiz>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => {

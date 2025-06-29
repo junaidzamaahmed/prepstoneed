@@ -8,7 +8,7 @@ import { Loader2, PlusCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Section, Question, Qtype, QBankChapter } from "@prisma/client";
+import { Section, Question, Qtype } from "@prisma/client";
 
 import {
   Form,
@@ -28,7 +28,7 @@ import { Editor } from "@/components/editor";
 import { FancyBox } from "@/components/fancy-box";
 
 interface QuestionFormProps {
-  initialData: QBankChapter & { questions: Question[] };
+  initialData: Section & { questions: Question[] };
   sectionId: string;
   testId: string;
   questionCategories: any;
@@ -91,7 +91,7 @@ export const QuestionForm = ({
       values.categoryId = selectedCategories[0]?.value;
       values.tags = selectedTags.map((tag: any) => tag.value);
       const ques = await axios.post(
-        `/api/qbanks/${testId}/chapter/${sectionId}/questions`,
+        `/api/tests/${testId}/sections/${sectionId}/questions`,
         values
       );
       toast.success("Question created");
@@ -112,7 +112,7 @@ export const QuestionForm = ({
     try {
       setIsUpdating(true);
       await axios.put(
-        `/api/qbanks/${testId}/sections/${sectionId}/questions/reorder`,
+        `/api/tests/${testId}/sections/${sectionId}/questions/reorder`,
         {
           list: updateData,
         }
@@ -127,7 +127,7 @@ export const QuestionForm = ({
   };
   const onEdit = (id: string) => {
     router.push(
-      `/teacher/q-bank/${testId}/sections/${sectionId}/questions/${id}`
+      `/teacher/tests/${testId}/sections/${sectionId}/questions/${id}`
     );
   };
   const [answers, setAnswers] = useState<any>("");

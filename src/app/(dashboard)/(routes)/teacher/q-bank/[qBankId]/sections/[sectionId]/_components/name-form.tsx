@@ -20,19 +20,19 @@ import { Button } from "@/components/ui/button";
 
 interface NameFormProps {
   initialData: {
-    title: string;
+    name: string;
   };
-  chapterId: string;
-  qBankId: string;
+  sectionId: string;
+  testId: string;
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, {
+  name: z.string().min(1, {
     message: "Name is required",
   }),
 });
 
-export const NameForm = ({ initialData, chapterId, qBankId }: NameFormProps) => {
+export const NameForm = ({ initialData, sectionId, testId }: NameFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -48,7 +48,7 @@ export const NameForm = ({ initialData, chapterId, qBankId }: NameFormProps) => 
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/qbanks/${qBankId}/chapter/${chapterId}`, values);
+      await axios.patch(`/api/tests/${testId}/sections/${sectionId}`, values);
       toast.success("Section updated");
       toggleEdit();
       router.refresh();
@@ -60,7 +60,7 @@ export const NameForm = ({ initialData, chapterId, qBankId }: NameFormProps) => 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Title 
+        Name
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
@@ -72,7 +72,7 @@ export const NameForm = ({ initialData, chapterId, qBankId }: NameFormProps) => 
           )}
         </Button>
       </div>
-      {!isEditing && <p className="text-sm mt-2">{initialData.title}</p>}
+      {!isEditing && <p className="text-sm mt-2">{initialData.name}</p>}
       {isEditing && (
         <Form {...form}>
           <form
@@ -81,7 +81,7 @@ export const NameForm = ({ initialData, chapterId, qBankId }: NameFormProps) => 
           >
             <FormField
               control={form.control}
-              name="title"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
