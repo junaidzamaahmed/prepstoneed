@@ -8,12 +8,11 @@ import { Loader2 } from "lucide-react"
 import { useEffect } from "react"
 import { toast } from "sonner"
 import type { TheoryBlock } from "@prisma/client"
-
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Editor } from "@/components/editor"
-
 
 interface TheoryModalProps {
   isOpen: boolean
@@ -25,6 +24,7 @@ interface TheoryModalProps {
 }
 
 const formSchema = z.object({
+  title: z.string().min(1, "Title is required").max(100, "Title must be less than 100 characters"),
   content: z.string().min(5, "Content must be at least 5 characters long"),
 })
 
@@ -32,6 +32,7 @@ export const TheoryModal = ({ isOpen, onClose, onSuccess, qBankId, chapterId, ed
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: "",
       content: "",
     },
   })
@@ -40,9 +41,10 @@ export const TheoryModal = ({ isOpen, onClose, onSuccess, qBankId, chapterId, ed
 
   useEffect(() => {
     if (editingTheory) {
+      form.setValue("title", editingTheory.title || "")
       form.setValue("content", editingTheory.content)
     } else {
-      form.reset({ content: "" })
+      form.reset({ title: "", content: "" })
     }
   }, [editingTheory, form])
 
@@ -72,14 +74,27 @@ export const TheoryModal = ({ isOpen, onClose, onSuccess, qBankId, chapterId, ed
         <DialogHeader>
           <DialogTitle>{editingTheory ? "Edit Theory" : "Add a Theory"}</DialogTitle>
         </DialogHeader>
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter theory title..." disabled={isSubmitting} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="content"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Content</FormLabel>
                   <FormControl>
                     <div className="min-h-[400px]">
                       <Editor
@@ -94,7 +109,6 @@ export const TheoryModal = ({ isOpen, onClose, onSuccess, qBankId, chapterId, ed
                 </FormItem>
               )}
             />
-
             <div className="flex items-center gap-x-2 justify-end">
               <Button type="button" variant="outline" onClick={handleClose}>
                 Cancel

@@ -11,7 +11,7 @@ export async function POST(
 ) {
   try {
     const { userId } = auth();
-    const { content } = await req.json();
+    const { content, title } = await req.json();
     const {chapterId} = params
 
     if (!userId) {
@@ -19,6 +19,7 @@ export async function POST(
     }
     const qbank = await db.theoryBlock.create({
       data: {
+        title: title,
         content: content,
         chapterId: chapterId,
         position: 0

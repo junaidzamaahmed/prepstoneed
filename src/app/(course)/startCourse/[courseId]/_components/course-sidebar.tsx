@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import {
   Category,
   Course,
+  CourseQBankRelation,
   PracticeTestRelations,
   QBank,
   Quiz,
@@ -28,7 +29,7 @@ interface CourseSidebarProps {
     tests: Quiz[];
     category: Category | null;
     practiceTestRelations: any[];
-    QBank: QBank[];
+    qbankRelations: any[];
   };
 }
 export default async function CourseSidebar({ course }: CourseSidebarProps) {
@@ -235,28 +236,25 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
                 <div className='text-left'>
                   <p>Q Banks</p>
                   <p className='text-black/70 text-xs mb-2 block'>
-                    {course?.QBank?.length} Question Bank
+                    {course?.qbankRelations?.length} Question Bank
                   </p>
                 </div>
               </AccordionTrigger>
 
               <AccordionContent className='my-1'>
-                {/* {course?.qbanks?.map((qbank) =>
-                  qbank..map((chapter: any) => (
-                    <Link key={chapter.id} href={`/q-bank/${chapter.id}`}>
+                {course?.qbankRelations?.map((item) =>(
+                  <Link key={item.qbank.id} href={`/startCourse/${course.id}/q-bank/${item.qbank.id}`}>
                       <div className='flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group'>
                         <div className='flex items-center space-x-2 hover:text-secondary'>
                           <PlayIcon
                             size={16}
                             className='pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all'
                           />
-                          <p className='font-medium'>{chapter.title}</p>
+                          <p className='font-medium'>{item.qbank.title}</p>
                         </div>
                       </div>
-                    </Link>
-                  ))
-                )} */}
-                question banks will be added soon
+                    </Link>))}
+
               </AccordionContent>
             </AccordionItem>
             {/* )} */}

@@ -5,6 +5,7 @@ import {
   PracticeTestRelations,
   Quiz,
   Recordings,
+  CourseQBankRelation
 } from "@prisma/client";
 import { MenuIcon } from "lucide-react";
 import CourseSidebar from "./course-sidebar";
@@ -15,6 +16,7 @@ interface CourseMobileSidebarProps {
     tests: Quiz[];
     category: Category | null;
     practiceTestRelations: PracticeTestRelations[];
+    qbankRelations: CourseQBankRelation[]
   };
 }
 export default function CourseMobileSidebar({

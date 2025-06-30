@@ -2,6 +2,7 @@ import NavbarRoutes from "@/components/navbar-routes";
 import {
   Category,
   Course,
+  CourseQBankRelation,
   PracticeTestRelations,
   QBank,
   Quiz,
@@ -16,7 +17,7 @@ interface CourseNavbarProps {
     tests: Quiz[];
     category: Category | null;
     practiceTestRelations: PracticeTestRelations[];
-    QBank: QBank[]
+    qbankRelations: CourseQBankRelation[]
   };
 }
 export default function CourseNavbar({ course }: CourseNavbarProps) {
