@@ -20,7 +20,7 @@ export async function DELETE(
     });
     return NextResponse.json(test);
   } catch (error) {
-    console.log("[TEST_ID]", error);
+    console.log("[QBANK_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -46,7 +46,9 @@ export async function PATCH(
     });
     return NextResponse.json(test);
   } catch (error) {
-    console.log("[TEST_ID]", error);
+    console.log("[QBANK_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+

@@ -3,6 +3,7 @@ import {
   Category,
   Course,
   PracticeTestRelations,
+  QBank,
   Quiz,
   Recordings,
 } from "@prisma/client";
@@ -15,6 +16,7 @@ interface CourseNavbarProps {
     tests: Quiz[];
     category: Category | null;
     practiceTestRelations: PracticeTestRelations[];
+    QBank: QBank[]
   };
 }
 export default function CourseNavbar({ course }: CourseNavbarProps) {
