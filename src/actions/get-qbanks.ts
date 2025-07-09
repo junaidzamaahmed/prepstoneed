@@ -17,28 +17,33 @@ export const getQBanks = async ({
 
     const course = await db.course.findUnique({
       where: { id: courseId },
-      select: { price: true, title:true },
+      select: { price: true, title: true },
     });
 
     const qbank = await db.qBank.findUnique({
       where: { id: qBankId, isPublished: true },
-      include:{
+      include: {
         chapters: {
-          include:{
+          include: {
             theoryBlocks: true,
-            questions: true
-          }
-        }
-      }
+            questions: {
+              where: { isQbank: true },
+              include:{
+                answers:true
+              }
+            },
+          },
+        },
+      },
     });
     if (!course || !qbank) {
       throw new Error("Course or recording not found");
     }
-    return{
+    return {
       course,
-      qbank, 
-      purchase
-    }
+      qbank,
+      purchase,
+    };
   } catch (e) {
     console.error(e);
     return {

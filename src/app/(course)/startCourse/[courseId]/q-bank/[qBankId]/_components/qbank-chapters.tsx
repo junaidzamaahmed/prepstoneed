@@ -6,13 +6,14 @@ import { TheoryBlock } from "./theory-block"
 import { BookOpen, HelpCircle, CheckCircle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { PracticeQuestions } from "./practice-question"
+import { Question } from "@prisma/client"
 
 interface Chapter {
   id: string
   title: string
   description?: string
   theoryBlocks?: TheoryBlockType[]
-  practiceQuestions?: PracticeQuestion[]
+  questions?: Question[]
   isCompleted?: boolean
 }
 
@@ -24,20 +25,14 @@ interface TheoryBlockType {
   // isCompleted?: boolean
 }
 
-interface PracticeQuestion {
-  id: string
-  question: string
-  options: string[]
-  correctAnswer: number
-  explanation?: string
-  isCompleted?: boolean
-}
+
 
 interface QBankChaptersProps {
   chapters: Chapter[]
 }
 
 export function QBankChapters({ chapters }: QBankChaptersProps) {
+  // console.log(chapters)
   if (!chapters || chapters.length === 0) {
     return (
       <div className="text-center py-12">
@@ -77,7 +72,7 @@ export function QBankChapters({ chapters }: QBankChaptersProps) {
                     <BookOpen className="w-3 h-3" />
                     {chapter.theoryBlocks?.length || 0}
                     <HelpCircle className="w-3 h-3 ml-2" />
-                    {chapter.practiceQuestions?.length || 0}
+                    {chapter.questions?.length || 0}
                   </div>
                 </div>
               </div>
@@ -97,20 +92,20 @@ export function QBankChapters({ chapters }: QBankChaptersProps) {
                 )}
 
                 {/* Practice Questions Section */}
-                {chapter.practiceQuestions && chapter.practiceQuestions.length > 0 && (
+                {chapter.questions && chapter.questions.length > 0 && (
                   <div>
                     <div className="flex items-center gap-2 mb-4">
                       <HelpCircle className="w-5 h-5 text-green-600" />
                       <h4 className="text-lg font-medium text-gray-900">Practice Questions</h4>
-                      <Badge variant="outline">{chapter.practiceQuestions.length} questions</Badge>
+                      <Badge variant="outline">{chapter.questions.length} questions</Badge>
                     </div>
-                    <PracticeQuestions questions={chapter.practiceQuestions} />
+                    <PracticeQuestions questions={chapter.questions} />
                   </div>
                 )}
 
                 {/* Empty State */}
                 {(!chapter.theoryBlocks || chapter.theoryBlocks.length === 0) &&
-                  (!chapter.practiceQuestions || chapter.practiceQuestions.length === 0) && (
+                  (!chapter.questions || chapter.questions.length === 0) && (
                     <div className="text-center py-8 text-gray-500">
                       <p>No content available for this chapter yet.</p>
                     </div>

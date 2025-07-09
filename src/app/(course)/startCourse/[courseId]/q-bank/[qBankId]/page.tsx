@@ -27,6 +27,7 @@ export default async function RecordingPage({
   if (!qbank?.qbank || !qbank?.course) {
     return redirect("/");
   }
+  // console.log(qbank.qbank.chapters[0])
 
   return (
     <div className='flex flex-col max-w-6xl mx-auto pb-20 px-4'>
