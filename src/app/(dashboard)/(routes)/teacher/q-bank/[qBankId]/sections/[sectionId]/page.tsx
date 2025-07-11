@@ -14,10 +14,9 @@ import {
 import Link from "next/link";
 import { Banner } from "@/components/banner";
 import { SectionActions } from "./_components/actions";
-import { PositionForm } from "./_components/position-form";
 import { TheoryForm } from "./_components/thoery-form";
 import { NameForm } from "./_components/name-form";
-import { QuestionForm } from "./_components/question-form";
+import QuestionForm from "./_components/question-form";
 
 const SectionIdPage = async ({
   params,
@@ -40,13 +39,16 @@ const SectionIdPage = async ({
       theoryBlocks: {
         orderBy: { position: "asc" },
       },
-      questions: {
-        orderBy: {
-          position: "asc",
-        },
-      },
+      quizzes: true
     },
   });
+
+  const tests = await db.quiz.findMany({
+    where:{
+      isPublished: true
+    }
+  })
+
   const questionCategories = await db.questionCategory.findMany({});
   const questionTags = await db.questionTag.findMany({});
   if (!section) {
@@ -54,7 +56,6 @@ const SectionIdPage = async ({
   }
   const requiredFields = [
     section.title,
-    section.questions.length > 0,
     section.theoryBlocks.length > 0
   ];
   const totalFields = requiredFields.length;
@@ -77,7 +78,7 @@ const SectionIdPage = async ({
             href={`/teacher/q-bank/${params.qBankId}/`}
           >
             <ArrowLeft className='h-4 w-4 mr-2' />
-            Back to test setup
+            Back 
           </Link>
         </div>
         <div className='py-2 flex justify-end'>
@@ -97,11 +98,7 @@ const SectionIdPage = async ({
           qBankId={params.qBankId}
           chapterId={params.sectionId}
         />
-        {/* <PositionForm
-          initialData={section}
-          testId={params.qBankId}
-          sectionId={params.sectionId}
-        /> */}
+
         <div className='mt-4 flex items-center gap-x-2'>
           <IconBadge icon={TextSelectIcon} />
           <h2 className='text-xl'>Theory</h2>
@@ -110,17 +107,16 @@ const SectionIdPage = async ({
           initialData={section}
           qBankId={params.qBankId}
           chapterId={params.sectionId}
-        />
+          />
         <div className='mt-4 flex items-center gap-x-2'>
           <IconBadge icon={MessageCircleQuestion} />
-          <h2 className='text-xl'>Question</h2>
+          <h2 className='text-xl'>Tests</h2>
         </div>
         <QuestionForm
                   initialData={section}
-                  testId={params.qBankId}
-                  sectionId={section.id}
-                  questionCategories={questionCategories}
-                  questionTags={questionTags}
+                  tests={tests}
+                  chapterId={section.id}
+                  qBankId={params.qBankId}
                 />
       </div>
     </>

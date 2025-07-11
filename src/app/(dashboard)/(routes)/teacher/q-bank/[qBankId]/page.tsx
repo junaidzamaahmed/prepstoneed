@@ -54,7 +54,7 @@ const QBankPageId = async ({ params }: { params: { qBankId: string } }) => {
         <div>
           <Link
             className="flex items-center text-sm hover:opacity-75 transition mb-6"
-            href={`/teacher/q-bank/`}
+            href={`/teacher/q-abank/`}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back

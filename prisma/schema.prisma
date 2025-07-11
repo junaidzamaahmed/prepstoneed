@@ -66,11 +66,14 @@ model Quiz {
   // Relationships
   category Category? @relation(fields: [categoryId], references: [id])
   courseId String?
+  qbankChapterId String?
   // user     User      @relation(fields: [userId], references: [id])
 
   course            Course?                 @relation(fields: [courseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   attempts          QuizAttempt[]
   sections          Section[]
+  qbankChapter      QBankChapter?           @relation(fields: [qbankChapterId], references: [id], onDelete: Cascade)
+
   practiceRelations PracticeTestRelations[]
   leaderboardInfo   LeaderboardInfo?
 
@@ -116,7 +119,6 @@ model Section {
 model Question {
   id          String  @id @default(uuid())
   sectionId   String?
-  chapterId   String?
   question    String  @db.Text
   explanation String? @db.Text
   position    Int
@@ -132,7 +134,6 @@ model Question {
   responses    UserResponse[]
   category     QuestionCategory?     @relation(fields: [categoryId], references: [id])
   tagRelations QuestionTagRelation[]
-  chapter      QBankChapter?         @relation("Question_chapter", fields: [chapterId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -455,7 +456,7 @@ model QBankChapter {
   qbank QBank @relation(fields: [qbankId], references: [id], onDelete: Cascade)
 
   theoryBlocks TheoryBlock[]
-  questions    Question[]    @relation("Question_chapter")
+  quizzes      Quiz[]
 }
 
 model TheoryBlock {

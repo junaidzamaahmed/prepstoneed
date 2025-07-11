@@ -1,429 +1,168 @@
 "use client";
-import React from "react";
-import * as z from "zod";
+
+import * as React from "react";
+import { X } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
+import { Command as CommandPrimitive } from "cmdk";
+import { Quiz } from "@prisma/client";
 import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Loader2, PlusCircle } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { Section, Question, Qtype, QBankChapter } from "@prisma/client";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { QuestionsList } from "./questions-list";
-import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Editor } from "@/components/editor";
-import { FancyBox } from "@/components/fancy-box";
-
-interface QuestionFormProps {
-  initialData: QBankChapter & { questions: Question[] };
-  sectionId: string;
-  testId: string;
-  questionCategories: any;
-  questionTags: any;
-}
-
-const formSchema = z.object({
-  question: z.string().min(1),
-  isPublished: z.boolean().optional(),
-  imageUrl: z.string().optional(),
-  explanation: z.string().min(1),
-  qtype: z.string().min(1),
-  answers: z.array(
-    z.object({
-      text: z.string().min(1),
-      isCorrect: z.boolean().optional(),
-      position: z.number().gte(1).optional(),
-    })
-  ),
-  categoryId: z.string().optional(),
-  tags: z.array(z.string()).optional(),
-});
-
-export const QuestionForm = ({
+export default function QuestionForm({
   initialData,
-  sectionId,
-  testId,
-  questionCategories,
-  questionTags,
-}: QuestionFormProps) => {
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<any>([]);
-  const [selectedTags, setSelectedTags] = useState<any>([]);
+  chapterId,
+  tests,
+  qBankId,
+}: {
+  initialData: any;
+  chapterId: string;
+  qBankId: string;
+  tests: Quiz[];
+}) {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState<Quiz[]>(initialData.quizzes);
+  const [inputValue, setInputValue] = React.useState("");
+  const [disabled, setDisabled] = React.useState(false);
 
-  const toggleCreating = () => {
-    setIsCreating((current) => !current);
-  };
-
-  const router = useRouter();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      question: "",
-      qtype: "MCQ",
-    },
-  });
-
-  const { isSubmitting, isValid } = form.formState;
-
-  // const onSubmit = async (values: z.infer<typeof formSchema>) => {
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleSelect = React.useCallback(async (test: Quiz) => {
     try {
-      values?.answers?.forEach((element: any, index: number) => {
-        element.isCorrect = ansObj[index].isCorrect;
-        element.position = ansObj[index].position;
-      });
-      values.isPublished = true;
-      values.categoryId = selectedCategories[0]?.value;
-      values.tags = selectedTags.map((tag: any) => tag.value);
-      const ques = await axios.post(
-        `/api/qbanks/${testId}/chapter/${sectionId}/questions`,
-        values
+      setDisabled(true);
+      await axios.patch(
+        `/api/qbanks/${qBankId}/chapter/${chapterId}/add-tests`,
+        { quizId: test.id, 
+          newChapterId: chapterId }
       );
-      toast.success("Question created");
-      toggleCreating();
-      router.refresh();
-      form.reset();
-      setAnsObj(null);
-      setAnswers("");
-      setSelectedCategories([]);
-      setSelectedTags([]);
-      setRef(false);
+      toast.success("Test added to course");
+      setDisabled(false);
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Failed to add test to course");
     }
-  };
+  }, []);
 
-  const onReorder = async (updateData: { id: string; position: number }[]) => {
+  const handleUnselect = React.useCallback(async (test: Quiz) => {
     try {
-      setIsUpdating(true);
-      await axios.put(
-        `/api/qbanks/${testId}/chapter/${sectionId}/questions/reorder`,
-        {
-          list: updateData,
+      setDisabled(true);
+      await axios.patch(
+        `/api/qbanks/${qBankId}/chapter/${chapterId}/add-tests`,
+        { quizId: test.id, 
+          newChapterId: null }
+      );
+      setSelected((prev) => prev.filter((s) => s.id !== test.id));
+      toast.success("Test removed from course");
+      setDisabled(false);
+    } catch {
+      toast.error("Failed to remove test from course");
+    }
+  }, []);
+
+  const handleKeyDown = React.useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      const input = inputRef.current;
+      if (input) {
+        if (e.key === "Delete" || e.key === "Backspace") {
+          if (input.value === "") {
+            setSelected((prev) => {
+              const newSelected = [...prev];
+              newSelected.pop();
+              return newSelected;
+            });
+          }
         }
-      );
-      toast.success("Questions reordered");
-      router.refresh();
-    } catch {
-      toast.error("Something went wrong.");
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-  const onEdit = (id: string) => {
-    router.push(
-      `/teacher/q-bank/${testId}/sections/${sectionId}/questions/${id}`
-    );
-  };
-  const [answers, setAnswers] = useState<any>("");
-  const [ansObj, setAnsObj] = useState<any>(null);
-  const [ref, setRef] = useState<boolean>(false);
-  useEffect(() => {
-    if (answers && !ref) {
-      setAnsObj(
-        answers.map((a: any, index: number) => {
-          return {
-            position: index + 1,
-            isCorrect: !index ? true : false,
-            text: a,
-          };
-        })
-      );
-      setRef(true);
-    }
-  }, [answers]);
-  const onChange = (e: string) => {
-    ansObj.forEach((answer: any) => {
-      if (answer.text === e) {
-        answer.isCorrect = true;
-      } else {
-        answer.isCorrect = false;
+        // This is not a default behaviour of the <input /> field
+        if (e.key === "Escape") {
+          input.blur();
+        }
       }
-    });
-    setAnsObj(ansObj);
-  };
-  const options = questionCategories.map((category: any) => ({
-    label: category.name,
-    value: category.id,
-  }));
-  const tagOptions = questionTags.map((category: any) => ({
-    label: category.name,
-    value: category.id,
-  }));
+    },
+    []
+  );
 
-  const onAddCategory = async (category: any) => {
-    try {
-      const res = await axios.post(`/api/question-categories`, {
-        name: category,
-      });
-      questionCategories.push(res.data);
-      options.push({ label: res.data.name, value: res.data.id });
-      toast.success("Category added");
-      return { label: res.data.name, value: res.data.id };
-    } catch {
-      toast.error("Something went wrong");
-    }
-  };
-
-  const onAddTags = async (tags: any) => {
-    try {
-      const res = await axios.post(`/api/question-tags`, {
-        name: tags,
-      });
-      questionTags.push(res.data);
-      tagOptions.push({ label: res.data.name, value: res.data.id });
-      toast.success("Tag added");
-      return { label: res.data.name, value: res.data.id };
-    } catch {
-      toast.error("Something went wrong");
-    }
-  };
-
+  const selectables = tests.filter(
+    (test) => !selected.find((s) => s.id === test.id)
+  );
   return (
-    <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
-      {isUpdating && (
-        <div className="absolute h-full w-full bg-slate-500/20 top-0 right-0 rounded-m flex items-center justify-center">
-          <Loader2 className="animate-spin h-6 w-6 text-sky-700" />
-        </div>
-      )}
-      <div className="font-medium flex items-center justify-between">
-        Questions
-        <Button onClick={toggleCreating} variant="ghost">
-          {isCreating ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add a question
-            </>
-          )}
-        </Button>
+    <div className='mt-6 border bg-slate-100 rounded-md p-4'>
+      <div className='font-medium flex items-center justify-between mb-4'>
+        Add Tests
       </div>
-      {isCreating && (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
-          >
-            <FormField
-              control={form.control}
-              name="question"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Editor
-                      placeholder="e.g. 'What is your name?'"
-                      disabled={isSubmitting}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+      <Command
+        onKeyDown={handleKeyDown}
+        aria-disabled={disabled}
+        className='overflow-visible bg-transparent'
+      >
+        <div className='group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2'>
+          <div className='flex gap-1 flex-wrap'>
+            {selected.map((test) => {
+              return (
+                <Badge
+                  key={test.id}
+                  variant='secondary'
+                  className='bg-sky-200/40 hover:bg-sky-200/60 transition'
+                >
+                  {test.title}
+                  <button
+                    disabled={disabled}
+                    className='ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleUnselect(test);
+                      }
+                    }}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                    onClick={() => handleUnselect(test)}
+                  >
+                    <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
+                  </button>
+                </Badge>
+              );
+            })}
+            {/* Avoid having the "Search" Icon */}
+            <CommandPrimitive.Input
+              ref={inputRef}
+              value={inputValue}
+              onValueChange={setInputValue}
+              onBlur={() => setOpen(false)}
+              onFocus={() => setOpen(true)}
+              placeholder='Select tests...'
+              className='ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1'
             />
-
-            <FormField
-              control={form.control}
-              name="qtype"
-              render={({ field }) => (
-                <FormItem className="space-y-3 ">
-                  <FormControl>
-                    <RadioGroup
-                      defaultValue={field.value}
-                      onValueChange={field.onChange}
-                      className="space-y-1"
-                    >
-                      {Object.keys(Qtype).map((key, index) => (
-                        <FormItem key={key} className="space-x-2">
-                          <FormControl>
-                            <RadioGroupItem value={key} />
-                          </FormControl>
-                          <FormLabel className="font-normal">{key}</FormLabel>
-                        </FormItem>
-                      ))}
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* <QuestionCategoryForm /> */}
-            <p>Question Category</p>
-            <FormField
-              control={form.control}
-              name="categoryId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <FancyBox
-                      selectedValues={selectedCategories}
-                      setSelectedValues={setSelectedCategories}
-                      options={options}
-                      addFunction={onAddCategory}
-                      multiselect={false}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* <QuestionTagForm /> */}
-            <p>Question Tags</p>
-            <FormField
-              control={form.control}
-              name="categoryId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <FancyBox
-                      selectedValues={selectedTags}
-                      setSelectedValues={setSelectedTags}
-                      options={tagOptions}
-                      addFunction={onAddTags}
-                      multiselect={true}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="explanation"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Editor
-                      disabled={isSubmitting}
-                      placeholder="Correct answer explanation"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="imageUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="Image URL"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {ansObj ? (
-              <RadioGroup
-                defaultValue={ansObj.find((ans: any) => ans?.isCorrect)?.text}
-                onValueChange={(e) => onChange(e)}
-              >
-                {ansObj.map((a: any, index: number) => {
+          </div>
+        </div>
+        <div className='relative mt-2'>
+          {open && selectables.length > 0 ? (
+            <div className='absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in'>
+              <CommandGroup className='h-full overflow-auto'>
+                {selectables.map((test) => {
                   return (
-                    <div key={index} className="flex gap-x-2 items-center">
-                      <FormField
-                        defaultValue={a.isCorrect}
-                        control={form.control}
-                        name={`answers.${index}.isCorrect`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <RadioGroupItem value={a.text} id={a.text} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        defaultValue={a.text}
-                        control={form.control}
-                        name={`answers.${index}.text`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              {/* <Textarea
-                                className=""
-                                disabled={isSubmitting}
-                                placeholder="Answer here"
-                                {...field}
-                              /> */}
-                              <Editor
-                                placeholder="Answer here"
-                                disabled={isSubmitting}
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                    <CommandItem
+                      disabled={disabled}
+                      key={test.id}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      onSelect={(value) => {
+                        setInputValue("");
+                        handleSelect(test);
+                        setSelected((prev) => [...prev, test]);
+                      }}
+                      className={"cursor-pointer"}
+                    >
+                      {test.title}
+                    </CommandItem>
                   );
                 })}
-              </RadioGroup>
-            ) : (
-              <Textarea
-                disabled={isSubmitting}
-                placeholder="Paste answers here'"
-                onChange={(e) =>
-                  setAnswers(
-                    e.target.value.split("\n").filter((a: string) => a !== "")
-                  )
-                }
-              />
-            )}
-            <Button disabled={!isValid || isSubmitting} type="submit">
-              Create
-            </Button>
-          </form>
-        </Form>
-      )}
-      {!isCreating && (
-        <div
-          className={cn(
-            "text-sm mt-2",
-            !initialData.questions.length && "text-slate-500 italic"
-          )}
-        >
-          {!initialData.questions.length && "No Questions"}
-          <QuestionsList
-            onEdit={onEdit}
-            onReorder={onReorder}
-            items={initialData.questions || []}
-          />
+              </CommandGroup>
+            </div>
+          ) : null}
         </div>
-      )}
-      {!isCreating && (
-        <p className="text-xs text-muted-foreground mt-4">
-          Drag and drop to reorder the questions
-        </p>
-      )}
+      </Command>
     </div>
   );
-};
+}

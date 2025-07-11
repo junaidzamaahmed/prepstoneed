@@ -243,7 +243,7 @@ export default async function CourseSidebar({ course }: CourseSidebarProps) {
 
               <AccordionContent className='my-1'>
                 {course?.qbankRelations?.map((item) =>(
-                  <Link key={item.qbank.id} href={`/startCourse/${course.id}/q-bank/${item.qbank.id}`}>
+                  <Link key={item.qbank.id} href={`/startCourse/${course.id}/qbanks/${item.qbank.id}`}>
                       <div className='flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group'>
                         <div className='flex items-center space-x-2 hover:text-secondary'>
                           <PlayIcon

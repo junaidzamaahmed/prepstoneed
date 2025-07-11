@@ -5,13 +5,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { HelpCircle, Lightbulb, Eye } from "lucide-react"
+import { Answer } from "@prisma/client"
 
-type Answer = {
-  id: string
-  text: string
-  isCorrect: boolean
-  questionId: string
-}
+
 
 type Question = {
   answers: Answer[]

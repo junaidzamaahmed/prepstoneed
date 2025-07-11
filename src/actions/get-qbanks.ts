@@ -26,12 +26,7 @@ export const getQBanks = async ({
         chapters: {
           include: {
             theoryBlocks: true,
-            questions: {
-              where: { isQbank: true },
-              include:{
-                answers:true
-              }
-            },
+            quizzes:true
           },
         },
       },
@@ -43,6 +38,7 @@ export const getQBanks = async ({
       course,
       qbank,
       purchase,
+      
     };
   } catch (e) {
     console.error(e);
