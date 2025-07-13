@@ -149,21 +149,14 @@ export function QBankChapters({ chapters }: QBankChaptersProps) {
                           Test your understanding with practice questions and
                           detailed explanations.
                         </p>
-                        {chapter.quizzes.map((question) => (
-                          <Button
-                            asChild
-                            variant='outline'
-                            className='w-full border-green-200 hover:bg-green-50 bg-transparent'
-                            key={question.id}
+                        <Button asChild className='w-full' variant="outline">
+                          <Link
+                            href={`/startCourse/${courseId}/qbanks/${qBankId}/chapters/${chapter.id}/questions`}
                           >
-                            <Link
-                              href={`/startTest/${question.id}`}
-                            >
-                              {question.title}
-                              <ArrowRight className='w-4 h-4 ml-2' />
-                            </Link>
-                          </Button>
-                        ))}
+                            Practice Questions
+                            <ArrowRight className='w-4 h-4 ml-2' />
+                          </Link>
+                        </Button>
                       </div>
                     ) : (
                       <div className='text-center py-4'>
