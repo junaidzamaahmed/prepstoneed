@@ -2,7 +2,9 @@ import NavbarRoutes from "@/components/navbar-routes";
 import {
   Category,
   Course,
+  CourseQBankRelation,
   PracticeTestRelations,
+  QBank,
   Quiz,
   Recordings,
 } from "@prisma/client";
@@ -15,6 +17,7 @@ interface CourseNavbarProps {
     tests: Quiz[];
     category: Category | null;
     practiceTestRelations: PracticeTestRelations[];
+    qbankRelations: CourseQBankRelation[]
   };
 }
 export default function CourseNavbar({ course }: CourseNavbarProps) {

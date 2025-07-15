@@ -21,6 +21,7 @@ import SelectInstructor from "./_components/select-instructor";
 import { ClassLinkForm } from "./_components/class-link-form";
 import SelectPracticeTests from "./_components/select-practice-tests";
 import { CourseNoticeForm } from "./_components/course-notice-form";
+import SelectQBank from "./_components/qbank-form";
 
 const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -47,11 +48,22 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
           quiz: true,
         },
       },
+      qbankRelations:{
+        include:{
+          qbank:true
+        }
+      },
       instructors: { include: { instructor: true } },
       courseNotices: true,
     },
   });
+
   const tests = await db.quiz.findMany({});
+  const qbanks = await db.qBank.findMany({
+    where: {
+      isPublished: true,
+    },
+  });
   if (!course) {
     return redirect("/");
   }
@@ -84,21 +96,21 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
     <>
       {!course.isPublished && (
         <Banner
-          variant="warning"
-          label="This course is unpublished. It will not be visible in the website."
+          variant='warning'
+          label='This course is unpublished. It will not be visible in the website.'
         />
       )}
-      <div className="mt-10 mx-4">
+      <div className='mt-10 mx-4'>
         <div>
           <Link
-            className="flex items-center text-sm hover:opacity-75 transition mb-6"
+            className='flex items-center text-sm hover:opacity-75 transition mb-6'
             href={`/teacher/courses/`}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowLeft className='h-4 w-4 mr-2' />
             Back
           </Link>
         </div>
-        <div className="py-2 flex justify-end">
+        <div className='py-2 flex justify-end'>
           <TestActions
             disabled={!isComplete}
             testId={params.courseId}
@@ -106,20 +118,20 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
           />
         </div>
       </div>
-      <div className="p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-y-2">
-            <h1 className="text-2xl font-medium">Course setup</h1>
-            <span className="text-sm text-slate-700">
+      <div className='p-6'>
+        <div className='flex items-center justify-between'>
+          <div className='flex flex-col gap-y-2'>
+            <h1 className='text-2xl font-medium'>Course setup</h1>
+            <span className='text-sm text-slate-700'>
               Complete all fields {completionText}
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-16'>
           <div>
-            <div className="flex items-center gap-x-2">
+            <div className='flex items-center gap-x-2'>
               <IconBadge icon={LayoutDashboard} />
-              <h2 className="text-xl">Customise your course</h2>
+              <h2 className='text-xl'>Customise your course</h2>
             </div>
             <TitleForm initialData={course} courseId={course.id} />
             <DescriptionForm initialData={course} courseId={course.id} />
@@ -144,6 +156,11 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
               courseId={course.id}
               tests={tests}
             />
+            <SelectQBank
+              qbanks={qbanks}
+              initialData={course}
+              courseId={course.id}
+            />
             <SelectPracticeTests
               tests={tests}
               initialData={course}
@@ -152,9 +169,9 @@ const TestIdPage = async ({ params }: { params: { courseId: string } }) => {
             <CourseNoticeForm courseId={params.courseId} initialData={course} />
           </div>
           <div>
-            <div className="flex items-center gap-x-2">
+            <div className='flex items-center gap-x-2'>
               <IconBadge icon={ListChecks} />
-              <h2 className="text-xl">Course Videos</h2>
+              <h2 className='text-xl'>Course Videos</h2>
             </div>
             <VideoForm initialData={course} courseId={course.id} />
             <CourseFeaturesForm initialData={course} courseId={course.id} />

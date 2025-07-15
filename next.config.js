@@ -12,6 +12,11 @@ const nextConfig = {
         hostname: "yt3.googleusercontent.com",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "*",
+        pathname: "**",
+      },
     ],
   },
   reactStrictMode: false,
