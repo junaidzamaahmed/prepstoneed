@@ -31,6 +31,11 @@ export default async function DSAT({
       recordings: true,
       tests: true,
       category: true,
+      qbankRelations: {
+        include: {
+          qbank: true,
+        },
+      },
     },
   });
   let purchase: any = false;
@@ -46,24 +51,24 @@ export default async function DSAT({
   }
   return (
     <div>
-      <section className="bg-primary">
-        <div className="container grid grid-cols-12 gap-4 p-10 text-white">
-          <div className="md:col-span-7 xl:col-span-8 col-span-12">
-            <h1 className="font-bold text-2xl mb-2">{course?.title}</h1>
-            <div className="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 my-6">
+      <section className='bg-primary'>
+        <div className='container grid grid-cols-12 gap-4 p-10 text-white'>
+          <div className='md:col-span-7 xl:col-span-8 col-span-12'>
+            <h1 className='font-bold text-2xl mb-2'>{course?.title}</h1>
+            <div className='grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 my-6'>
               {course?.CourseFeatures.map((feature) => (
                 <div
-                  className="w-full text-center bg-[#194e9e] rounded-lg p-4 flex flex-col"
+                  className='w-full text-center bg-[#194e9e] rounded-lg p-4 flex flex-col'
                   key={feature.id}
                 >
-                  <CheckCircle2Icon size={32} className="mx-auto mb-2" />
-                  <p className="text-sm">{feature.feature}</p>
+                  <CheckCircle2Icon size={32} className='mx-auto mb-2' />
+                  <p className='text-sm'>{feature.feature}</p>
                 </div>
               ))}
             </div>
           </div>
-          <div className="md:col-span-5 xl:col-span-4 col-span-12">
-            <div className="bg-white w-full border border-1 rounded pb-1">
+          <div className='md:col-span-5 xl:col-span-4 col-span-12'>
+            <div className='bg-white w-full border border-1 rounded pb-1'>
               <div>
                 {course?.imageUrl && (
                   <Image
@@ -71,8 +76,8 @@ export default async function DSAT({
                     src={course?.imageUrl}
                     width={500}
                     height={500}
-                    className="w-full h-full rounded-t"
-                    alt="course image"
+                    className='w-full h-full rounded-t'
+                    alt='course image'
                   />
                 )}
                 {!course?.imageUrl && (
@@ -80,8 +85,8 @@ export default async function DSAT({
                     src={"/assets/banner.jpg"}
                     width={500}
                     height={500}
-                    className="w-full h-full rounded-t"
-                    alt="course image"
+                    className='w-full h-full rounded-t'
+                    alt='course image'
                   />
                 )}
                 {/* <iframe
@@ -121,13 +126,13 @@ export default async function DSAT({
                   </div>
                 </div> */}
               </div>
-              <p className="px-2 py-3 text-primary font-bold text-xl">
+              <p className='px-2 py-3 text-primary font-bold text-xl'>
                 &#2547; {course?.price}
               </p>
-              <div className="mx-1">
+              <div className='mx-1'>
                 {purchase ? (
                   <Link
-                    className="bg-secondary py-2 w-full text-center text-white block rounded hover:bg-secondary/80 transition"
+                    className='bg-secondary py-2 w-full text-center text-white block rounded hover:bg-secondary/80 transition'
                     href={`/startCourse/${course?.id}`}
                   >
                     Continue Learning
@@ -135,13 +140,13 @@ export default async function DSAT({
                 ) : (
                   <>
                     <Link
-                      className="mb-1 bg-secondary py-2 w-full text-center text-white block rounded hover:bg-secondary/80 transition"
+                      className='mb-1 bg-secondary py-2 w-full text-center text-white block rounded hover:bg-secondary/80 transition'
                       href={`/startCourse/${course?.id}`}
                     >
                       Start Learning
                     </Link>
                     <Link
-                      className="bg-secondary py-2 w-full text-center text-white block rounded hover:bg-secondary/80 transition"
+                      className='bg-secondary py-2 w-full text-center text-white block rounded hover:bg-secondary/80 transition'
                       href={`/courses/${course?.id}/purchase`}
                     >
                       Buy Now
@@ -155,7 +160,7 @@ export default async function DSAT({
       </section>
       {purchase && (
         <Banner
-          variant="success"
+          variant='success'
           label={`A live class is going on right now! Click <a style="color:yellow;text-decoration:underline;" href="${
             course?.classLink || "#"
           }" target="${
@@ -165,12 +170,12 @@ export default async function DSAT({
       )}
 
       <section>
-        <div className="container grid grid-cols-12 gap-4 p-10">
-          <div className="md:col-span-7 xl:col-span-8 col-span-12">
-            <h2 className="font-bold text-2xl mb-2 text-secondary">
+        <div className='container grid grid-cols-12 gap-4 p-10'>
+          <div className='md:col-span-7 xl:col-span-8 col-span-12'>
+            <h2 className='font-bold text-2xl mb-2 text-secondary'>
               {course?.title}
             </h2>
-            <div className="text-black/70 font-medium w-[80%] ml-[-1rem]">
+            <div className='text-black/70 font-medium w-[80%] ml-[-1rem]'>
               <Preview value={course?.description || ""} />
             </div>
 
@@ -239,111 +244,111 @@ export default async function DSAT({
               </AccordionItem>
             </Accordion> */}
 
-            <h3 className="font-bold text-2xl mb-2 text-secondary mt-5">FAQ</h3>
+            <h3 className='font-bold text-2xl mb-2 text-secondary mt-5'>FAQ</h3>
             <Accordion
-              type="single"
+              type='single'
               collapsible
-              className="w-full mb-10 border border-1"
+              className='w-full mb-10 border border-1'
             >
               {course?.FAQ.map((faq) => (
                 <AccordionItem key={faq.id} value={faq.id}>
-                  <AccordionTrigger className="text-secondary px-3 hover:no-underline">
+                  <AccordionTrigger className='text-secondary px-3 hover:no-underline'>
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="px-3">
+                  <AccordionContent className='px-3'>
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
           </div>
-          <div className="md:col-span-5 xl:col-span-4 col-span-12">
-            <h3 className="font-semibold text-md">COURSE CONTENT</h3>
-            <p className="text-black/70 text-sm mb-2">
+          <div className='md:col-span-5 xl:col-span-4 col-span-12'>
+            <h3 className='font-semibold text-md'>COURSE CONTENT</h3>
+            <p className='text-black/70 text-sm mb-2'>
               2 Sections, {course?.recordings.length} Lectures
             </p>
             <Accordion
-              type="single"
+              type='single'
               collapsible
-              className="w-full mb-10 border border-1 border-slate-300 rounded-lg first:rounded-lg"
+              className='w-full mb-10 border border-1 border-slate-300 rounded-lg first:rounded-lg'
             >
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all rounded-lg">
-                  <div className="text-left">
+              <AccordionItem value='item-1'>
+                <AccordionTrigger className='px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all rounded-lg'>
+                  <div className='text-left'>
                     <p>Introduction</p>
-                    <p className="text-black/70 text-xs mb-2 block">
+                    <p className='text-black/70 text-xs mb-2 block'>
                       4 Lectures
                     </p>
                   </div>
                 </AccordionTrigger>
 
-                <AccordionContent className="my-1">
-                  <div className="flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group">
-                    <div className="flex items-center space-x-2 hover:text-secondary">
+                <AccordionContent className='my-1'>
+                  <div className='flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group'>
+                    <div className='flex items-center space-x-2 hover:text-secondary'>
                       <PlayIcon
                         size={16}
-                        className="pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all"
+                        className='pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all'
                       />
-                      <p className="font-medium">Introduction</p>
+                      <p className='font-medium'>Introduction</p>
                     </div>
                     <UnlockIcon
                       size={12}
-                      className="text-slate-500 group-hover:text-secondary transition-all"
+                      className='text-slate-500 group-hover:text-secondary transition-all'
                     />
                   </div>
-                  <div className="flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group">
-                    <div className="flex items-center space-x-2 hover:text-secondary">
+                  <div className='flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group'>
+                    <div className='flex items-center space-x-2 hover:text-secondary'>
                       <PlayIcon
                         size={16}
-                        className="pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all"
+                        className='pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all'
                       />
-                      <p className="font-medium">PDF</p>
+                      <p className='font-medium'>PDF</p>
                     </div>
                     <UnlockIcon
                       size={12}
-                      className="text-slate-500 group-hover:text-secondary transition-all"
+                      className='text-slate-500 group-hover:text-secondary transition-all'
                     />
                   </div>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">
-                  <div className="text-left">
+              <AccordionItem value='item-2'>
+                <AccordionTrigger className='px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all'>
+                  <div className='text-left'>
                     <p>
                       Resources for{" "}
                       {course?.category?.name == "DSAT"
                         ? "DSAT"
                         : course?.category?.name == "BUP" && "BUP FBS"}
                     </p>
-                    <p className="text-black/70 text-xs mb-2 block">
+                    <p className='text-black/70 text-xs mb-2 block'>
                       1 Lecture
                     </p>
                   </div>
                 </AccordionTrigger>
 
-                <AccordionContent className="my-1">
-                  <div className="flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group">
-                    <div className="flex items-center space-x-2 hover:text-secondary">
+                <AccordionContent className='my-1'>
+                  <div className='flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group'>
+                    <div className='flex items-center space-x-2 hover:text-secondary'>
                       <PlayIcon
                         size={16}
-                        className="pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all"
+                        className='pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all'
                       />
-                      <p className="font-medium">PDF</p>
+                      <p className='font-medium'>PDF</p>
                     </div>
                   </div>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">
-                  <div className="text-left">
+              <AccordionItem value='item-3'>
+                <AccordionTrigger className='px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all'>
+                  <div className='text-left'>
                     <p>Recorded Classes</p>
-                    <p className="text-black/70 text-xs mb-2 block">
+                    <p className='text-black/70 text-xs mb-2 block'>
                       {course?.recordings.length} Lectures
                     </p>
                   </div>
                 </AccordionTrigger>
 
-                <AccordionContent className="my-1">
+                <AccordionContent className='my-1'>
                   {course?.recordings.map((recording) => (
                     // <div
                     //   key={recording.id}
@@ -367,17 +372,17 @@ export default async function DSAT({
                 </AccordionContent>
               </AccordionItem>
               {course?.category?.name == "BUP" && (
-                <AccordionItem value="item-4">
-                  <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">
-                    <div className="text-left">
+                <AccordionItem value='item-4'>
+                  <AccordionTrigger className='px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all'>
+                    <div className='text-left'>
                       <p>Practice Tests</p>
-                      <p className="text-black/70 text-xs mb-2 block">
+                      <p className='text-black/70 text-xs mb-2 block'>
                         {course?.tests.length} Tests
                       </p>
                     </div>
                   </AccordionTrigger>
 
-                  <AccordionContent className="my-1">
+                  <AccordionContent className='my-1'>
                     {/* {course?.tests.map((test) => (
                       <div
                         key={test.id}
@@ -395,50 +400,79 @@ export default async function DSAT({
                   </AccordionContent>
                 </AccordionItem>
               )}
-              <AccordionItem value="item-5">
-                <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">
-                  <div className="text-left">
+              <AccordionItem value='item-5'>
+                <AccordionTrigger className='px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all'>
+                  <div className='text-left'>
                     <p>
                       {course?.category?.name == "DSAT"
                         ? "Adaptive"
                         : course?.category?.name == "BUP" && ""}
                       Mock Tests
                     </p>
-                    <p className="text-black/70 text-xs mb-2 block">
+                    <p className='text-black/70 text-xs mb-2 block'>
                       {course?.tests.length} Tests
                     </p>
                   </div>
                 </AccordionTrigger>
 
-                <AccordionContent className="my-1">
+                <AccordionContent className='my-1'>
                   {course?.tests.map((test) => (
                     <div
                       key={test.id}
-                      className="flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group"
+                      className='flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group'
                     >
-                      <div className="flex items-center space-x-2 hover:text-secondary">
+                      <div className='flex items-center space-x-2 hover:text-secondary'>
                         <PlayIcon
                           size={16}
-                          className="pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all"
+                          className='pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all'
                         />
-                        <p className="font-medium">{test.title}</p>
+                        <p className='font-medium'>{test.title}</p>
                       </div>
                     </div>
                   ))}
                 </AccordionContent>
               </AccordionItem>{" "}
+              <AccordionItem value='item-7'>
+                <AccordionTrigger className='px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all'>
+                  <div className='text-left'>
+                    <p>Q-Banks</p>
+                    <p className='text-black/70 text-xs mb-2 block'>
+                      {course?.qbankRelations.length} Question Banks
+                    </p>
+                  </div>
+                </AccordionTrigger>
+
+                <AccordionContent className='my-1'>
+                  {course?.qbankRelations.map((qbanks) => (
+                    <div
+                      key={qbanks.qbank.id}
+                      className='flex justify-between py-[5px] items-center hover:bg-secondary/5 hover:text-secondary transition-all cursor-pointer px-3 group'
+                    >
+                      <Link href={`/startCourse/${course.id}/q-bank/${qbanks.qbank.id}`}>
+                        <div className='flex items-center space-x-2 hover:text-secondary'>
+                          <PlayIcon
+                            size={16}
+                            className='pl-[2px] py-[2px] rounded-full text-white bg-black group-hover:bg-secondary transition-all'
+                          />
+                          <p className='font-medium'>{qbanks.qbank.title}</p>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
               {course?.category?.name == "BUP" && (
-                <AccordionItem value="item-6">
-                  <AccordionTrigger className="px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all">
-                    <div className="text-left">
+                <AccordionItem value='item-6'>
+                  <AccordionTrigger className='px-3 py-2 hover:no-underline data-[state=open]:bg-accent transition-all'>
+                    <div className='text-left'>
                       <p>E-Qbanks</p>
-                      <p className="text-black/70 text-xs mb-2 block">
+                      <p className='text-black/70 text-xs mb-2 block'>
                         0 E-Qbanks
                       </p>
                     </div>
                   </AccordionTrigger>
 
-                  <AccordionContent className="my-1">
+                  <AccordionContent className='my-1'>
                     {/* {course?.tests.map((test) => (
                       <div
                         key={test.id}

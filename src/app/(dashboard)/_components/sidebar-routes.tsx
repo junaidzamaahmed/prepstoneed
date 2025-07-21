@@ -10,9 +10,14 @@ import {
   User,
   FileMinus,
 } from "lucide-react";
+
 import { SidebarItem } from "./sidebar-item";
 import { usePathname } from "next/navigation";
-import { PiChartBarHorizontal, PiStudent } from "react-icons/pi";
+import {
+  PiChartBarHorizontal,
+  PiStudent,
+  PiNotebookBold,
+} from "react-icons/pi";
 
 const guestRoutes = [
   {
@@ -46,6 +51,11 @@ const teacherRoutes = [
     icon: Layout,
     label: "Courses",
     href: "/teacher/courses",
+  },
+  {
+    icon: PiNotebookBold,
+    label: "QBanks",
+    href: "/teacher/q-bank",
   },
   {
     icon: BarChart,

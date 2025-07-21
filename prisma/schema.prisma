@@ -66,11 +66,14 @@ model Quiz {
   // Relationships
   category Category? @relation(fields: [categoryId], references: [id])
   courseId String?
+  qbankChapterId String?
   // user     User      @relation(fields: [userId], references: [id])
 
   course            Course?                 @relation(fields: [courseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   attempts          QuizAttempt[]
   sections          Section[]
+  qbankChapter      QBankChapter?           @relation(fields: [qbankChapterId], references: [id], onDelete: Cascade)
+
   practiceRelations PracticeTestRelations[]
   leaderboardInfo   LeaderboardInfo?
 
@@ -115,17 +118,18 @@ model Section {
 // Question model
 model Question {
   id          String  @id @default(uuid())
-  sectionId   String
+  sectionId   String?
   question    String  @db.Text
   explanation String? @db.Text
   position    Int
   imageUrl    String? @db.Text
   isPublished Boolean @default(false)
+  isQbank     Boolean @default(false)
   qtype       Qtype   @default(MCQ)
   categoryId  String?
 
   // Relationships
-  section      Section               @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  section      Section?              @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   answers      Answer[]
   responses    UserResponse[]
   category     QuestionCategory?     @relation(fields: [categoryId], references: [id])
@@ -250,6 +254,7 @@ model Course {
   accessRequests        AccessRequest[]
   practiceTestRelations PracticeTestRelations[]
   courseNotices         CourseNotice[]
+  qbankRelations        CourseQBankRelation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -416,4 +421,50 @@ model Testimonial {
   location String
   rating   Int
   comment  String  @db.Text
+}
+
+// Q-Banks
+model QBank {
+  id              String                @id @default(uuid())
+  title           String
+  courseId        String?
+  isPublished     Boolean               @default(false)
+  chapters        QBankChapter[]
+  courseRelations CourseQBankRelation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CourseQBankRelation {
+  courseId String
+  qbankId  String
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  qbank  QBank  @relation(fields: [qbankId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, qbankId])
+}
+
+model QBankChapter {
+  id          String  @id @default(uuid())
+  title       String
+  qbankId     String
+  position    Int
+  isPublished Boolean @default(false)
+
+  qbank QBank @relation(fields: [qbankId], references: [id], onDelete: Cascade)
+
+  theoryBlocks TheoryBlock[]
+  quizzes      Quiz[]
+}
+
+model TheoryBlock {
+  id        String       @id @default(uuid())
+  title     String
+  chapterId String
+  chapter   QBankChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  content  String @db.Text
+  position Int
 }

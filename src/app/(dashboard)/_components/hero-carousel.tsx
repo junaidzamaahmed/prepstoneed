@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -32,19 +33,23 @@ export default function Hero() {
             </p>
 
             <div className=' flex-col sm:flex-row gap-4 justify-center lg:justify-start hidden lg:flex'>
-              <Button
-                size='lg'
-                className='bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold'
-              >
-                Get Started
-              </Button>
-              <Button
-                variant='outline'
-                size='lg'
-                className='border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg font-semibold'
-              >
-                Browse Courses
-              </Button>
+              <Link href='/'>
+                <Button
+                  size='lg'
+                  className='bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold'
+                >
+                  Get Started
+                </Button>
+              </Link>
+              <Link href={"/courses"}>
+                <Button
+                  variant='outline'
+                  size='lg'
+                  className='border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg font-semibold'
+                >
+                  Browse Courses
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -71,19 +76,24 @@ export default function Hero() {
             </div>
           </div>
           <div className='flex flex-col sm:flex-row gap-4 justify-center lg:justify-start lg:hidden'>
-            <Button
-              size='lg'
-              className='bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold'
-            >
-              Get Started
-            </Button>
-            <Button
-              variant='outline'
-              size='lg'
-              className='border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg font-semibold'
-            >
-              Browse Courses
-            </Button>
+            <Link href='/'>
+              <Button
+                size='lg'
+                className='bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold'
+              >
+                Get Started
+              </Button>
+            </Link>
+
+            <Link href={"/courses"}>
+              <Button
+                variant='outline'
+                size='lg'
+                className='border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg font-semibold'
+              >
+                Browse Courses
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
