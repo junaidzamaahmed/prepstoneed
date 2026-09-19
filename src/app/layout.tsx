@@ -6,7 +6,7 @@ import Favicon from "./favicon.ico";
 import Fingerprint from "@/components/fingerprint";
 
 const poppins = Poppins({
-  subsets: ["devanagari", "latin"],
+  subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
 });
 

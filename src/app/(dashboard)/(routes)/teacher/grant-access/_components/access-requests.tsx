@@ -73,10 +73,8 @@ export default function AccessRequests({
             <TableRow key={request.id}>
               <TableCell>{request.user.fullName}</TableCell>
               <TableCell>
-                {
-                  courses.find((course: any) => course.id === request.courseId)
-                    .title
-                }
+                {courses.find((course: any) => course.id === request.courseId)
+                  ?.title ?? "—"}
               </TableCell>
               <TableCell>{request.trxId}</TableCell>
               <TableCell>{request.phone}</TableCell>

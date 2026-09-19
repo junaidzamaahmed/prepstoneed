@@ -13,7 +13,8 @@ interface PreviewProps {
 
 export const Preview = ({ value }: PreviewProps) => {
   useEffect(() => {
-    window.katex = katex;
+    // Quill formula module expects window.katex; default export lacks nested namespace from export-as-namespace
+    (window as unknown as { katex: typeof katex }).katex = katex;
   }, []);
 
   const ReactQuill = useMemo(

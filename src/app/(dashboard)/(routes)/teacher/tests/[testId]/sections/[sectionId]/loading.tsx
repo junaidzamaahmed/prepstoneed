@@ -1,5 +1,4 @@
 export default function Loading() {
-  setTimeout(() => {}, 1000);
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex items-center space-x-2">

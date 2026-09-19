@@ -1,4 +1,5 @@
 "use client";
+
 import { Course, User } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,11 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-interface AccessFormProps {
-  users: User[];
-  courses: Course[];
-}
 import { z } from "zod";
 import {
   Select,
@@ -28,20 +24,30 @@ import {
 import axios from "axios";
 import { toast } from "sonner";
 
+interface AccessFormProps {
+  users: Pick<User, "id" | "email">[];
+  courses: Pick<Course, "id" | "title">[];
+}
+
 const formSchema = z.object({
   uid: z.string().min(1),
   cid: z.string().min(1),
 });
 
-async function AccessForm({ users, courses }: AccessFormProps) {
+function AccessForm({ users, courses }: AccessFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      uid: "",
+      cid: "",
+    },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await axios.post("/api/access", values);
       toast.success("Access granted");
+      form.reset({ uid: "", cid: "" });
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -56,7 +62,7 @@ async function AccessForm({ users, courses }: AccessFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Student</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value || undefined}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a student" />
@@ -81,7 +87,7 @@ async function AccessForm({ users, courses }: AccessFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Course</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value || undefined}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a course" />
